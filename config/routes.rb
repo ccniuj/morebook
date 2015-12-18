@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :statics, :only => [:index]
   root 'statics#index'
   resources :shelves, :only => [:index, :show]
