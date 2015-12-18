@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :managers
   devise_for :users
   resources :statics, :only => [:index]
   root 'statics#index'
@@ -7,11 +8,11 @@ Rails.application.routes.draw do
   namespace :dashboard do
     resources :shelves
     resources :books
-    resources :stairs
+    resources :stars
     namespace :admin do
       resources :shelves
       resources :books
-      resources :stairs
+      resources :stars
       resources :tags
       resources :users
       resources :managers
