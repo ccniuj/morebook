@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Morebook</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+<body>
+  <div class='header'>
+    <%= yield :header %>
+  </div>
+  <h1>對外頁面：Public</h1>
+  <% if current_user %>
+    Hi!<%= current_user.email %>, 
+    <%= link_to '登出', destroy_user_session_path, :method => 'delete' %>
+  <% else %>
+    <%= link_to '登入', new_user_session_path %>,
+    <%= link_to '註冊', new_user_registration_path %>
+  <% end %>
+  <%= will_paginate @paginate if @paginate %>
+  <hr>
+  <%= yield %>
+  <hr>
+  <%= will_paginate @paginate if @paginate %>
+  <div class='footer'>
+    <%= yield :footer %>
+  </div>
+</body>
+</html>
