@@ -927,7 +927,7 @@ a:focus {
 .navbar-nav > .notifications-menu > .dropdown-menu,
 .navbar-nav > .messages-menu > .dropdown-menu,
 .navbar-nav > .tasks-menu > .dropdown-menu {
-  width: 280px;
+  width: 190px;
   padding: 0 0 0 0;
   margin: 0;
   top: 100%;
@@ -1067,7 +1067,7 @@ a:focus {
   border-top-left-radius: 0;
   padding: 1px 0 0 0;
   border-top-width: 0;
-  width: 280px;
+  width: 190px;
 }
 .navbar-nav > .user-menu > .dropdown-menu,
 .navbar-nav > .user-menu > .dropdown-menu > .user-body {
