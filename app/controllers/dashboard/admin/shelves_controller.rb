@@ -1,6 +1,6 @@
 class Dashboard::Admin::ShelvesController < Dashboard::Admin::AdminController
   def index
-    @shelves = @paginate = Shelf.all.paginate(:page => params[:page])
+    @shelves = @paginate = Shelf.all.order('id DESC').paginate(:page => params[:page])
   end
 
   def new
@@ -20,8 +20,14 @@ class Dashboard::Admin::ShelvesController < Dashboard::Admin::AdminController
     end
   end
 
+  def destroy
+    @shelf = Shelf.find(params[:id])
+    @shelf.destroy
+    redirect_to dashboard_admin_shelves_path
+  end
+
   private
   def shelf_params
-    params.require(:shelf).permit(:name)
+    params.require(:shelf).permit(:name, :descrition)
   end
 end

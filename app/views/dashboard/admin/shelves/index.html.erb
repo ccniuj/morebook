@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>ID</th>
       <th>名稱</th>
       <th>管理</th>
     </tr>
@@ -13,10 +14,11 @@
   <tbody>
     <% @shelves.each do |shelf| %>
       <tr>
+        <td><%= shelf.id %></td>
         <td><%= shelf.name %></td>
         <td>
           <%= link_to '編輯', edit_dashboard_admin_shelf_path(shelf) %>
-          <%= link_to '刪除', shelf, method: :delete, data: { confirm: '你確定嗎？' } %></td>
+          <%= link_to '刪除', dashboard_admin_shelf_path(shelf), method: :delete, data: { confirm: '你確定嗎？' } %></td>
       </tr>
     <% end %>
   </tbody>
