@@ -1,6 +1,6 @@
 class Dashboard::Admin::BooksController < Dashboard::Admin::AdminController
   def index
-    @books = @paginate = Book.all.order('id DESC').paginate(:page => params[:page])
+    @books = @paginate = Book.includes(:tag).all.order('id DESC').paginate(:page => params[:page])
   end
 
   def new
