@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :tags
+  resources :stars
+  resources :books
+  resources :shelves
   devise_for :managers
   devise_for :users
   # resources :statics, :only => [:index]
