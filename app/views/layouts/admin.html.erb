@@ -24,6 +24,7 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <%= yield :css_load %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
   </head>
@@ -465,9 +466,12 @@
         <section class="content">
           <div class="row">
             <div class="col-md-6">
+              <div class='header'>
+                <%= yield :header %>
+              </div>
+              <%= will_paginate @paginate if @paginate %>              
               <%= yield %>
-    
-
+              <%= will_paginate @paginate if @paginate %>
             </div><!-- /.col -->
           </div><!-- /.row -->
         </section><!-- /.content -->
@@ -658,5 +662,6 @@
     <script src="/template/dist/js/app.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="/template/dist/js/demo.js"></script>
+    <%= yield :js_load %>
   </body>
 </html>
