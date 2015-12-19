@@ -1,5 +1,13 @@
-<h1>編輯書櫃</h1>
-<%= form_for(@shelf, {:url => dashboard_admin_shelf_path, :method => 'patch'}) do |f| %>
-  名稱<%= f.text_field :name %><br/>
-  <%= f.submit %>
-<% end %>
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">編輯書櫃</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <%= form_for(@shelf, {:url => dashboard_admin_shelf_path, :method => 'patch'}) do |f| %>
+      <div class='form-group'>
+        名稱<%= f.text_field :name, :class => 'form-control' %>
+      </div>
+      <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
+    <% end %>
+  </div>
+</div>

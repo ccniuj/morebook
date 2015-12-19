@@ -1,7 +1,15 @@
-<h1>新增書本</h1>
-<%= form_for(@book, { :url => dashboard_admin_books_path, :method => 'post'}) do |f| %>
-  名稱<%= f.text_field :name %><br/>
-  分類<%= f.select :tag_id, Tag.all.map{|t|[t.name, t.id]} %><br/>
-  封面<%= f.file_field :cover %><br/>
-  <%= f.submit %>
-<% end %>
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">新增書本</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <%= form_for(@book, {:url => dashboard_admin_books_path, :method => 'post'}) do |f| %>
+      <div class='form-group'>
+        名稱<%= f.text_field :name, :class => 'form-control' %>
+        分類<%= f.select :tag_id, Tag.all.map{|t|[t.name, t.id]}, {}, {:class => 'form-control'} %><br/>
+        封面<%= f.file_field :cover, :class => 'form-control' %><br/>
+      </div>
+      <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
+    <% end %>
+  </div>
+</div>
