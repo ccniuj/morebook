@@ -1,6 +1,5 @@
-<h1>Editing Book</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @book %> |
-<%= link_to 'Back', books_path %>
+<h1>編輯書本</h1>
+<%= form_for(@book, {:url => dashboard_admin_book_path, :method => 'patch'}) do |f| %>
+  名稱<%= f.text_field :name %><br/>
+  <%= f.submit %>
+<% end %>

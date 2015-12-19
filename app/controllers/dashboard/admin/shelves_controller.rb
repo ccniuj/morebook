@@ -11,6 +11,12 @@ class Dashboard::Admin::ShelvesController < Dashboard::Admin::AdminController
     @shelf = Shelf.find(params[:id])
   end
 
+  def create
+    @shelf = Shelf.new(shelf_params)
+    @shelf.save
+    redirect_to dashboard_admin_shelves_path
+  end
+
   def update
     @shelf = Shelf.find(params[:id])
     if @shelf.update(shelf_params)
