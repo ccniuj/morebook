@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Morebook</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<h1>後台頁面：Admin</h1>
-  Hi!<%= current_manager.email %>, 
-  <%= link_to '登出', destroy_manager_session_path, :method => 'delete' %>
-<hr>
-<ul>
-  <li><%= link_to '書櫃管理', dashboard_admin_shelves_path %></li>
-  <li><%= link_to '書本管理', dashboard_admin_books_path %></li>
-</ul>
-<%= will_paginate @paginate if @paginate %>
-<hr>
-<%= yield %>
-<hr>
-<%= will_paginate @paginate if @paginate %>
-</body>
+  <head>
+    <title>Morebook</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class='header'>
+      <%= yield :header %>
+    </div>
+    <h1>後台頁面：Admin</h1>
+    Hi!<%= current_manager.email %>, 
+    <%= link_to '登出', destroy_manager_session_path, :method => 'delete' %>
+    <hr>
+    <ul>
+      <li><%= link_to '書櫃管理', dashboard_admin_shelves_path %></li>
+      <li><%= link_to '書本管理', dashboard_admin_books_path %></li>
+    </ul>
+    <%= will_paginate @paginate if @paginate %>
+    <hr>
+    <%= yield %>
+    <hr>
+    <%= will_paginate @paginate if @paginate %>
+    <div class='footer'>
+      <%= yield :footer %>
+    </div>
+  </body>
 </html>

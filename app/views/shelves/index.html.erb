@@ -1,25 +1,25 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Shelves</h1>
-
+<% content_for :header do %>
+  <h3>This is header</h3>
+<% end %>
+<h1>書櫃列表</h1>
 <table>
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>ID</th>
+      <th>名稱</th>
     </tr>
   </thead>
 
   <tbody>
     <% @shelves.each do |shelf| %>
       <tr>
-        <td><%= link_to 'Show', shelf %></td>
-        <td><%= link_to 'Edit', edit_shelf_path(shelf) %></td>
-        <td><%= link_to 'Destroy', shelf, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= shelf.id %></td>
+        <td><%= link_to shelf.name, shelf_path(shelf) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Shelf', new_shelf_path %>
+<% content_for :footer do %>
+  <h3>This is footer</h3>
+<% end %>

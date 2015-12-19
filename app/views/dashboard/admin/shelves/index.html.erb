@@ -1,4 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% content_for :header do %>
+  <h3>This is header</h3>
+<% end %>
 
 <h1>書櫃列表</h1>
 
@@ -27,3 +29,7 @@
 <br>
 
 <%= link_to '新增書櫃', new_dashboard_admin_shelf_path %>
+
+<% content_for :footer do %>
+  <h3>This is footer</h3>
+<% end %>
