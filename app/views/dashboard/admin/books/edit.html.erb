@@ -1,7 +1,7 @@
 <h1>編輯書本</h1>
 <%= form_for(@book, {:url => dashboard_admin_book_path, :method => 'patch'}) do |f| %>
   名稱<%= f.text_field :name %><br/>
-  Tag ID<%= f.number_field :tag_id %><br/>
+  分類<%= f.select :tag_id, Tag.all.map{|t|[t.name, t.id]} %><br/>
   封面<%= f.file_field :cover %><br/>
   <%= f.submit %>
 <% end %>
