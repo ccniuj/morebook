@@ -7,6 +7,7 @@
     <tr>
       <th>ID</th>
       <th>名稱</th>
+      <th>封面</th>
       <th>管理</th>
     </tr>
   </thead>
@@ -16,6 +17,8 @@
       <tr>
         <td><%= book.id %></td>
         <td><%= book.name %></td>
+        <td><%= book.tag_id %></td>
+        <td><%= image_tag book.cover.url(:thumb), :width => '100', :height => '100' %></td>
         <td>
           <%= link_to '編輯', edit_dashboard_admin_book_path(book) %>
           <%= link_to '刪除', dashboard_admin_book_path(book), method: :delete, data: { confirm: '你確定嗎？' } %></td>

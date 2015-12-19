@@ -11,7 +11,8 @@ class Book < ActiveRecord::Base
     styles: {
       original: "1024x1024>",
       medium: "300x300>",
-      thumb: "100x100>"
-    }
+      thumb: "100x100"
+    }, 
+    default_url: '/images/missing.jpg'
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
 end

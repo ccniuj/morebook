@@ -2,5 +2,6 @@
 <%= form_for(@book, { :url => dashboard_admin_books_path, :method => 'post'}) do |f| %>
   名稱<%= f.text_field :name %><br/>
   Tag ID<%= f.number_field :tag_id %><br/>
+  封面<%= f.file_field :cover %><br/>
   <%= f.submit %>
 <% end %>
