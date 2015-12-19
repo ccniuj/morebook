@@ -1,4 +1,4 @@
-<h1>Editing Shelf</h1>
+<h1>編輯書櫃</h1>
 <%= form_for(@shelf, {:url => dashboard_admin_shelf_path, :method => 'patch'}) do |f| %>
   名稱<%= f.text_field :name %><br/>
   <%= f.submit %>

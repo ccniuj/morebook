@@ -7,14 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<h1>對外頁面：Public</h1>
-<% if current_user %>
-  Hi!<%= current_user.email %>, 
-  <%= link_to '登出', destroy_user_session_path, :method => 'delete' %>
-<% else %>
-  <%= link_to '登入', new_user_session_path %>,
-  <%= link_to '註冊', new_user_registration_path %>
-<% end %>
+<h1>後台頁面：Admin</h1>
+  Hi!<%= current_manager.email %>, 
+  <%= link_to '登出', destroy_manager_session_path, :method => 'delete' %>
+<hr>
+<ul>
+  <li><%= link_to '書櫃管理', dashboard_admin_shelves_path %></li>
+</ul>
 <%= will_paginate @paginate if @paginate %>
 <hr>
 <%= yield %>
