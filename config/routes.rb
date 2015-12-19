@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   devise_for :managers
   devise_for :users
-  resources :statics, :only => [:index]
-  root 'statics#index'
+  # resources :statics, :only => [:index]
+  root 'shelves#index'
   resources :shelves, :only => [:index, :show]
   resources :books, :only => [:index, :show]
   namespace :dashboard do
