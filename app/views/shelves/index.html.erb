@@ -1,18 +1,59 @@
-<h1>書櫃列表</h1>
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>名稱</th>
-    </tr>
-  </thead>
+<div class="main-content">
+<!--  begin portfolio section  -->
+    <section class="bg-light-gray">
+        <div class="container">
 
-  <tbody>
-    <% @shelves.each do |shelf| %>
-      <tr>
-        <td><%= shelf.id %></td>
-        <td><%= link_to shelf.name, shelf_path(shelf) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+            <div class="headline text-center">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <h2 class="section-title">瀏覽書櫃</h2>
+                        <p class="section-sub-title">
+                            快來挑選你有興趣的主題
+                        </p> <!-- /.section-sub-title -->
+                    </div>
+                </div>
+            </div> <!-- /.headline -->
+            <%= will_paginate @paginate if @paginate %>
+            <div class="portfolio-item-list">
+                <div class="row">
+
+                    <% @shelves.each do |shelf| %>
+                        <div class="col-md-3 col-sm-6">       
+                            <div class="portfolio-item">       
+                                <div class="item-image">       
+                                    <a href="<%= shelf_path(shelf) %>">       
+                                        <img src="/template_front/assets/img/portfolio1.jpg" class="img-responsive center-block" alt="portfolio1">       
+                                        <div><span><i class="fa fa-plus"></i></span></div>       
+                                    </a>       
+                                </div>       
+
+                                <div class="item-description">       
+                                    <div class="row">       
+                                        <div class="col-xs-8 col-xs-offset-2">
+                                            <span class="item-name">       
+                                                <%= shelf.name %>       
+                                            </span>       
+                                            <span>       
+                                                Fashion       
+                                            </span>       
+                                        </div>       
+                                        <div class="col-xs-6 col-xs-offset-3">       
+                                            <span class="like">       
+                                                <i class="fa fa-heart-o"></i>       
+                                                576       
+                                            </span>       
+                                        </div>       
+                                    </div>       
+                                </div> <!-- end of /.item-description -->       
+                            </div> <!-- end of /.portfolio-item -->       
+                        </div>       
+                    <% end %>
+                </div>
+            </div> <!-- end of portfolio-item-list -->
+            
+            <%= will_paginate @paginate if @paginate %>
+
+        </div>
+    </section> 
+    <!--   end of portfolio section  -->
+</div>
