@@ -1,2 +1,92 @@
-<h1><%= @shelf.name %></h1>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
 
+            <section class="blog-content">
+                <div class="container">
+                    <div class="row">
+                        <main class="col-md-9 col-md-push-3" style="display: block;">
+                            <article class="blog-item">
+                                <div class="blog-heading">
+                                    <h1 class="text-capitalize">
+                                      <%= @shelf.name %>
+                                    </h1>
+                                    <span class="date">may 24,2015</span>
+                                    <span>12 comments</span>
+                                </div>
+                                <p>
+                                  <%= @shelf.description %>
+                                </p>
+                            </article>
+                            <div class="portfolio-item-list">
+                              <div class="row">
+                                <% 12.times do |t| %>
+                                  <div class="col-md-3 col-sm-6">       
+                                      <div class="portfolio-item">       
+                                          <div class="item-image">       
+                                              <a href="#">       
+                                                  <img src="/template_front/assets/img/portfolio1.jpg" class="img-responsive center-block" alt="          portfolio1">       
+                                                  <div><span><i class="fa fa-plus"></i></span></div>       
+                                              </a>       
+                                          </div>       
+
+                                          <div class="item-description">       
+                                              <div class="row">       
+                                                  <div class="col-xs-6 col-xs-offset-3">       
+                                                      <span class="item-name">       
+                                                          Oliver a Note       
+                                                      </span>       
+                                                      <span>       
+                                                          Fashion       
+                                                      </span>       
+                                                  </div>       
+                                                  <div class="col-xs-6 col-xs-offset-3">       
+                                                      <span class="like">       
+                                                          <i class="fa fa-heart-o"></i>       
+                                                          576       
+                                                      </span>       
+                                                  </div>       
+                                              </div>       
+                                          </div> <!-- end of /.item-description -->       
+                                      </div> <!-- end of /.portfolio-item -->       
+                                  </div>       
+                                <% end %>
+                              </div>
+                            </div> <!-- end of portfolio-item-list -->
+                        </main>
+
+
+
+
+                        <!-- begin sidebar -->
+                        <aside class="col-md-3 col-md-pull-9">
+
+                            <!-- begin tag-widget -->
+                            <div class="tag-widget">
+                                <h4>Popular Tags</h4>
+                                <div class="tags">
+                                    <a href="#">masonary</a>
+                                    <a href="#">responsive</a>
+                                    <a href="#">ecommerce</a>
+                                    <a href="#">web design</a>
+                                    <a href="#">wordpress</a>
+                                    <a href="#">mobile</a>
+                                    <a href="#">retina</a>
+                                    <a href="#">multi-purpose</a>
+                                    <a href="#">blog posts</a>
+                                    <a href="#">new slider</a>
+                                    <a href="#">popular</a>
+                                    <a href="#">recent</a>
+                                    <a href="#">modern</a>
+                                    <a href="#">themeforest</a>
+                                </div>
+                            </div> <!-- /.tag-widget -->
+
+                        </aside>
+                        <!-- end sidebar -->
+                    </div>
+                </div>
+
+            </section>
