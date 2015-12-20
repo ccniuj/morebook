@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :books
   resources :shelves
   devise_for :managers
-  devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :statics, :only => [:index]
   resources :shelves, :only => [:index, :show]
   resources :books, :only => [:index, :show]
