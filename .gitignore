@@ -13,3 +13,4 @@
 /tmp
 /public/system
 /config/application.yml
+/coverage
