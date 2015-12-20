@@ -34,6 +34,7 @@ class Dashboard::Admin::BooksController < Dashboard::Admin::AdminController
 
   private
   def book_params
-    params.require(:book).permit(:name, :descrition, :tag_id, :cover)
+    params.require(:book).permit(:name, :description, :tag_id, :cover,
+     :author, :descripton, :isbn, :publisher, :publish_date, :language, :page)
   end
 end
