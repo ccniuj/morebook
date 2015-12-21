@@ -1,29 +1,29 @@
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:id => 'login-form'}) do |f| %>
-        <div class="heading">登入Morebook</div>
-        <div class="left">
-          <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true %>
-          <%= f.label :password %>
-          <%= f.password_field :password, autocomplete: "off" %>
-          <% if devise_mapping.rememberable? %>
-            <div class="field">
-              <%= f.check_box :remember_me %>
-              <%= f.label :remember_me %>
-            </div>
-          <% end %>
-          <div class="actions">
-            <%= f.submit "Log in" %>
-          </div>
-          <%= link_to 'Sign up', new_user_registration_path %><br/>
-          <%= link_to 'Forgot password', new_user_password_path %><br/>
-        </div>
-        <div class="right">
-          <div class="connect">請選擇一個帳號</div>
-          <a href="" class="facebook">
-            <span class="fontawesome-facebook">facebook</span>
-          </a> <br />
-          <a href="<%= user_omniauth_authorize_path(:google_oauth2) %>" class="google-plus">
-            <span class="fontawesome-google-plus">Google</span>
-          </a> <br />
-        </div>
-      <% end %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), :html => {:id => 'login-form'}) do |f| %>
+  <div class="heading">登入Morebook</div>
+  <div class="left">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "off" %>
+    <% if devise_mapping.rememberable? %>
+      <div class="field">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me %>
+      </div>
+    <% end %>
+    <div class="actions">
+      <%= f.submit "Log in" %>
+    </div>
+    <%= link_to 'Sign up', new_user_registration_path %><br/>
+    <%= link_to 'Forgot password', new_user_password_path %><br/>
+  </div>
+  <div class="right">
+    <div class="connect">請選擇一個帳號</div>
+    <a href="" class="facebook">
+      <span class="fontawesome-facebook">facebook</span>
+    </a> <br />
+    <a href="<%= user_omniauth_authorize_path(:google_oauth2) %>" class="gplus">
+      <span class="fontawesome-google-plus">Google</span>
+    </a> <br />
+  </div>
+<% end %>
