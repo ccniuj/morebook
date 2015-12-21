@@ -1,0 +1,29 @@
+<%= link_to '新增書櫃', new_dashboard_shelf_path %>
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">書櫃列表</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body no-padding">
+    <table class="table table-striped">
+      <tr>
+        <th>ID</th>
+        <th>封面</th>
+        <th>名稱</th>
+        <th>簡介</th>
+        <th>管理</th>
+      </tr>
+      <% @shelves.each do |shelf| %>
+        <tr>
+          <td><%= shelf.id %></td>
+          <td><%= image_tag shelf.cover.url(:thumb), :width => '100', :height => '100' %></td>
+          <td><%= shelf.name %></td>
+          <td width='500'><%= shelf.description %></td>
+          <td>
+            <%= link_to '編輯', edit_dashboard_shelf_path(shelf) %>
+            <%= link_to '刪除', dashboard_shelf_path(shelf), method: :delete, data: { confirm: '你確定嗎？' } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div><!-- /.box-body --> 
+</div><!-- /.box -->

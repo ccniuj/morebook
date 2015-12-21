@@ -1,0 +1,15 @@
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">編輯書櫃</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <%= form_for(@shelf, {:url => dashboard_shelf_path, :method => 'patch'}) do |f| %>
+      <div class='form-group'>
+        封面<%= f.file_field :cover, :class => 'form-control' %>
+        名稱<%= f.text_field :name, :class => 'form-control' %>
+        簡介<%= f.text_area :description, :class => 'form-control' %>
+      </div>
+      <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
+    <% end %>
+  </div>
+</div>
