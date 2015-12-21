@@ -1,0 +1,21 @@
+<div class="box box-warning">
+  <div class="box-header with-border">
+    <h3 class="box-title">General Elements</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <% if @shelf.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@shelf.errors.count, "error") %> prohibited this shelf from being saved:</h2>    
+        <ul>
+        <% @shelf.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-group">
+      <label>名稱</label>
+      <input type="text" class="form-control" value="<%= @shelf.name %>">
+    </div>
+  </div>
+</div>

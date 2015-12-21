@@ -1,0 +1,16 @@
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">新增使用者</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <%= form_for(@user, {:url => dashboard_admin_users_path, :method => 'post'}) do |f| %>
+      <div class='form-group'>
+        名稱<%= f.text_field :name, :class => 'form-control' %>
+        Email<%= f.email_field :email, :class => 'form-control' %>
+        密碼<%= f.text_field :password, :class => 'form-control' %>
+        確認密碼<%= f.text_field :password_confirmation, :class => 'form-control' %>
+      </div>
+      <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
+    <% end %>
+  </div>
+</div>
