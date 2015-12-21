@@ -8,8 +8,16 @@
         封面<%= f.file_field :cover, :class => 'form-control' %>
         名稱<%= f.text_field :name, :class => 'form-control' %>
         分類<%= f.select :tag_id, Tag.all.map{|t|[t.name, t.id]}, {}, {:class => 'form-control'} %>
+        書櫃<%= select_tag :shelf_id,
+            options_for_select(Shelf.all.map{|s|[s.name, s.id]}),
+            {:class => 'form-control'} %>
         作者<%= f.text_field :author, :class => 'form-control' %>
         簡介<%= f.text_area :description, :class => 'form-control' %>
+        ISBN<%= f.text_field :isbn, :class => 'form-control' %>
+        出版商<%= f.text_field :publisher, :class => 'form-control' %>
+        出版日期<%= f.date_field :publish_date, :class => 'form-control' %>
+        語言<%= f.text_field :language, :class => 'form-control' %>
+        頁數<%= f.number_field :page, :class => 'form-control' %>
       </div>
       <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
     <% end %>

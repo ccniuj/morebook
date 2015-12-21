@@ -14,7 +14,14 @@ class Dashboard::ShelvesController < Dashboard::DashboardController
   def create
     @shelf = Shelf.new(shelf_params)
     @shelf.save
-    redirect_to dashboard_shelves_path
+    @user_shelf = UserShelf.new(:user_id => current_user.id, 
+                                :shelf_id => @shelf.id, 
+                                :is_owner? => true)
+    if @user_shelf.save
+      redirect_to dashboard_shelves_path
+    else
+      @shelf.destroy
+    end
   end
 
   def update
@@ -33,6 +40,7 @@ class Dashboard::ShelvesController < Dashboard::DashboardController
   end
 
   private
+
   def shelf_params
     params.require(:shelf).permit(:name, :description, :cover)
   end
