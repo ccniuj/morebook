@@ -34,6 +34,6 @@ class Dashboard::Admin::ShelvesController < Dashboard::Admin::AdminController
 
   private
   def shelf_params
-    params.require(:shelf).permit(:name, :descrition, :cover)
+    params.require(:shelf).permit(:name, :description, :cover)
   end
 end
