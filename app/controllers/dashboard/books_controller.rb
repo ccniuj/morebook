@@ -33,6 +33,14 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def update
     @book = Book.find(params[:id])
+    
+    BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
+    params[:tags_id].size.times do |i|
+      book_tag = BookTag.new(:book_id => @book.id,
+                              :tag_id => params[:tags_id][i])
+      book_tag.save
+    end
+
     @shelf_book = ShelfBook.where(:book_id => @book.id).take
     if @book.update(book_params) && @shelf_book.update(:shelf_id => params[:shelf_id])
       redirect_to dashboard_books_path
@@ -49,7 +57,7 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   private
   def book_params
-    params.require(:book).permit(:name, :description, :tag_id, :shelf_id, :cover,
+    params.require(:book).permit(:name, :description, :shelf_id, :cover,
      :author, :descripton, :isbn, :publisher, :publish_date, :language, :page)
   end
 end
