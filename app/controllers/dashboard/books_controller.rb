@@ -1,6 +1,6 @@
 class Dashboard::BooksController < Dashboard::DashboardController
   def index
-    @books = @paginate = Book.includes(:tag).where(:user_id => current_user.id).order('id DESC').paginate(:page => params[:page])
+    @books = @paginate = Book.joins(:tags).where(:user_id => current_user.id).uniq.order('id DESC').paginate(:page => params[:page])
   end
 
   def new
@@ -15,9 +15,16 @@ class Dashboard::BooksController < Dashboard::DashboardController
     @book = Book.new(book_params)
     @book.user_id = current_user.id
     @book.save
-    @shelf_book = ShelfBook.new(:book_id => @book.id,
+    
+    params[:tags_id].size.times do |i|
+      book_tag = BookTag.new(:book_id => @book.id,
+                              :tag_id => params[:tags_id][i])
+      book_tag.save
+    end
+
+    shelf_book = ShelfBook.new(:book_id => @book.id,
                                 :shelf_id => params[:shelf_id])
-    if @shelf_book.save
+    if shelf_book.save
       redirect_to dashboard_books_path
     else
       @book.destroy

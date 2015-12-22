@@ -57,3 +57,4 @@ gem 'font-awesome-rails'
 gem 'omniauth-google-oauth2'
 gem 'figaro'
 gem 'simplecov', :require => false, :group => :test
+gem 'hirb'

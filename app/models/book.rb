@@ -17,4 +17,9 @@ class Book < ActiveRecord::Base
     default_url: '/images/missing.jpg'
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
 
+  def self.tags
+    Book.select("books.*, tags.*").
+          joins('LEFT JOIN book_tags ON book_tags.book_id = book.id').
+          joins(:tag)
+  end
 end
