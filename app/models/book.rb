@@ -8,18 +8,7 @@ class Book < ActiveRecord::Base
   has_many :book_tags
   has_many :tags, through: :book_tags
   
-  has_attached_file :cover,
-    styles: {
-      original: "1024x1024>",
-      medium: "300x300>",
-      thumb: "100x100"
-    }, 
-    default_url: '/images/missing.jpg'
+  has_attached_file :cover, styles: { medium: "300x300>", thumb: "100x100>" }, 
+    default_url: "/images/:styles/missing.png"
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
-
-  def self.tags
-    Book.select("books.*, tags.*").
-          joins('LEFT JOIN book_tags ON book_tags.book_id = book.id').
-          joins(:tag)
-  end
 end
