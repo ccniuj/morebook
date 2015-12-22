@@ -19,6 +19,14 @@ class Dashboard::Admin::BooksController < Dashboard::Admin::AdminController
 
   def update
     @book = Book.find(params[:id])
+
+    BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
+    params[:tags_id].size.times do |i|
+      book_tag = BookTag.new(:book_id => @book.id,
+                              :tag_id => params[:tags_id][i])
+      book_tag.save
+    end
+
     if @book.update(book_params)
       redirect_to dashboard_admin_books_path
     else
