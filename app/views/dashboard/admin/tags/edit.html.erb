@@ -1,6 +1,13 @@
-<h1>Editing Tag</h1>
-
-<%= render 'form' %>
-
-<%= link_to 'Show', @tag %> |
-<%= link_to 'Back', tags_path %>
+<div class="box box-primary">
+  <div class="box-header with-border">
+    <h3 class="box-title">編輯分類</h3>
+  </div><!-- /.box-header -->
+  <div class="box-body">
+    <%= form_for(@tag, {:url => dashboard_admin_tag_path, :method => 'patch'}) do |f| %>
+      <div class='form-group'>
+        名稱<%= f.text_field :name, :class => 'form-control' %>
+      </div>
+      <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
+    <% end %>
+  </div>
+</div>
