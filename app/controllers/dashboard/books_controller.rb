@@ -15,7 +15,9 @@ class Dashboard::BooksController < Dashboard::DashboardController
     @book = Book.new(book_params)
     @book.user_id = current_user.id
     @book.save
-    
+  
+    @book.save_image(params[:book][:image])
+
     params[:tags_id].size.times do |i|
       book_tag = BookTag.new(:book_id => @book.id,
                               :tag_id => params[:tags_id][i])
@@ -32,6 +34,7 @@ class Dashboard::BooksController < Dashboard::DashboardController
   end
 
   def update
+    binding.pry
     @book = Book.find(params[:id])
     
     BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
@@ -57,7 +60,7 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   private
   def book_params
-    params.require(:book).permit(:name, :description, :shelf_id, :cover,
-     :author, :descripton, :isbn, :publisher, :publish_date, :language, :page)
+    params.require(:book).permit(:name, :description, :shelf_id, :author,
+     :descripton, :isbn, :publisher, :publish_date, :language, :page)
   end
 end

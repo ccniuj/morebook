@@ -5,7 +5,7 @@
   <div class="box-body">
     <%= form_for(@book, {:url => dashboard_book_path, :method => 'patch'}) do |f| %>
       <div class='form-group'>
-        封面<%= f.file_field :cover, :class => 'form-control' %>
+        封面<%= f.file_field :image, :class => 'form-control' %>
         名稱<%= f.text_field :name, :class => 'form-control' %>
         分類<br/>
         <% Tag.all.each do |tag| %>
