@@ -11,5 +11,13 @@ class Shelf < ActiveRecord::Base
       thumb: "100x100"
     }, 
     default_url: '/images/missing.jpg'
-  validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/  
+  validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
+
+  def self.owned_by(user)
+    Shelf.select("shelves.*, user_shelves.user_id").
+          joins('LEFT JOIN user_shelves ON user_shelves.shelf_id = shelves.id').
+          where("user_shelves.user_id = ?", user.id)
+  end
+
+
 end

@@ -1,4 +1,4 @@
 class UserShelf < ActiveRecord::Base
-  belongs_to :User
-  belongs_to :Shelf
+  belongs_to :user
+  belongs_to :shelf
 end

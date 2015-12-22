@@ -1,6 +1,8 @@
 class Dashboard::ShelvesController < Dashboard::DashboardController
   def index
-    @shelves = @paginate = Shelf.all.order('id DESC').paginate(:page => params[:page])
+    @shelves = @paginate = Shelf.owned_by(current_user).
+                                 order('id DESC').
+                                 paginate(:page => params[:page])
   end
 
   def new
@@ -15,7 +17,7 @@ class Dashboard::ShelvesController < Dashboard::DashboardController
     @shelf = Shelf.new(shelf_params)
     @shelf.save
     @user_shelf = UserShelf.new(:user_id => current_user.id, 
-                                :shelf_id => @shelf.id, 
+                                :shelf_id => @shelf.id,
                                 :is_owner? => true)
     if @user_shelf.save
       redirect_to dashboard_shelves_path

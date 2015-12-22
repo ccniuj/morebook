@@ -1,6 +1,6 @@
 class Dashboard::BooksController < Dashboard::DashboardController
   def index
-    @books = @paginate = Book.includes(:tag).all.order('id DESC').paginate(:page => params[:page])
+    @books = @paginate = Book.includes(:tag).where(:user_id => current_user.id).order('id DESC').paginate(:page => params[:page])
   end
 
   def new
@@ -13,11 +13,10 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def create
     @book = Book.new(book_params)
+    @book.user_id = current_user.id
     @book.save
     @shelf_book = ShelfBook.new(:book_id => @book.id,
-                                :shelf_id => params[:shelf_id],
-                                :user_id => current_user.id,
-                                :is_local? => true )
+                                :shelf_id => params[:shelf_id])
     if @shelf_book.save
       redirect_to dashboard_books_path
     else

@@ -15,4 +15,5 @@ class Book < ActiveRecord::Base
     }, 
     default_url: '/images/missing.jpg'
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
+
 end
