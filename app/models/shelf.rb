@@ -15,6 +15,7 @@ class Shelf < ActiveRecord::Base
   end
 
   def self.tag_filter(tag_name)
+
   end
 
   def count_tags

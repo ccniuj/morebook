@@ -58,4 +58,4 @@ gem 'omniauth-google-oauth2'
 gem 'figaro'
 gem 'simplecov', :require => false, :group => :test
 gem 'hirb'
-gem 'aws-sdk'
+gem 'aws-sdk', '<2.0'
