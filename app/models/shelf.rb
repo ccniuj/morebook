@@ -14,6 +14,9 @@ class Shelf < ActiveRecord::Base
           where("user_shelves.user_id = ?", user.id)
   end
 
+  def self.tag_filter(tag_name)
+  end
+
   def count_tags
     counter = {}
     self.books.each do |book|

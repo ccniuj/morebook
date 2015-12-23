@@ -14,10 +14,13 @@
                 </div>
                 <hr/>
                 <ul class="nav nav-pills">
+                  <li role="presentation" >
+                    <%= link_to 'All', shelves_path %>
+                  </li>
                   <% Tag.all.each do |tag| %>
-                    <li role="presentation" class="<%= 'active' if @tag_id == tag.id %>">
+                    <li role="presentation" class="<%= 'active' if @tag_name == tag.name %>">
                         <%= link_to tag.name, 
-                        shelves_path + '?tag=' + tag.id.to_s %></li>
+                        shelves_path + '?tag=' + tag.name %></li>
                   <% end %>
                 </ul>
                 <hr/>
@@ -25,37 +28,38 @@
             <%= will_paginate @paginate if @paginate %>
             <div class="portfolio-item-list">
                 <div class="row">
-
                     <% @shelves.each do |shelf| %>
-                        <div class="col-md-3 col-sm-6">       
-                            <div class="portfolio-item">       
-                                <div class="item-image">       
-                                    <a href="<%= shelf_path(shelf) %>">       
-                                        <img src="<%= shelf.cover.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">       
-                                        <div><span><i class="fa fa-plus"></i></span></div>       
-                                    </a>       
-                                </div>       
-
-                                <div class="item-description">       
-                                    <div class="row">       
-                                        <div class="col-xs-8 col-xs-offset-2">
-                                            <span class="item-name">       
-                                                <%= shelf.name %>       
-                                            </span>       
-                                            <span>       
-                                                <%= shelf.main_tag %>
-                                            </span>       
-                                        </div>       
-                                        <div class="col-xs-6 col-xs-offset-3">       
-                                            <span class="like">       
-                                                <i class="fa fa-heart-o"></i>       
-                                                99       
-                                            </span>       
-                                        </div>       
+                        <% if !@tag_name || (shelf.main_tag == @tag_name) then %>
+                            <div class="col-md-3 col-sm-6">       
+                                <div class="portfolio-item">       
+                                    <div class="item-image">       
+                                        <a href="<%= shelf_path(shelf) %>">       
+                                            <img src="<%= shelf.cover.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">       
+                                            <div><span><i class="fa fa-plus"></i></span></div>       
+                                        </a>       
                                     </div>       
-                                </div> <!-- end of /.item-description -->       
-                            </div> <!-- end of /.portfolio-item -->       
-                        </div>       
+
+                                    <div class="item-description">       
+                                        <div class="row">       
+                                            <div class="col-xs-8 col-xs-offset-2">
+                                                <span class="item-name">       
+                                                    <%= shelf.name %>       
+                                                </span>       
+                                                <span>       
+                                                    <%= shelf.main_tag %>
+                                                </span>       
+                                            </div>       
+                                            <div class="col-xs-6 col-xs-offset-3">       
+                                                <span class="like">       
+                                                    <i class="fa fa-heart-o"></i>       
+                                                    99       
+                                                </span>       
+                                            </div>       
+                                        </div>       
+                                    </div> <!-- end of /.item-description -->       
+                                </div> <!-- end of /.portfolio-item -->       
+                            </div>   
+                        <% end %>    
                     <% end %>
                 </div>
             </div> <!-- end of portfolio-item-list -->
