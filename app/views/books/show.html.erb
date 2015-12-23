@@ -53,7 +53,8 @@
                     <%= @book.isbn %>
                     <h4>出版商</h4>
                     <%= @book.publisher %>
-                    
+                    <h4>出版日</h4>
+                    <%= @book.publish_date.strftime('%m/%d/%Y') %>
                     <h4>語言</h4>
                     <%= @book.language %>
                     <h4>頁數</h4>
