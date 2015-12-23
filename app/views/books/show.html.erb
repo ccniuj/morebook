@@ -40,7 +40,13 @@
                             <a href="#"><%= tag.name %></a>
                         <% end %>
                     </div>
-
+                    <h4>書櫃</h4>
+                    <div class="tags">
+                        <% @book.shelves.each do |shelf| %>
+                            <%= link_to shelf.name, shelf_path(shelf) %>
+                        <% end %>
+                    </div>
+                    
                 </div> <!-- /.tag-widget -->
 
             </aside>
