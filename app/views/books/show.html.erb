@@ -40,25 +40,7 @@
                             <a href="#"><%= tag.name %></a>
                         <% end %>
                     </div>
-                    <h4>書櫃</h4>
-                    <div class="tags">
-                        <% @book.shelves.each do |shelf| %>
-                            <%= link_to shelf.name, shelf_path(shelf) %>
-                        <% end %>
-                    </div>
-                    <h4>評分</h4>
-                    <h4>作者</h4>
-                    <%= @book.author %>
-                    <h4>ISBN</h4>
-                    <%= @book.isbn %>
-                    <h4>出版商</h4>
-                    <%= @book.publisher %>
-                    <h4>出版日</h4>
-                    <%= @book.publish_date.strftime('%m%d%Y') %>
-                    <h4>語言</h4>
-                    <%= @book.language %>
-                    <h4>頁數</h4>
-                    <%= @book.page %>
+
                 </div> <!-- /.tag-widget -->
 
             </aside>
