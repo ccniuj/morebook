@@ -13,36 +13,37 @@
                                     <h1 class="text-capitalize">
                                       <%= @shelf.name %>
                                     </h1>
-                                    <span class="date">may 24,2015</span>
+                                    <span class="date"><%= @shelf.created_at.strftime('%m/%d/%Y') %></span>
                                     <span>12 comments</span>
                                 </div>
                                 <p>
                                   <%= @shelf.description %>
                                 </p>
                             </article>
+                            <h3>書本</h3>
                             <div class="portfolio-item-list">
                               <div class="row">
-                                <% 12.times do |t| %>
+                                <% @books.each do |book| %>
                                   <div class="col-md-3 col-sm-6">       
                                       <div class="portfolio-item">       
                                           <div class="item-image">       
-                                              <a href="#">       
-                                                  <img src="/template_front/assets/img/portfolio1.jpg" class="img-responsive center-block" alt="          portfolio1">       
+                                              <a href="<%= book_path(book.id) %>">
+                                                  <img src="<%= book.pictures.first.image.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">
                                                   <div><span><i class="fa fa-plus"></i></span></div>       
                                               </a>       
                                           </div>       
 
                                           <div class="item-description">       
                                               <div class="row">       
-                                                  <div class="col-xs-6 col-xs-offset-3">       
+                                                  <div class="col-xs-8 col-xs-offset-2">       
                                                       <span class="item-name">       
-                                                          Oliver a Note       
+                                                          <%= book.name %>
                                                       </span>       
                                                       <span>       
                                                           Fashion       
                                                       </span>       
                                                   </div>       
-                                                  <div class="col-xs-6 col-xs-offset-3">       
+                                                  <div class="col-xs-8 col-xs-offset-2">       
                                                       <span class="like">       
                                                           <i class="fa fa-heart-o"></i>       
                                                           576       

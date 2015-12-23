@@ -6,5 +6,6 @@ class ShelvesController < ApplicationController
 
   def show
     @shelf = Shelf.find(params[:id])
+    @books = Book.joins(:shelves).where('shelves.id = ?', @shelf.id)
   end
 end
