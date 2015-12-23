@@ -36,12 +36,12 @@
             <div class="portfolio-item-list">
                 <div class="row">
 
-                    <% 12.times do |t| %>
+                    <% @shelves.each do |shelf| %>
                         <div class="col-md-3 col-sm-6">       
                             <div class="portfolio-item">       
                                 <div class="item-image">       
-                                    <a href="#">       
-                                        <img src="/template_front/assets/img/portfolio1.jpg" class="img-responsive center-block" alt="portfolio1">       
+                                    <a href="<%= shelf_path(shelf) %>">       
+                                        <img src="<%= shelf.cover.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">
                                         <div><span><i class="fa fa-plus"></i></span></div>       
                                     </a>       
                                 </div>       
@@ -50,10 +50,10 @@
                                     <div class="row">       
                                         <div class="col-xs-6 col-xs-offset-3">       
                                             <span class="item-name">       
-                                                Oliver a Note       
+                                                <%= shelf.name %>
                                             </span>       
                                             <span>       
-                                                Fashion       
+                                                <%= shelf.main_tag %>
                                             </span>       
                                         </div>       
                                         <div class="col-xs-6 col-xs-offset-3">       
