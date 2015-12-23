@@ -12,6 +12,15 @@
                         </p> <!-- /.section-sub-title -->
                     </div>
                 </div>
+                <hr/>
+                <ul class="nav nav-pills">
+                  <% Tag.all.each do |tag| %>
+                    <li role="presentation" class="<%= 'active' if @tag_id == tag.id %>">
+                        <%= link_to tag.name, 
+                        shelves_path + '?tag=' + tag.id.to_s %></li>
+                  <% end %>
+                </ul>
+                <hr/>
             </div> <!-- /.headline -->
             <%= will_paginate @paginate if @paginate %>
             <div class="portfolio-item-list">
