@@ -13,4 +13,25 @@ class Shelf < ActiveRecord::Base
           joins('LEFT JOIN user_shelves ON user_shelves.shelf_id = shelves.id').
           where("user_shelves.user_id = ?", user.id)
   end
+
+  def count_tags
+    counter = {}
+    self.books.each do |book|
+      book.tags.each do |tag|
+        counter[tag.name] ||= 0
+        counter[tag.name] += 1
+      end
+    end
+    counter
+  end
+
+  def main_tag
+    counter = self.count_tags
+    r = counter.reduce(['', 0]) { |result, c| (c[1] < result[1]) ? result : c }
+    (r[0] == '') ? 'None' : r[0]
+  end
+
+  def list_tags
+    list = self.count_tags.keys
+  end
 end

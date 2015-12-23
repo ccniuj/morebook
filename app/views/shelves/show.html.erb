@@ -23,7 +23,7 @@
                             <h3>書本</h3>
                             <div class="portfolio-item-list">
                               <div class="row">
-                                <% @books.each do |book| %>
+                                <% @shelf.books.each do |book| %>
                                   <div class="col-md-3 col-sm-6">       
                                       <div class="portfolio-item">       
                                           <div class="item-image">       
@@ -58,30 +58,16 @@
                             </div> <!-- end of portfolio-item-list -->
                         </main>
 
-
-
-
                         <!-- begin sidebar -->
                         <aside class="col-md-3 col-md-pull-9">
 
                             <!-- begin tag-widget -->
                             <div class="tag-widget">
-                                <h4>Popular Tags</h4>
+                                <h4>分類</h4>
                                 <div class="tags">
-                                    <a href="#">masonary</a>
-                                    <a href="#">responsive</a>
-                                    <a href="#">ecommerce</a>
-                                    <a href="#">web design</a>
-                                    <a href="#">wordpress</a>
-                                    <a href="#">mobile</a>
-                                    <a href="#">retina</a>
-                                    <a href="#">multi-purpose</a>
-                                    <a href="#">blog posts</a>
-                                    <a href="#">new slider</a>
-                                    <a href="#">popular</a>
-                                    <a href="#">recent</a>
-                                    <a href="#">modern</a>
-                                    <a href="#">themeforest</a>
+                                    <% @shelf.list_tags.each do |tag_name| %>
+                                        <a href="#"><%= tag_name %></a>
+                                    <% end %>
                                 </div>
                             </div> <!-- /.tag-widget -->
 
