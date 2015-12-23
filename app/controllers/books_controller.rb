@@ -4,6 +4,6 @@ class BooksController < ApplicationController
   end
 
   def show
-    @book = Book.find(params[:id])
+    @book = Book.joins(:shelves).joins(:tags).find(params[:id])
   end
 end
