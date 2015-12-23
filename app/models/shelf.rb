@@ -4,7 +4,7 @@ class Shelf < ActiveRecord::Base
   has_many :shelf_books
   has_many :books, through: :shelf_books
 
-  has_attached_file :cover, styles: { medium: "300x300>", thumb: "100x100>" }, 
+  has_attached_file :cover, styles: { medium: "300x300#", thumb: "100x100#" }, 
     default_url: '/images/:styles/missing.png'
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
 
