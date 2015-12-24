@@ -59,3 +59,7 @@ gem 'figaro'
 gem 'simplecov', :require => false, :group => :test
 gem 'hirb'
 gem 'aws-sdk-v1'
+gem 'nokogiri'
+gem 'redis'
+gem 'mechanize'
+gem 'watir-webdriver'
