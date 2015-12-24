@@ -8,8 +8,8 @@ class Crawler
   @@QUEUE_NAME = :url_queue
   @@CSS = '#item > tbody > tr > td:nth-child(4) > a,.pagelinks > a:nth-last-of-type(2)'
   @@REDIS = Redis.new
-  @@nthu_lib_query_url = "http://webpac.lib.nthu.edu.tw/F/#{@@fresh_key}?func=find-b&find_code=WAN&request="
   @@fresh_key = '7XRD78FQ18Y8MNERSVXUIAMJ21CBIJ9V6P1NRHC7US85XIT959-04415'
+  @@nthu_lib_query_url = "http://webpac.lib.nthu.edu.tw/F/#{@@fresh_key}?func=find-b&find_code=WAN&request="
   
   def initialize
   end

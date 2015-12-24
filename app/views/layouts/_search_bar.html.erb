@@ -1,0 +1,8 @@
+<%= form_tag(search_statics_path, :method => "get", :class => "navbar-form navbar-left") do %>
+    <div class="form-group">
+      <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Search ISBN" %>
+      <!-- In order to have the "search" icon int the button, we need to use plain HTML instead 
+           of using a Rails form helper -->
+      <button class="btn btn-default" type="submit"><i class="icon-search"></i></button>
+    </div>
+  <% end %>
