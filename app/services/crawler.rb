@@ -85,6 +85,7 @@ class Crawler
     author_intro = doc.css('.content')[1].to_s
     outline = doc.css('.content')[2].to_s
     review = doc.css('.content')[3].to_s 
+    cover_url = doc.css('img.cover')[0]['src'] if doc.css('img.cover').any?
 
     result = {
       :title => title,
@@ -99,7 +100,8 @@ class Crawler
       :author_en => author_en,
       :author_intro => author_intro,
       :outline => outline,
-      :review => review
+      :review => review,
+      :cover_url => cover_url
     }
   end
 end
