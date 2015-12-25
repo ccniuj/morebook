@@ -1,2 +1,5 @@
-<h1>search result<h1>
-<%= @result %>
+<h1>搜尋結果</h1>
+
+<% @result.each do |result| %>
+  <%= link_to result[0], result[1] %><br/>
+<% end %>

@@ -6,7 +6,15 @@ class StaticsController < ApplicationController
 
   def search
     @query = params[:query]
+    uri = URI::encode(utf8_to_uri_encoding(@query))
     c = Crawler.new
-    @result = c.watir_webdriver(@query)
+    @result = c.search(uri)
+  end
+
+  private
+  def utf8_to_uri_encoding(str)
+    ascii = str.force_encoding('ASCII-8BIT')
+    str.force_encoding('UTF-8')
+    ascii
   end
 end

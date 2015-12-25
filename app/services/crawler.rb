@@ -10,7 +10,8 @@ class Crawler
   @@REDIS = Redis.new
   @@fresh_key = '7XRD78FQ18Y8MNERSVXUIAMJ21CBIJ9V6P1NRHC7US85XIT959-04415'
   @@nthu_lib_query_url = "http://webpac.lib.nthu.edu.tw/F/#{@@fresh_key}?func=find-b&find_code=WAN&request="
-  
+  @@books_query_url = "http://search.books.com.tw/exep/prod_search.php?key="
+
   def initialize
   end
 
@@ -41,5 +42,15 @@ class Crawler
 
     doc = Nokogiri::HTML.parse(text)
     result = doc.css('.brieftit').children.to_s
+  end
+
+  def search(str)
+    doc = Nokogiri::HTML(open(@@books_query_url + str))
+    links = doc.css('li.item h3 a')
+    result = {}
+    links.each do |link|
+      result[link['title']] = URI.decode(link['href'])
+    end
+    result
   end
 end
