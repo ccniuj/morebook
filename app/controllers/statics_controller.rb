@@ -6,11 +6,15 @@ class StaticsController < ApplicationController
 
   def search
     @query = params[:query]
-    uri = URI::encode(utf8_to_uri_encoding(@query))
-    c = Crawler.new
-    @results = c.books_search(uri)
+    unless @query.empty?
+      uri = URI::encode(utf8_to_uri_encoding(@query))
+      c = Crawler.new
+      @results = c.books_search(uri)
 
-    session[:books_search] = @results
+      session[:books_search] = @results
+    else
+      redirect_to root_path
+    end
   end
 
   def book

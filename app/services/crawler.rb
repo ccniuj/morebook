@@ -46,13 +46,15 @@ class Crawler
 
   def books_search(str)
     pages = 2
+    count = 0
     urls = []
     urls.push(@@books_query_url + str)
     results = []
 
-    pages.times do |i|
+    while urls.any?
+      break if pages == count
       doc = Nokogiri::HTML(open(urls.shift))
-      next_page_url = doc.css('a.nxt')[0]['href']
+      next_page_url = doc.css('a.nxt')[0]['href'] if doc.css('a.nxt')[0]
       urls.push(next_page_url)
   
       entries = doc.css('li.item h3 a')
@@ -62,6 +64,7 @@ class Crawler
               :product_id => entry['href'].scan(/[0-9]{10}/) }
         (results << e) if e[:product_id].any?
       end
+      count += 1
     end
     results
   end
@@ -69,23 +72,34 @@ class Crawler
   def get_book_info(url)
     doc = Nokogiri::HTML(open(url))
     
+    title = doc.css('h1').children.text.strip
+    author = doc.css('li:contains("作者") a').children[3].text.strip if doc.css('li:contains("作者") a').children[3]
+    publisher = doc.css('li:contains("出版社") a span').children.text.strip
+    publish_date = doc.css('li:contains("出版日期")').children.text.strip
+    language = doc.css('li:contains("語言")').children.text.strip
+    description = doc.css('.content')[0].to_s
+    isbn = doc.css('.bd ul li meta')[0].text.strip.scan(/[0-9]{13}/)[0] if doc.css('.bd ul li meta')[0]
+    page = doc.css('.bd ul li')[2].children.text.strip.scan(/[0-9]{3}/)[0] if doc.css('.bd ul li')[2]
+    title_en = doc.css('h2 a').last.children.text.strip if doc.css('h2 a').last
+    author_en = doc.css('li:contains("原文作者") a').children.text.strip
+    author_intro = doc.css('.content')[1].to_s
+    outline = doc.css('.content')[2].to_s
+    review = doc.css('.content')[3].to_s 
+
     result = {
-      :title => doc.css('h1').children.to_s,
-      :author => doc.css('li:contains("作者") a').children[3].text.strip,
-
-      :publisher => doc.css('li:contains("出版社") a span').children.text.strip,
-      :publish_date => doc.css('li:contains("出版日期")').children.text.strip,
-
-      :language => doc.css('li:contains("語言")').children.text.strip,
-      :description => doc.css('.content')[0].to_s,
-      :isbn => doc.css('.bd ul li meta')[0].text.strip.scan(/[0-9]{13}/)[0],
-      :page => doc.css('.bd ul li')[2].children.text.strip.scan(/[0-9]{3}/)[0],
-  
-      :title_en => doc.css('h2 a').last.children.text.strip,
-      :author_en => doc.css('li:contains("原文作者") a').children.text.strip,
-      :author_intro => doc.css('.content')[1].to_s,
-      :outline => doc.css('.content')[2].to_s,
-      :review => doc.css('.content')[3].to_s 
+      :title => title,
+      :author => author,
+      :publisher => publisher,
+      :publish_date => publish_date,
+      :language => language,
+      :description => description,
+      :isbn => isbn,
+      :page => page,
+      :title_en => title_en,
+      :author_en => author_en,
+      :author_intro => author_intro,
+      :outline => outline,
+      :review => review
     }
   end
 end
