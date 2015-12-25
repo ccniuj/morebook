@@ -44,12 +44,15 @@ class Crawler
     result = doc.css('.brieftit').children.to_s
   end
 
-  def search(str)
+  def books_search(str)
     doc = Nokogiri::HTML(open(@@books_query_url + str))
     links = doc.css('li.item h3 a')
-    result = {}
+    result = []
     links.each do |link|
-      result[link['title']] = URI.decode(link['href'])
+      l = { :title => link['title'],
+            :href => link['href'],
+            :product_id => link['href'].scan(/[0-9]{10}/) }
+      (result << l) if l[:product_id].any?
     end
     result
   end

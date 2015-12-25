@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :statics, :only => [:index, :search] do
     get 'search', on: :collection
+    get 'book', on: :member
   end
   resources :shelves, :only => [:index, :show]
   resources :books, :only => [:index, :show]

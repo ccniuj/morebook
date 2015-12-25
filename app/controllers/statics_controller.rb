@@ -8,7 +8,12 @@ class StaticsController < ApplicationController
     @query = params[:query]
     uri = URI::encode(utf8_to_uri_encoding(@query))
     c = Crawler.new
-    @result = c.search(uri)
+    @results = c.books_search(uri)
+  end
+
+  def book
+    binding.pry
+    @book_id = params[:id]
   end
 
   private

@@ -1,5 +1,5 @@
 <h1>搜尋結果</h1>
 
-<% @result.each do |result| %>
-  <%= link_to result[0], result[1] %><br/>
+<% @results.each do |result| %>
+  <%= link_to result[:title], book_static_path(result[:product_id]) %><br/>
 <% end %>
