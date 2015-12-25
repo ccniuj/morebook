@@ -45,15 +45,47 @@ class Crawler
   end
 
   def books_search(str)
-    doc = Nokogiri::HTML(open(@@books_query_url + str))
-    links = doc.css('li.item h3 a')
-    result = []
-    links.each do |link|
-      l = { :title => link['title'],
-            :href => link['href'],
-            :product_id => link['href'].scan(/[0-9]{10}/) }
-      (result << l) if l[:product_id].any?
+    pages = 2
+    urls = []
+    urls.push(@@books_query_url + str)
+    results = []
+
+    pages.times do |i|
+      doc = Nokogiri::HTML(open(urls.shift))
+      next_page_url = doc.css('a.nxt')[0]['href']
+      urls.push(next_page_url)
+  
+      entries = doc.css('li.item h3 a')
+      entries.each do |entry|
+        e = { :title => entry['title'],
+              :href => entry['href'],
+              :product_id => entry['href'].scan(/[0-9]{10}/) }
+        (results << e) if e[:product_id].any?
+      end
     end
-    result
+    results
+  end
+
+  def get_book_info(url)
+    doc = Nokogiri::HTML(open(url))
+    
+    result = {
+      :title => doc.css('h1').children.to_s,
+      :author => doc.css('li:contains("作者") a').children[3].text.strip,
+
+      :publisher => doc.css('li:contains("出版社") a span').children.text.strip,
+      :publish_date => doc.css('li:contains("出版日期")').children.text.strip,
+
+      :language => doc.css('li:contains("語言")').children.text.strip,
+      :description => doc.css('.content')[0].to_s,
+      :isbn => doc.css('.bd ul li meta')[0].text.strip.scan(/[0-9]{13}/)[0],
+      :page => doc.css('.bd ul li')[2].children.text.strip.scan(/[0-9]{3}/)[0],
+  
+      :title_en => doc.css('h2 a').last.children.text.strip,
+      :author_en => doc.css('li:contains("原文作者") a').children.text.strip,
+      :author_intro => doc.css('.content')[1].to_s,
+      :outline => doc.css('.content')[2].to_s,
+      :review => doc.css('.content')[3].to_s 
+    }
   end
 end

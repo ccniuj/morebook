@@ -9,11 +9,15 @@ class StaticsController < ApplicationController
     uri = URI::encode(utf8_to_uri_encoding(@query))
     c = Crawler.new
     @results = c.books_search(uri)
+
+    session[:books_search] = @results
   end
 
   def book
-    binding.pry
-    @book_id = params[:id]
+    book_id = params[:id]
+    book = find(book_id)[0]
+    c = Crawler.new
+    @book = c.get_book_info(book[:href])
   end
 
   private
@@ -21,5 +25,10 @@ class StaticsController < ApplicationController
     ascii = str.force_encoding('ASCII-8BIT')
     str.force_encoding('UTF-8')
     ascii
+  end
+
+  def find(book_id)
+    entries = session[:books_search]
+    result = entries.select { |entry| entry[:product_id][0] == book_id }
   end
 end

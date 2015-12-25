@@ -1,1 +1,15 @@
-<h1><%= @book_id %></h1>
+<%= @book[:title] %><br/>
+<%= @book[:author] %><br/>
+<%= @book[:publisher] %><br/>
+<%= @book[:publish_date] %><br/>
+<%= @book[:language] %><br/>
+<%= @book[:isbn] %><br/>
+<%= @book[:page] %><br/>
+<%= @book[:title_en] %><br/>
+<%= @book[:author_en] %><br/>
+
+<hr/>
+<%= sanitize @book[:author_intro] %><br/>
+<%= sanitize @book[:description] %><br/>
+<%= sanitize @book[:outline] %><br/>
+<%= sanitize @book[:review] %>
