@@ -82,7 +82,7 @@ class Crawler
     description = doc.css('.content')[0].to_s
     isbn = doc.css('.bd ul li meta')[0]['content'].scan(/[0-9]{13}/)[0] if doc.css('.bd ul li meta')[0]
     page = doc.css('.bd ul li')[2].children.text.strip.scan(/[0-9]{3}/)[0] if doc.css('.bd ul li')[2]
-    title_en = doc.css('h2 a').last.children.text.strip if doc.css('h2 a').last
+    name_en = doc.css('h2 a').last.children.text.strip if doc.css('h2 a').last
     author_en = doc.css('li:contains("原文作者") a').children.text.strip
     author_intro = doc.css('.content')[1].to_s
     outline = doc.css('.content')[2].to_s
@@ -98,7 +98,7 @@ class Crawler
       :description => description,
       :isbn => isbn,
       :page => page,
-      :title_en => title_en,
+      :name_en => name_en,
       :author_en => author_en,
       :author_intro => author_intro,
       :outline => outline,
