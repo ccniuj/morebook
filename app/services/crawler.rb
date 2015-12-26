@@ -62,7 +62,7 @@ class Crawler
         e = { :product_id => entry['href'].scan(/[0-9]{10}/),
               :title => entry['title'],
               :href => entry['href'],
-              :cover_url => entry.css('img.itemcov').first['data-original']
+              :cover_url => image_url_resize(entry.css('img.itemcov').first['data-original'], 300, 300)
               }
         (results << e) if e[:product_id].any?
       end
@@ -105,5 +105,13 @@ class Crawler
       :review => review,
       :cover_url => cover_url
     }
+  end
+
+  private
+  def image_url_resize(url, width, height)
+    if url
+      url = url.scan(/.+\.jpg/).first
+      url = url + "&w=#{width}&h=#{height}"
+    end
   end
 end
