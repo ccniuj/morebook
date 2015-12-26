@@ -21,7 +21,11 @@ class StaticsController < ApplicationController
     book_id = params[:id]
     book = find(book_id)[0]
     c = Crawler.new
-    @book = c.get_book_info(book[:href])
+    if book
+      @book = c.get_book_info(book[:href])
+    else
+      redirect_to root_path
+    end
   end
 
   private
@@ -33,6 +37,10 @@ class StaticsController < ApplicationController
 
   def find(book_id)
     entries = session[:books_search]
-    result = entries.select { |entry| entry[:product_id][0] == book_id }
+    if entries
+      result = entries.select { |entry| entry[:product_id][0] == book_id }
+    else
+      result = []
+    end
   end
 end

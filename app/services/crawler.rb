@@ -57,11 +57,13 @@ class Crawler
       next_page_url = doc.css('a.nxt')[0]['href'] if doc.css('a.nxt')[0]
       urls.push(next_page_url)
   
-      entries = doc.css('li.item h3 a')
+      entries = doc.css('li.item > :nth-child(2)')
       entries.each do |entry|
-        e = { :title => entry['title'],
+        e = { :product_id => entry['href'].scan(/[0-9]{10}/),
+              :title => entry['title'],
               :href => entry['href'],
-              :product_id => entry['href'].scan(/[0-9]{10}/) }
+              :cover_url => entry.css('img.itemcov').first['data-original']
+              }
         (results << e) if e[:product_id].any?
       end
       count += 1
