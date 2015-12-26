@@ -23,7 +23,10 @@ class StaticsController < ApplicationController
     c = Crawler.new
     if book
       @book = c.get_book_info(book[:href])
-      @book_in_database = Book.where(:isbn => @book[:isbn]).any?
+      @book_db = Book.where(:isbn => @book[:isbn]).first
+      if @book_db
+        redirect_to book_path(@book_db.id)
+      end
     else
       redirect_to root_path
     end

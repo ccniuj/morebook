@@ -1,17 +1,67 @@
-<%= @book[:title] %><br/>
-<%= @book[:author] %><br/>
-<%= @book[:publisher] %><br/>
-<%= @book[:publish_date] %><br/>
-<%= @book[:language] %><br/>
-<%= @book[:isbn] %><br/>
-<%= @book_in_database %><br/>
-<%= @book[:page] %><br/>
-<%= @book[:title_en] %><br/>
-<%= @book[:author_en] %><br/>
-<%= image_tag @book[:cover_url] %>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
 
-<hr/>
-<%= sanitize @book[:author_intro] %><br/>
-<%= sanitize @book[:description] %><br/>
-<%= sanitize @book[:outline] %><br/>
-<%= sanitize @book[:review] %>
+<section class="blog-content">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-9 col-md-push-3" style="display: block;">
+                <article class="blog-item">
+                    <div class="blog-heading">
+                        <h1 class="text-capitalize">
+                          <%= @book[:name] %>
+                        </h1>
+                        <span class="date"></span>
+                        <span>12 comments</span>
+                    </div>
+                    <p>
+                      <%= sanitize @book[:description] %><br/>
+                      <%= sanitize @book[:outline] %><br/>
+                      <%= sanitize @book[:author_intro] %><br/>
+                      <%= sanitize @book[:review] %>
+                    </p>
+                </article>
+                <h3>筆記</h3>
+
+                <h3>書評</h3>
+
+            </main>
+
+            <!-- begin sidebar -->
+            <aside class="col-md-3 col-md-pull-9">
+                <div class="item-image">       
+                  <img src="<%= @book[:cover_url] %>" 
+                       class="img-responsive center-block" alt="portfolio1">   
+                </div>
+                <!-- begin tag-widget -->
+                <div class="tag-widget">
+                    <h4>分類</h4>
+                    <h4>書櫃</h4>
+                    <% if @book_db.nil? %>
+                      這本書不在書櫃裡
+                    <% end %>
+                    <h4>評分</h4>
+                    <h4>作者</h4>
+                    <%= @book[:author] %><br/>
+                    <h4>ISBN</h4>
+                    <%= @book[:isbn] %><br/>
+                    <h4>出版商</h4>
+                    <%= @book[:publisher] %>
+                    <% if @book[:publish_date]  %>
+                      <h4>出版日</h4>
+                      <%= @book[:publish_date].strftime('%m/%d/%Y') %>
+                    <% end %>
+                    <h4>語言</h4>
+                    <%= @book[:language] %>
+                    <h4>頁數</h4>
+                    <%= @book[:page] %>
+                </div> <!-- /.tag-widget -->
+
+            </aside>
+            <!-- end sidebar -->
+        </div>
+    </div>
+
+</section>

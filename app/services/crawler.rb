@@ -74,10 +74,10 @@ class Crawler
   def get_book_info(url)
     doc = Nokogiri::HTML(open(url))
     
-    title = doc.css('h1').children.text.strip
+    name = doc.css('h1').children.text.strip
     author = doc.css('li:contains("作者") a').children[3].text.strip if doc.css('li:contains("作者") a').children[3]
     publisher = doc.css('li:contains("出版社") a span').children.text.strip
-    publish_date = doc.css('li:contains("出版日期")').children.text.strip
+    publish_date = doc.css('li:contains("出版日期")').children.text.strip.scan(/\d/).join.to_time
     language = doc.css('li:contains("語言")').children.text.strip
     description = doc.css('.content')[0].to_s
     isbn = doc.css('.bd ul li meta')[0]['content'].scan(/[0-9]{13}/)[0] if doc.css('.bd ul li meta')[0]
@@ -90,7 +90,7 @@ class Crawler
     cover_url = doc.css('img.cover')[0]['src'] if doc.css('img.cover').any?
 
     result = {
-      :title => title,
+      :name => name,
       :author => author,
       :publisher => publisher,
       :publish_date => publish_date,
