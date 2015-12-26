@@ -14,4 +14,5 @@ class Book < ActiveRecord::Base
       self.pictures.create(:image => img)
     end
   end
+
 end
