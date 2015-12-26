@@ -57,12 +57,12 @@ class Crawler
       next_page_url = doc.css('a.nxt')[0]['href'] if doc.css('a.nxt')[0]
       urls.push(next_page_url)
   
-      entries = doc.css('li.item > :nth-child(2)')
+      entries = doc.css('li.item > a[rel="mid_image"]')
       entries.each do |entry|
         e = { :product_id => entry['href'].scan(/[0-9]{10}/),
               :title => entry['title'],
               :href => entry['href'],
-              :cover_url => image_url_resize(entry.css('img.itemcov').first['data-original'], 300, 300)
+              :cover_url => image_url_resize(entry.css('img.itemcov').first['data-original'], 500, 500)
               }
         (results << e) if e[:product_id].any?
       end
@@ -80,7 +80,7 @@ class Crawler
     publish_date = doc.css('li:contains("出版日期")').children.text.strip
     language = doc.css('li:contains("語言")').children.text.strip
     description = doc.css('.content')[0].to_s
-    isbn = doc.css('.bd ul li meta')[0].text.strip.scan(/[0-9]{13}/)[0] if doc.css('.bd ul li meta')[0]
+    isbn = doc.css('.bd ul li meta')[0]['content'].scan(/[0-9]{13}/)[0] if doc.css('.bd ul li meta')[0]
     page = doc.css('.bd ul li')[2].children.text.strip.scan(/[0-9]{3}/)[0] if doc.css('.bd ul li')[2]
     title_en = doc.css('h2 a').last.children.text.strip if doc.css('h2 a').last
     author_en = doc.css('li:contains("原文作者") a').children.text.strip
@@ -109,8 +109,8 @@ class Crawler
 
   private
   def image_url_resize(url, width, height)
-    if url
-      url = url.scan(/.+\.jpg/).first
+    unless url.empty?
+      url = url.scan(/.+\.[a-z]{3}/).first
       url = url + "&w=#{width}&h=#{height}"
     end
   end
