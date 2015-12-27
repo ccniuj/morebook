@@ -14,14 +14,22 @@ class Book < ActiveRecord::Base
     end
   end
 
-  def self.add_book_to_db(user, book_data)
+  def self.add_book_to_shelf(user, book_data)
+    book = self.where(:isbn => book_data[:isbn]).first
+    if book.nil?
+      book = self.add_book_to_db(book_data)
+    end
+    shelf = user.shelves.first
+    if book.shelf_books.select{ |s| s.shelf_id == shelf.id }.empty?
+      book.shelf_books.create(:book_id => book, :shelf_id => shelf.id)
+    end
+    book
+  end
+
+  def self.add_book_to_db(book_data)
     cover_url = book_data.delete(:cover_url)
     book = self.new(book_data)
-
     book.save
-
-    shelf = user.shelves.first
-    book.shelf_books.create(:book_id => book, :shelf_id => shelf.id)
 
     book_cover = book.save_image([cover_url])
     book

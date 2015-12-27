@@ -33,7 +33,7 @@ class StaticsController < ApplicationController
     end
   end
 
-  def add_book_to_db
+  def add_book_to_shelf
     book_isbn = params[:isbn]
     book_data_url = params[:book_data_url]
     if book_isbn
@@ -43,8 +43,8 @@ class StaticsController < ApplicationController
       authenticate_user!
       session[:user_return_to] = nil
 
-      book_saved = Book.add_book_to_db(current_user, book_data)
-      redirect_to edit_dashboard_book_path(book_saved)
+      book_saved = Book.add_book_to_shelf(current_user, book_data)
+      redirect_to book_path(book_saved)
     else
       redirect_to root_path
     end
