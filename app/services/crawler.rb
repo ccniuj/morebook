@@ -89,8 +89,6 @@ class Crawler
     review = doc.css('div.mod_b h3:contains("序") +div div.content')[0].to_s 
     cover_url = doc.css('img.cover')[0]['src'] if doc.css('img.cover').any?
 
-    binding.pry
-
     result = {
       :name => name,
       :author => author,
