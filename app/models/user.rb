@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
   has_many :notes
   has_many :comments
   has_many :rates
-  has_many :books
   has_many :user_shelves
   has_many :shelves, through: :user_shelves
   has_one :star

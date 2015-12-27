@@ -1,5 +1,4 @@
 class Book < ActiveRecord::Base
-  belongs_to :user
   has_many :pictures
   has_many :notes 
   has_many :comments
