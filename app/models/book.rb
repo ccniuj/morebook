@@ -26,4 +26,11 @@ class Book < ActiveRecord::Base
     book_cover = book.save_image([cover_url])
     book
   end
+
+  def self.kept_by(user)
+    self.joins('INNER JOIN shelf_books ON books.id = shelf_books.book_id ').
+         joins('INNER JOIN user_shelves ON shelf_books.shelf_id = user_shelves.shelf_id ').
+         where('user_shelves.user_id = ?', user.id).
+         uniq
+  end
 end

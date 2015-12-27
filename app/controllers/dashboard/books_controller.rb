@@ -1,6 +1,6 @@
 class Dashboard::BooksController < Dashboard::DashboardController
   def index
-    @books = @paginate = Book.joins(:tags).where(:user_id => current_user.id).uniq.order('id DESC').paginate(:page => params[:page])
+    @books = @paginate = Book.kept_by(current_user).joins(:tags).uniq.order('id DESC').paginate(:page => params[:page])
   end
 
   def new
