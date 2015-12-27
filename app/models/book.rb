@@ -1,11 +1,11 @@
 class Book < ActiveRecord::Base
-  has_many :pictures
-  has_many :notes 
-  has_many :comments
-  has_many :rates
-  has_many :shelf_books
+  has_many :pictures, dependent: :destroy
+  has_many :notes, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :rates, dependent: :destroy
+  has_many :shelf_books, dependent: :destroy
   has_many :shelves, through: :shelf_books
-  has_many :book_tags
+  has_many :book_tags, dependent: :destroy
   has_many :tags, through: :book_tags
   
   def save_image(images)

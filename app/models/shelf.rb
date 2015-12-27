@@ -1,7 +1,7 @@
 class Shelf < ActiveRecord::Base
-  has_many :user_shelves
+  has_many :user_shelves, dependent: :destroy
   has_many :users, through: :user_shelves
-  has_many :shelf_books
+  has_many :shelf_books, dependent: :destroy
   has_many :books, through: :shelf_books
 
   has_attached_file :cover, styles: { medium: "300x300#", thumb: "100x100#" }, 
