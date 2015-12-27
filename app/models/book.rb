@@ -14,4 +14,16 @@ class Book < ActiveRecord::Base
     end
   end
 
+  def self.add_book_to_db(user, book_data)
+    cover_url = book_data.delete(:cover_url)
+    book = self.new(book_data)
+
+    book.save
+
+    shelf = user.shelves.first
+    book.shelf_books.create(:book_id => book, :shelf_id => shelf.id)
+
+    book_cover = book.save_image([cover_url])
+    book
+  end
 end

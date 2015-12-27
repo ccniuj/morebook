@@ -42,6 +42,7 @@
                     <% if @book_db.nil? %>
                       <%= form_tag add_book_to_db_statics_path, :method => 'post' do %>
                         <%= hidden_field_tag 'isbn', @book[:isbn] %>
+                        <%= hidden_field_tag 'book_data_url', request.original_url %>
                         這本書不在書櫃裡, <%= submit_tag '新增到我的書櫃' %>
                       <% end %>
                     <% end %>

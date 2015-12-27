@@ -35,17 +35,16 @@ class StaticsController < ApplicationController
 
   def add_book_to_db
     book_isbn = params[:isbn]
+    book_data_url = params[:book_data_url]
     if book_isbn
       book_data = session[book_isbn]
-      cover_url = book_data.delete(:cover_url)
+      
+      session[:user_return_to] = book_data_url
+      authenticate_user!
+      session[:user_return_to] = nil
 
-      book = Book.new(book_data)
-      book_cover = book.pictures.build(:image => cover_url)
-      if book.save && book_cover.save
-        redirect_to book_path(book)
-      else
-        redirect_to root_path
-      end
+      book_saved = Book.add_book_to_db(current_user, book_data)
+      redirect_to edit_dashboard_book_path(book_saved)
     else
       redirect_to root_path
     end
@@ -65,5 +64,9 @@ class StaticsController < ApplicationController
     else
       result = []
     end
+  end
+
+  def find_product_id_by_isbn(isbn)
+
   end
 end
