@@ -4,10 +4,28 @@
   <% if current_user %>
     <% current_user.shelves.all.each do |shelf| %>
       <%= check_box_tag "shelves_id[]", shelf.id, 
-        shelf.books.map{|b|b.isbn}.include?(@book[:isbn]) %><%= shelf.name %><br/>
+        shelf.books.map{|b|b.isbn}.include?(@book[:isbn]), :class => 'ck' %><%= shelf.name %><br/>
       <% end %>
-    <%= submit_tag '新增到我的書櫃', :class => 'form-control' %>
+    <%= submit_tag '新增到我的書櫃', :class => 'form-control', :onclick => 'return validateCheckbox();' %>
   <% else %>
     您尚未登入，<br/><%= submit_tag '登入以將這本書新增至您的書櫃', :class => 'form-control' %>
   <% end %>
 <% end %>
+
+<script 'type/javascript' >
+  function validateCheckbox()
+  {
+    var checkboxes = document.getElementsByClassName("ck");
+    var checkboxesChecked = [];
+
+    for (var i=0; i<checkboxes.length; i++) {
+      if (checkboxes[i].checked) {
+        checkboxesChecked.push(checkboxes[i]);
+      }
+    }
+    if (checkboxesChecked.length == 0) {
+      alert('請至少選取一個書櫃');
+      return false;
+    }
+  }
+</script>
