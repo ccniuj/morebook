@@ -1,0 +1,13 @@
+<%= form_for(@book, {:url => add_book_to_shelf_books_path, :method => 'post'}) do |f| %>
+  <%= hidden_field_tag 'book_id', @book.id %>
+  <%= hidden_field_tag 'book_show_url', request.original_url %>
+  <% if current_user %>
+    <% current_user.shelves.all.each do |shelf| %>
+      <%= check_box_tag "shelves_id[]", shelf.id,
+        shelf.books.map{|b|b.isbn}.include?(@book.isbn) %><%= shelf.name %><br/>
+      <% end %>
+    <%= f.submit '新增到我的書櫃', :class => 'form-control' %>
+  <% else %>
+    您尚未登入，<%= f.submit '登入以將這本書新增至您的書櫃', :class => 'form-control' %>
+  <% end %>
+<% end %>

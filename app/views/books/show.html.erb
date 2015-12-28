@@ -48,6 +48,7 @@
                         <% @book.shelves.each do |shelf| %>
                             <%= link_to shelf.name, shelf_path(shelf) %>
                         <% end %>
+                        <%= render 'add_book_to_shelf' %>
                     </div>
                     <h4>評分</h4>
                     <h4>作者</h4>

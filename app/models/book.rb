@@ -15,15 +15,18 @@ class Book < ActiveRecord::Base
   end
 
   def self.add_book_to_shelf(user, book_data, shelves_id)
-    book = self.where(:isbn => book_data[:isbn]).first
-    if book.nil?
-      book = self.add_book_to_db(book_data)
-    end
-    
-    shelves_id.each do |s_id|
-      if book.shelf_books.select{ |s| s.shelf_id == s_id }.empty?
-        book.shelf_books.create(:book_id => book, :shelf_id => s_id)
+    if book_data.class == self
+      book = book_data
+    else
+      book = self.where(:isbn => book_data[:isbn]).first
+      if book.nil?
+        book = self.add_book_to_db(book_data)
       end
+    end
+
+    book.shelf_books.each {|s| s.destroy }    
+    shelves_id.each do |s_id|
+      book.shelf_books.create(:book_id => book, :shelf_id => s_id)
     end
     
     book

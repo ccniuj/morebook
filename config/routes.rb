@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   root 'statics#index'
   resources :tags
   resources :stars
-  resources :books
+  resources :books do
+    post 'add_book_to_shelf', on: :collection
+  end
   resources :shelves
   devise_for :managers
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
