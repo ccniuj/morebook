@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151227075212) do
+ActiveRecord::Schema.define(version: 20151228031932) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,7 +22,6 @@ ActiveRecord::Schema.define(version: 20151227075212) do
   end
 
   create_table "books", force: :cascade do |t|
-    t.integer  "user_id"
     t.string   "name"
     t.text     "description"
     t.string   "author"
@@ -34,10 +33,6 @@ ActiveRecord::Schema.define(version: 20151227075212) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delete_at"
-    t.string   "cover_file_name"
-    t.string   "cover_content_type"
-    t.integer  "cover_file_size"
-    t.datetime "cover_updated_at"
     t.string   "name_en"
     t.string   "author_en"
     t.text     "author_intro"
@@ -46,7 +41,6 @@ ActiveRecord::Schema.define(version: 20151227075212) do
   end
 
   add_index "books", ["isbn"], name: "index_books_on_isbn", using: :btree
-  add_index "books", ["user_id"], name: "index_books_on_user_id", using: :btree
 
   create_table "comments", force: :cascade do |t|
     t.integer "book_id"
@@ -97,7 +91,6 @@ ActiveRecord::Schema.define(version: 20151227075212) do
     t.integer "shelf_id"
     t.integer "book_id"
     t.integer "user_id"
-    t.integer "is_local?"
   end
 
   add_index "shelf_books", ["book_id", "shelf_id"], name: "index_shelf_books_on_book_id_and_shelf_id", using: :btree
