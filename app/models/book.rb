@@ -42,8 +42,10 @@ class Book < ActiveRecord::Base
   end
 
   def self.kept_by(user)
-    self.joins('INNER JOIN shelf_books ON books.id = shelf_books.book_id ').
-         joins('INNER JOIN user_shelves ON shelf_books.shelf_id = user_shelves.shelf_id ').
+    self.joins('INNER JOIN shelf_books ON books.id = shelf_books.book_id').
+         joins('INNER JOIN user_shelves ON shelf_books.shelf_id = user_shelves.shelf_id').
+         joins('LEFT JOIN book_tags ON books.id = book_tags.book_id').
+         joins('LEFT JOIN tags ON book_tags.tag_id = tags.id').
          where('user_shelves.user_id = ?', user.id).
          uniq
   end
