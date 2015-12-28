@@ -36,6 +36,8 @@ class StaticsController < ApplicationController
   def add_book_to_shelf
     book_isbn = params[:isbn]
     book_data_url = params[:book_data_url]
+    shelves_id = params[:shelves_id]
+
     if book_isbn
       book_data = session[book_isbn]
       
@@ -43,7 +45,7 @@ class StaticsController < ApplicationController
       authenticate_user!
       session[:user_return_to] = nil
 
-      book_saved = Book.add_book_to_shelf(current_user, book_data)
+      book_saved = Book.add_book_to_shelf(current_user, book_data, shelves_id)
       redirect_to book_path(book_saved)
     else
       redirect_to root_path
