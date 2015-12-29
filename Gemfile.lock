@@ -136,6 +136,8 @@ GEM
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
+    omniauth-facebook (3.0.0)
+      omniauth-oauth2 (~> 1.2)
     omniauth-google-oauth2 (0.2.9)
       addressable (~> 2.3)
       jwt (~> 1.0)
@@ -265,6 +267,7 @@ DEPENDENCIES
   jquery-rails
   mechanize
   nokogiri
+  omniauth-facebook
   omniauth-google-oauth2
   paperclip
   pg

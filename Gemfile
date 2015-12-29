@@ -55,6 +55,7 @@ gem 'puma'
 gem 'faker'
 gem 'font-awesome-rails'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 gem 'figaro'
 gem 'simplecov', :require => false, :group => :test
 gem 'hirb'

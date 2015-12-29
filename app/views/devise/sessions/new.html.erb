@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/template_login/css/style.css">
   </head>
   <body>
+
+
     <% if request.fullpath.include?('users') %>
       <%= render 'user_login' %>
     <% else %>
