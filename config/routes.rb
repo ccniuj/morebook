@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :shelves
     resources :books
     resources :stars
+    resources :profiles, :only => [:edit, :update]
     namespace :admin do
       resources :shelves
       resources :books

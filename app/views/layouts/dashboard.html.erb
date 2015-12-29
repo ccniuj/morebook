@@ -52,7 +52,7 @@
             <ul class="nav navbar-nav">
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="/template/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                  <img src="<%= current_user.profile.selfie(:thumb) %>" class="user-image" alt="User Image">
                   <span class="hidden-xs"><%= current_user.name %></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -78,7 +78,7 @@
           <!-- Sidebar user panel -->
           <div class="user-panel">
             <div class="pull-left image">
-              <img src="/template/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+              <img src="<%= current_user.profile.selfie(:thumb) %>" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
               <p><%= current_user.name %></p>
@@ -96,6 +96,11 @@
           <!-- /.search form -->
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
+            <li class="treeview">
+              <a href="<%= edit_dashboard_profile_path(current_user.id) %>">
+                <i class='fa fa-table'></i> <span>個人資訊</span>
+              </a>
+            </li>
             <li class="treeview">
               <a href="<%= dashboard_shelves_path %>">
                 <i class='fa fa-table'></i> <span>書櫃</span>
