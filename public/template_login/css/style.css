@@ -83,7 +83,7 @@ div.left label {
   font-size: 1.1em;
   margin-top: 0.6em;
 }
-div.left input[type="email"], div.left input[type="password"] {
+div.left input[type="email"], div.left input[type="password"], div.left input[type="text"] {
   border: 0.1em solid #dfdfdf;
   padding: 1em;
   margin: 0.6em 0;
