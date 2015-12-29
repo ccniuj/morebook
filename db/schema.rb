@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151229055943) do
+ActiveRecord::Schema.define(version: 20151229092715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,7 +135,16 @@ ActiveRecord::Schema.define(version: 20151229055943) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "delete_at"
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
+    t.integer  "parent_id"
+    t.integer  "depth",          default: 0, null: false
+    t.integer  "children_count", default: 0, null: false
   end
+
+  add_index "tags", ["lft"], name: "index_tags_on_lft", using: :btree
+  add_index "tags", ["parent_id"], name: "index_tags_on_parent_id", using: :btree
+  add_index "tags", ["rgt"], name: "index_tags_on_rgt", using: :btree
 
   create_table "user_shelves", force: :cascade do |t|
     t.integer "user_id"
