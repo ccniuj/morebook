@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :user_shelves, dependent: :destroy
   has_many :shelves, through: :user_shelves
   has_one :star
+  has_one :profile
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
