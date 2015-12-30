@@ -1,59 +1,3 @@
-<script src="/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
-<script>
-  function getTree() {
-    // Some logic to retrieve, or generate tree structure
-    var data = [
-      {
-        text: "Parent 1",
-        selectable: false,
-        nodes: [
-          {
-            text: "Child 1",
-            selectable: false,
-            nodes: [
-              {
-                text: "Grandchild 1",
-                selectable: false
-              },
-              {
-                text: "Grandchild 2",
-                selectable: false
-              }
-            ]
-          },
-          {
-            text: "Child 2",
-            selectable: false
-          }
-        ],
-      },
-      {
-        text: "Parent 2",
-        selectable: false
-      },
-      {
-        text: "Parent 3",
-        selectable: false
-      },
-      {
-        text: "Parent 4",
-        selectable: false
-      },
-      {
-        text: "Parent 5",
-        selectable: false
-      }
-    ];
-    return data;
-  }
-
-  $(document).ready(function($) {
-    $('#tree').treeview({
-      data: getTree(),
-      showCheckbox: true
-    });
-  })
-</script>
 <div class="box box-primary">
   <div class="box-header with-border">
     <h3 class="box-title">編輯書本</h3>
@@ -68,7 +12,7 @@
           <%= check_box_tag "tags_id[]", tag.id, 
               @book.tags.map{|t|t.name}.include?(tag.name) %><%= tag.name %><br/>
         <% end %>
-        <div id='tree'></div>
+        <%= render 'tag' %>
         書櫃<%= select_tag :shelf_id, 
                 options_for_select(Shelf.all.map{|s|[s.name, s.id]},
                 ShelfBook.where(:book_id => @book.id).take.shelf_id),

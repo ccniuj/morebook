@@ -9,6 +9,7 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def edit
     @book = Book.find(params[:id])
+    @book_json = { 'a' => 1 }
   end
 
   def create
