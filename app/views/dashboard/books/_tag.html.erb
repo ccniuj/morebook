@@ -1,4 +1,5 @@
-<div class='test' data="<%= @book_json %>"></div>
+    <div class='test' data="<%= @book_json %>"></div>
+    <%= hidden_field_tag 'book_tag_list', @book_tag_list %>
       <div class="row">
         <hr>
         <h2>Checkable Tree</h2>
@@ -48,9 +49,6 @@
 
       $(function() {
 
-        var test = <%= raw @book_json %>
-        console.log(test)
-        
         var defaultData = [
           {
             text: 'Parent 1',
@@ -190,90 +188,37 @@
           '}' +
         ']';
 
+        var tag_list_json = "[{\"tag_id\":16,\"text\":\"CS\",\"state\":{\"checked\":true},\"nodes\":[{\"tag_id\":18,\"text\":\"AI\",\"state\":{\"checked\":true},\"nodes\":[{\"tag_id\":19,\"text\":\"computer vision\",\"state\":{\"checked\":true},\"nodes\":null},{\"tag_id\":20,\"text\":\"expert system\",\"state\":{\"checked\":true},\"nodes\":null}]}]}]"
+
+        var tag_list_hash = [
+          { 
+          tag_id: 16, 
+          text: 'CS', 
+          state: {checked: true}, 
+          nodes: [
+            {
+            tag_id: 18, 
+            text: 'AI', 
+            state: {checked: true}, 
+            nodes: [
+              {
+              tag_id: 19, 
+              text: 'computer vision', 
+              state: {checked: true}, 
+              }, 
+              {
+              tag_id: 20, 
+              text: 'expert system', 
+              state: {checked: true}, 
+              }]
+             }]
+           }
+        ];
+
+
+        var book_tag_list = $('#book_tag_list').val();
+
         var tags_checked = [];
-
-        $('#treeview1').treeview({
-          data: defaultData
-        });
-
-        $('#treeview2').treeview({
-          levels: 1,
-          data: defaultData
-        });
-
-        $('#treeview3').treeview({
-          levels: 99,
-          data: defaultData
-        });
-
-        $('#treeview4').treeview({
-
-          color: "#428bca",
-          data: defaultData
-        });
-
-        $('#treeview5').treeview({
-          color: "#428bca",
-          expandIcon: 'glyphicon glyphicon-chevron-right',
-          collapseIcon: 'glyphicon glyphicon-chevron-down',
-          nodeIcon: 'glyphicon glyphicon-bookmark',
-          data: defaultData
-        });
-
-        $('#treeview6').treeview({
-          color: "#428bca",
-          expandIcon: "glyphicon glyphicon-stop",
-          collapseIcon: "glyphicon glyphicon-unchecked",
-          nodeIcon: "glyphicon glyphicon-user",
-          showTags: true,
-          data: defaultData
-        });
-
-        $('#treeview7').treeview({
-          color: "#428bca",
-          showBorder: false,
-          data: defaultData
-        });
-
-        $('#treeview8').treeview({
-          expandIcon: "glyphicon glyphicon-stop",
-          collapseIcon: "glyphicon glyphicon-unchecked",
-          nodeIcon: "glyphicon glyphicon-user",
-          color: "yellow",
-          backColor: "purple",
-          onhoverColor: "orange",
-          borderColor: "red",
-          showBorder: false,
-          showTags: true,
-          highlightSelected: true,
-          selectedColor: "yellow",
-          selectedBackColor: "darkorange",
-          data: defaultData
-        });
-
-        $('#treeview9').treeview({
-          expandIcon: "glyphicon glyphicon-stop",
-          collapseIcon: "glyphicon glyphicon-unchecked",
-          nodeIcon: "glyphicon glyphicon-user",
-          color: "yellow",
-          backColor: "purple",
-          onhoverColor: "orange",
-          borderColor: "red",
-          showBorder: false,
-          showTags: true,
-          highlightSelected: true,
-          selectedColor: "yellow",
-          selectedBackColor: "darkorange",
-          data: alternateData
-        });
-
-        $('#treeview10').treeview({
-          color: "#428bca",
-          enableLinks: true,
-          data: defaultData
-        });
-
-
 
         var $searchableTree = $('#treeview-searchable').treeview({
           data: defaultData,
@@ -397,7 +342,8 @@
 
         //ans
         var $checkableTree = $('#treeview-checkable').treeview({
-          data: defaultData,
+          data: book_tag_list,
+          //data: defaultData,
           showIcon: false,
           showCheckbox: true,
           onNodeChecked: function(event, node) {

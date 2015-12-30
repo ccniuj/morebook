@@ -9,7 +9,8 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def edit
     @book = Book.find(params[:id])
-    @book_json = { 'a' => 1 }
+    @book_tag_list = @book.hierarchy_tag_hash.to_json
+
   end
 
   def create
@@ -36,7 +37,8 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def update
     @book = Book.find(params[:id])
-    
+    # @tag_list = JSON.parse(params[:tag_list])
+
     BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
     params[:tags_id].size.times do |i|
       book_tag = BookTag.new(:book_id => @book.id,

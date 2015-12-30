@@ -13,6 +13,19 @@ class Book < ActiveRecord::Base
       self.pictures.create(:image => img)
     end
   end
+  
+  def hierarchy_tag_hash(current_nodes=nil)
+    current_nodes ||= [Tag.root]
+
+    current_nodes.map do |cn|
+      {
+        :tag_id => cn.id,
+        :text => cn.name,
+        :state => {:checked => self.tags.all.include?(cn)},
+        :nodes => cn.children.any? ? self.hierarchy_tag_hash(cn.children) : nil 
+      }      
+    end
+  end
 
   def self.add_book_to_shelf(user, book_data, shelves_id)
     if book_data.class == self
@@ -49,4 +62,5 @@ class Book < ActiveRecord::Base
          where('user_shelves.user_id = ?', user.id).
          uniq
   end
+
 end
