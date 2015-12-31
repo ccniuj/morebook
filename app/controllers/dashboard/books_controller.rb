@@ -37,7 +37,7 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def update
     @book = Book.find(params[:id])
-    # @tag_list = JSON.parse(params[:tag_list])
+    @book_tag_list = JSON.parse(params[:book_tag_list])
 
     BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
     params[:tags_id].size.times do |i|

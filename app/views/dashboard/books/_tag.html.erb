@@ -14,8 +14,7 @@
       $(function() {
 
         var book_tag_list = $('#book_tag_list').val();
-
-        var tags_checked = [];
+        var book_tag_list_object = JSON.parse(book_tag_list);
 
         var $searchableTree = $('#treeview-searchable').treeview({
           data: book_tag_list,
@@ -136,40 +135,16 @@
           $expandibleTree.treeview('collapseAll', { silent: $('#chk-expand-silent').is(':checked') });
         });
 
-
-        //ans
-        var $checkableTree = $('#treeview-checkable').treeview({
-          data: book_tag_list,
-          showIcon: false,
-          showCheckbox: true,
-          onNodeChecked: function(event, node) {
-            console.log(node.text + 'was checked');
-            console.log(node.depth);
-            console.log(node.parent_id);
-            tags_checked[tags_checked.length] = [node.text, node.depth];
-            console.log(tags_checked);
-            //$('#checkable-output').prepend('<p>' + node.text + ' was checked</p>');
-          },
-          onNodeUnchecked: function (event, node) {
-            console.log(node.text + 'was unchecked');
-            //$('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
-          }
-        });
-
-
-        //search object from json data
-        var book_tag_list_object = jQuery.parseJSON(book_tag_list);
-
-        function search_object(data, target_object) {
+        var search_object = function(data, obj) {
           var queue = [data[0]];
-          while(queue.length > 0){
+          while(queue.length > 0) {
             var current = queue.shift();
-            if(current['tag_id'] == target_object.tag_id){
+            if(current['tag_id'] == obj.tag_id) {
               return current
             }
             else{
               var children = current['nodes']
-              if (children != null ){
+              if (children != null ) {
                 $.each( children, function( key, value ){
                   queue.push(value);
                 });    
@@ -178,7 +153,36 @@
           }
         }
 
-        console.log(search_object(book_tag_list_object, book_tag_list_object[0]['nodes'][0]['nodes'][1]))
+        //console.log(search_object(book_tag_list_object, book_tag_list_object[0]))
+
+        function change_object_state(data, obj) {
+          var o = search_object(data, obj);
+          o['state']['checked'] = !o['state']['checked']
+        }
+
+        //ans
+        var $checkableTree = $('#treeview-checkable').treeview({
+          data: book_tag_list,
+          showIcon: false,
+          showCheckbox: true,
+          onNodeChecked: function(event, node) {
+            console.log(node.state.checked);
+            console.log(node.text + 'was checked');
+            change_object_state(book_tag_list_object, node);
+            $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
+            console.log($('#book_tag_list').val());
+          },
+          onNodeUnchecked: function (event, node) {
+            console.log(node.state.checked);
+            console.log(node.text + 'was unchecked');
+            change_object_state(book_tag_list_object, node);
+            $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
+            console.log($('#book_tag_list').val());
+          }
+        });
+
+
+        //search object from json data
 
         var findCheckableNodess = function() {
           return $checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
