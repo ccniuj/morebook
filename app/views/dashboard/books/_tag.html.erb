@@ -7,7 +7,11 @@
         </div>
       </div>
       <hr>
-
+      分類<br/>
+      <% Tag.all.each do |tag| %>
+        <%= check_box_tag "tags_id[]", tag.id, 
+            @book.tags.map{|t|t.name}.include?(tag.name) %><%= tag.name %><br/>
+      <% end %>
     <script src="/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
     <script type="text/javascript">
 
@@ -166,18 +170,18 @@
           showIcon: false,
           showCheckbox: true,
           onNodeChecked: function(event, node) {
-            console.log(node.state.checked);
-            console.log(node.text + 'was checked');
+            // console.log(node.state.checked);
+            // console.log(node.text + 'was checked');
             change_object_state(book_tag_list_object, node);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            console.log($('#book_tag_list').val());
+            // console.log($('#book_tag_list').val());
           },
           onNodeUnchecked: function (event, node) {
-            console.log(node.state.checked);
-            console.log(node.text + 'was unchecked');
+            // console.log(node.state.checked);
+            // console.log(node.text + 'was unchecked');
             change_object_state(book_tag_list_object, node);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            console.log($('#book_tag_list').val());
+            // console.log($('#book_tag_list').val());
           }
         });
 

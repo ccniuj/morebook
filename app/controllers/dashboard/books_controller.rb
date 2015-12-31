@@ -37,12 +37,14 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def update
     @book = Book.find(params[:id])
+    
     @book_tag_list = JSON.parse(params[:book_tag_list])
+    tags_id = book_tag_filter(@book_tag_list)
 
     BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
-    params[:tags_id].size.times do |i|
+    tags_id.each do |tag_id|
       book_tag = BookTag.new(:book_id => @book.id,
-                              :tag_id => params[:tags_id][i])
+                              :tag_id => tag_id)
       book_tag.save
     end
 
@@ -64,5 +66,29 @@ class Dashboard::BooksController < Dashboard::DashboardController
   def book_params
     params.require(:book).permit(:name, :description, :shelf_id, :author,
      :descripton, :isbn, :publisher, :publish_date, :language, :page)
+  end
+
+  def book_tag_filter(hash_arr)
+    results = []
+    queue = []
+    hash_arr.each do |h|
+      queue.push(h)
+    end
+
+    while queue.any?
+      current = queue.shift
+
+      children = current['nodes']
+      unless children.nil?
+        children.each do |children|
+          queue.push(children)
+        end
+      end
+
+      if current['state']['checked']
+        results << current['tag_id']
+      end
+    end
+    results
   end
 end

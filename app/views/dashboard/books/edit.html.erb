@@ -7,11 +7,6 @@
       <div class='form-group'>
         封面<%= f.file_field :image, :class => 'form-control' %>
         名稱<%= f.text_field :name, :class => 'form-control' %>
-        分類<br/>
-        <% Tag.all.each do |tag| %>
-          <%= check_box_tag "tags_id[]", tag.id, 
-              @book.tags.map{|t|t.name}.include?(tag.name) %><%= tag.name %><br/>
-        <% end %>
         <%= render 'tag' %>
         書櫃<%= select_tag :shelf_id, 
                 options_for_select(Shelf.all.map{|s|[s.name, s.id]},
