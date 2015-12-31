@@ -1,227 +1,24 @@
-    <div class='test' data="<%= @book_json %>"></div>
     <%= hidden_field_tag 'book_tag_list', @book_tag_list %>
+      <hr>
       <div class="row">
-        <hr>
-        <h2>Checkable Tree</h2>
         <div class="col-sm-4">
-          <h2>Input</h2>
-          <div class="form-group">
-            <label for="input-check-node" class="sr-only">Search Tree:</label>
-            <input type="input" class="form-control" id="input-check-node" placeholder="Identify node..." value="Parent 1">
-          </div>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" class="checkbox" id="chk-check-silent" value="false">
-              Silent (No events)
-            </label>
-          </div>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <button type="button" class="btn btn-success check-node" id="btn-check-node">Check Node</button>
-            </div>
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-danger check-node" id="btn-uncheck-node">Uncheck Node</button>
-          </div>
-          <div class="form-group">
-            <button type="button" class="btn btn-primary check-node" id="btn-toggle-checked">Toggle Node</button>
-          </div>
-          <hr>
-          <div class="form-group row">
-            <div class="col-sm-6">
-              <button type="button" class="btn btn-success" id="btn-check-all">Check All</button>
-            </div>
-          </div>
-          <button type="button" class="btn btn-danger" id="btn-uncheck-all">Uncheck All</button>
-        </div>
-        <div class="col-sm-4">
-          <h2>Tree</h2>
+          分類<br/>
           <div id="treeview-checkable" class=""></div>
         </div>
-        <div class="col-sm-4">
-          <h2>Events</h2>
-          <div id="checkable-output"></div>
-        </div>
       </div>
+      <hr>
 
     <script src="/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
     <script type="text/javascript">
 
       $(function() {
 
-        var defaultData = [
-          {
-            text: 'Parent 1',
-            href: '#parent1',
-            tags: ['4'],
-            depth: 3,
-            nodes: [
-              {
-                text: 'Child 1',
-                href: '#child1',
-                tags: ['2'],
-                nodes: [
-                  {
-                    text: 'Grandchild 1',
-                    href: '#grandchild1',
-                    tags: ['0']
-                  },
-                  {
-                    text: 'Grandchild 2',
-                    href: '#grandchild2',
-                    tags: ['0']
-                  }
-                ]
-              },
-              {
-                text: 'Child 2',
-                href: '#child2',
-                tags: ['0']
-              }
-            ]
-          },
-          {
-            text: 'Parent 2',
-            href: '#parent2',
-            tags: ['0']
-          },
-          {
-            text: 'Parent 3',
-            href: '#parent3',
-             tags: ['0']
-          },
-          {
-            text: 'Parent 4',
-            href: '#parent4',
-            tags: ['0']
-          },
-          {
-            text: 'Parent 5',
-            href: '#parent5'  ,
-            tags: ['0']
-          }
-        ];
-
-        var alternateData = [
-          {
-            text: 'Parent 1',
-            tags: ['2'],
-            nodes: [
-              {
-                text: 'Child 1',
-                tags: ['3'],
-                nodes: [
-                  {
-                    text: 'Grandchild 1',
-                    tags: ['6']
-                  },
-                  {
-                    text: 'Grandchild 2',
-                    tags: ['3']
-                  }
-                ]
-              },
-              {
-                text: 'Child 2',
-                tags: ['3']
-              }
-            ]
-          },
-          {
-            text: 'Parent 2',
-            tags: ['7']
-          },
-          {
-            text: 'Parent 3',
-            icon: 'glyphicon glyphicon-earphone',
-            href: '#demo',
-            tags: ['11']
-          },
-          {
-            text: 'Parent 4',
-            icon: 'glyphicon glyphicon-cloud-download',
-            href: '/demo.html',
-            tags: ['19'],
-            selected: true
-          },
-          {
-            text: 'Parent 5',
-            icon: 'glyphicon glyphicon-certificate',
-            color: 'pink',
-            backColor: 'red',
-            href: 'http://www.tesco.com',
-            tags: ['available','0']
-          }
-        ];
-
-        var json = '[' +
-          '{' +
-            '"text": "Parent 1",' +
-            '"nodes": [' +
-              '{' +
-                '"text": "Child 1",' +
-                '"nodes": [' +
-                  '{' +
-                    '"text": "Grandchild 1"' +
-                  '},' +
-                  '{' +
-                    '"text": "Grandchild 2"' +
-                  '}' +
-                ']' +
-              '},' +
-              '{' +
-                '"text": "Child 2"' +
-              '}' +
-            ']' +
-          '},' +
-          '{' +
-            '"text": "Parent 2"' +
-          '},' +
-          '{' +
-            '"text": "Parent 3"' +
-          '},' +
-          '{' +
-            '"text": "Parent 4"' +
-          '},' +
-          '{' +
-            '"text": "Parent 5"' +
-          '}' +
-        ']';
-
-        var tag_list_json = "[{\"tag_id\":16,\"text\":\"CS\",\"state\":{\"checked\":true},\"nodes\":[{\"tag_id\":18,\"text\":\"AI\",\"state\":{\"checked\":true},\"nodes\":[{\"tag_id\":19,\"text\":\"computer vision\",\"state\":{\"checked\":true},\"nodes\":null},{\"tag_id\":20,\"text\":\"expert system\",\"state\":{\"checked\":true},\"nodes\":null}]}]}]"
-
-        var tag_list_hash = [
-          { 
-          tag_id: 16, 
-          text: 'CS', 
-          state: {checked: true}, 
-          nodes: [
-            {
-            tag_id: 18, 
-            text: 'AI', 
-            state: {checked: true}, 
-            nodes: [
-              {
-              tag_id: 19, 
-              text: 'computer vision', 
-              state: {checked: true}, 
-              }, 
-              {
-              tag_id: 20, 
-              text: 'expert system', 
-              state: {checked: true}, 
-              }]
-             }]
-           }
-        ];
-
-
         var book_tag_list = $('#book_tag_list').val();
 
         var tags_checked = [];
 
         var $searchableTree = $('#treeview-searchable').treeview({
-          data: defaultData,
+          data: book_tag_list,
         });
 
         var search = function(e) {
@@ -252,7 +49,7 @@
 
         var initSelectableTree = function() {
           return $('#treeview-selectable').treeview({
-            data: defaultData,
+            data: book_tag_list,
             multiSelect: $('#chk-select-multi').is(':checked'),
             onNodeSelected: function(event, node) {
               $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
@@ -296,7 +93,7 @@
 
 
         var $expandibleTree = $('#treeview-expandible').treeview({
-          data: defaultData,
+          data: book_tag_list,
           onNodeCollapsed: function(event, node) {
             $('#expandible-output').prepend('<p>' + node.text + ' was collapsed</p>');
           },
@@ -343,7 +140,6 @@
         //ans
         var $checkableTree = $('#treeview-checkable').treeview({
           data: book_tag_list,
-          //data: defaultData,
           showIcon: false,
           showCheckbox: true,
           onNodeChecked: function(event, node) {
@@ -359,6 +155,30 @@
             //$('#checkable-output').prepend('<p>' + node.text + ' was unchecked</p>');
           }
         });
+
+
+        //search object from json data
+        var book_tag_list_object = jQuery.parseJSON(book_tag_list);
+
+        function search_object(data, target_object) {
+          var queue = [data[0]];
+          while(queue.length > 0){
+            var current = queue.shift();
+            if(current['tag_id'] == target_object.tag_id){
+              return current
+            }
+            else{
+              var children = current['nodes']
+              if (children != null ){
+                $.each( children, function( key, value ){
+                  queue.push(value);
+                });    
+              }
+            }
+          }
+        }
+
+        console.log(search_object(book_tag_list_object, book_tag_list_object[0]['nodes'][0]['nodes'][1]))
 
         var findCheckableNodess = function() {
           return $checkableTree.treeview('search', [ $('#input-check-node').val(), { ignoreCase: false, exactMatch: false } ]);
@@ -395,7 +215,7 @@
 
 
         var $disabledTree = $('#treeview-disabled').treeview({
-          data: defaultData,
+          data: book_tag_list,
           onNodeDisabled: function(event, node) {
             $('#disabled-output').prepend('<p>' + node.text + ' was disabled</p>');
           },
@@ -445,11 +265,6 @@
           $disabledTree.treeview('enableAll', { silent: $('#chk-disable-silent').is(':checked') });
         });
 
-
-
-        var $tree = $('#treeview12').treeview({
-          data: json
-        });
       });
     </script>
 
