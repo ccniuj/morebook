@@ -3,16 +3,10 @@ class Tag < ActiveRecord::Base
   has_many :books, through: :book_tags
   acts_as_nested_set
 
-  def self.generate_hierarchy_hash(current_nodes=nil)
-    current_nodes ||= [Tag.root]
-
-    current_nodes.map do |cn|
-      {
-        :tag_id => cn.id,
-        :text => cn.name,
-        :state => {:checked => true},
-        :nodes => cn.children.any? ? Tag.generate_hierarchy_hash(cn.children) : nil 
-      }      
-    end
+  def self.add_child_tag(parent_tag_id, tag_name)
+    parent_tag = self.where(id: parent_tag_id).first
+    c = self.create(:name => tag_name)
+    c.move_to_child_of(parent_tag)
+    c.id
   end
 end
