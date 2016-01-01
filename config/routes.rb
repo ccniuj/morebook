@@ -19,6 +19,9 @@ Rails.application.routes.draw do
     resources :shelves
     resources :books
     resources :stars
+    resources :tags do
+      post 'add_tag', on: :collection
+    end
     resources :profiles, :only => [:edit, :update]
     namespace :admin do
       resources :shelves

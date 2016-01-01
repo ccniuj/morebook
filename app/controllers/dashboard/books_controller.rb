@@ -41,10 +41,10 @@ class Dashboard::BooksController < Dashboard::DashboardController
     @book_tag_list = JSON.parse(params[:book_tag_list])
     tags_id = book_tag_filter(@book_tag_list)
 
+
     BookTag.where(:book_id => @book.id).each {|bt|bt.destroy}
     tags_id.each do |tag_id|
-      book_tag = BookTag.new(:book_id => @book.id,
-                              :tag_id => tag_id)
+      book_tag = BookTag.new(:book_id => @book.id, :tag_id => tag_id)
       book_tag.save
     end
 
