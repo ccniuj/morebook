@@ -4,6 +4,8 @@
         <div class="col-sm-4">
           分類<br/>
           <div id="treeview-checkable" class=""></div>
+          <input type="text" id="tag_name">
+          <input type="button" value="Click me" id="ajax_submit">
         </div>
       </div>
       <hr>
@@ -12,6 +14,8 @@
         <%= check_box_tag "tags_id[]", tag.id, 
             @book.tags.map{|t|t.name}.include?(tag.name) %><%= tag.name %><br/>
       <% end %>
+
+
     <script src="/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
     <script type="text/javascript">
 
@@ -23,6 +27,7 @@
         var $searchableTree = $('#treeview-searchable').treeview({
           data: book_tag_list,
         });
+        var selected_tag_id = 0;
 
         var search = function(e) {
           var pattern = $('#input-search').val();
@@ -144,7 +149,7 @@
           while(queue.length > 0) {
             var current = queue.shift();
             if(current['tag_id'] == obj.tag_id) {
-              return current
+              return current;
             }
             else{
               var children = current['nodes']
@@ -161,27 +166,41 @@
 
         function change_object_state(data, obj) {
           var o = search_object(data, obj);
-          o['state']['checked'] = !o['state']['checked']
+          o['state']['checked'] = !o['state']['checked'];
         }
+
+
+        $('#ajax_submit').click(function(){
+          var name = $('#tag_name').val();
+          var parent = selected_tag_id;
+          $.ajax({
+            url: "/dashboard/tags/add_tag",
+            type: "POST",
+            dataType: "json",
+            data: {tag: {
+                     tag_name: name, 
+                     parent_tag_id: parent }},
+            success: function(data){
+               console.log(data);
+            }
+          });
+        });
 
         //ans
         var $checkableTree = $('#treeview-checkable').treeview({
           data: book_tag_list,
           showIcon: false,
           showCheckbox: true,
+          onNodeSelected: function(event, node) {
+            selected_tag_id = node.tag_id;
+          },
           onNodeChecked: function(event, node) {
-            // console.log(node.state.checked);
-            // console.log(node.text + 'was checked');
             change_object_state(book_tag_list_object, node);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            // console.log($('#book_tag_list').val());
           },
           onNodeUnchecked: function (event, node) {
-            // console.log(node.state.checked);
-            // console.log(node.text + 'was unchecked');
             change_object_state(book_tag_list_object, node);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            // console.log($('#book_tag_list').val());
           }
         });
 
@@ -275,4 +294,3 @@
 
       });
     </script>
-
