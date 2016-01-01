@@ -171,7 +171,14 @@
 
         function add_child_tag(data, parent_tag_obj, tag_id, tag_name) {
           var o = search_object(data, parent_tag_obj);
-          console.log(o.nodes);
+          o['nodes'].push({
+            'tag_id': tag_id,
+            'text': tag_name,
+            'nodes': null,
+            'state': {
+              'checked': false
+            }
+          });
         }
 
         $('#ajax_submit').click(function(){
@@ -186,6 +193,8 @@
                      parent_tag: parent}},
             success: function(data){
               add_child_tag(book_tag_list_object, data['parent_tag'], data['tag_id'], data['tag_name']);
+              console.log(book_tag_list_object);
+
               $checkableTree;
 
               // console.log(data);
@@ -193,9 +202,12 @@
           });
         });
 
+        function get_tree() {
+          return book_tag_list_object;
+        }
         //ans
         var $checkableTree = $('#treeview-checkable').treeview({
-          data: book_tag_list,
+          data: get_tree(),
           showIcon: false,
           showCheckbox: true,
           onNodeSelected: function(event, node) {
