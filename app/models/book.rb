@@ -21,7 +21,7 @@ class Book < ActiveRecord::Base
       {
         :tag_id => cn.id,
         :text => cn.name,
-        :state => {:checked => self.tags.all.include?(cn)},
+        :state => {:checked => self.tags.all.include?(cn), :expanded => true},
         :nodes => cn.children.any? ? self.hierarchy_tag_hash(cn.children) : nil 
       }      
     end
