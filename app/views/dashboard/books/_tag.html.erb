@@ -23,6 +23,7 @@
 
         var book_tag_list = $('#book_tag_list').val();
         var book_tag_list_object = JSON.parse(book_tag_list);
+        var root = book_tag_list_object[0];
 
         var $searchableTree = $('#treeview-searchable').treeview({
           data: book_tag_list,
@@ -163,27 +164,26 @@
         }
 
         var fn_search_object = function(current, args) {
-          target = args[0];
-          if(current.tag_id == target.tag_id) {
+          target_tag_id = args[0];
+          if (current.tag_id == target_tag_id) {
             return current;
           }
         }
 
         var fn_change_object_checked_state = function(current, args) {
-          target = args[0];
-          if(current.tag_id == target.tag_id) {
+          target_tag_id = args[0];
+          if (current.tag_id == target_tag_id) {
             current.state.checked = !current.state.checked;
             return current;
           } 
         }
 
         var fn_change_object_selected_state = function(current, args) {
-          target = args[0];
+          target_tag_id = args[0];
           current.state.selected = false;
 
-          if(current.tag_id == target.tag_id) {
+          if (current.tag_id == target_tag_id) {
             current.state.selected = !current.state.selected;
-            //return current;
           }
         }
 
@@ -191,7 +191,7 @@
           parrent_tag_id = args[0];
           tag_id = args[1];
           tag_name = args[2];
-          if(current.tag_id == parrent_tag_id) {
+          if (current.tag_id == parrent_tag_id) {
             current.nodes = current.nodes||[]
             current.nodes.push({
               'tag_id': tag_id,
@@ -207,9 +207,23 @@
           } 
         }
 
-        var trace
+        var trace = function(initiative, fn, args) {
+          current = initiative;
+          while (current.parent_tag_id) {
+            current = traverse(root, fn_search_object, [current.parent_tag_id]);
+            result = fn(current, args);
+            if (result) {
+              return result;
+            }
+          }
+        }
 
-        console.log(book_tag_list_object);
+        var fn_check_ancestors = function(current, args) {
+          current.state.checked = true;
+          //console.log(book_tag_list_object);
+        }
+
+        //console.log(book_tag_list_object);
 
         // function add_child_tag(data, parent_tag_obj, tag_id, tag_name) {
         //   var o = search_object(data, parent_tag_obj);
@@ -252,7 +266,7 @@
         $('#ajax_submit').click(function() {
           var name = $('#input-check-node').val();
           var tag = selected_tag;
-          traverse(book_tag_list_object[0], fn_change_object_selected_state, [tag]);
+          traverse(root, fn_change_object_selected_state, [tag.tag_id]);
 
           if(!name) {
             alert('請輸入分類名稱');
@@ -273,9 +287,9 @@
                      parent_tag_id: tag.tag_id}},
             success: function(data){
               args = [data['parent_tag_id'], data['tag_id'], data['tag_name']];
-              var new_tag = traverse(book_tag_list_object[0], fn_add_child_tag, args);
+              var new_tag = traverse(root, fn_add_child_tag, args);
               selected_tag = new_tag;
-              traverse(book_tag_list_object[0], fn_change_object_selected_state, [new_tag]);
+              traverse(root, fn_change_object_selected_state, [new_tag.tag_id]);
               // add_child_tag(book_tag_list_object, data['parent_tag'], data['tag_id'], data['tag_name']);
 
               //How to DRY this?
@@ -289,11 +303,11 @@
                   // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeChecked: function(event, node) {
-                  traverse(book_tag_list_object[0], fn_change_object_checked_state, [node]);
+                  traverse(root, fn_change_object_checked_state, [node.tag_id]);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeUnchecked: function (event, node) {
-                  traverse(book_tag_list_object[0], fn_change_object_checked_state, [node]);
+                  traverse(root, fn_change_object_checked_state, [node.tag_id]);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 }
               });
@@ -315,11 +329,12 @@
             // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           },
           onNodeChecked: function(event, node) {
-            traverse(book_tag_list_object[0], fn_change_object_checked_state, [node]);
+            traverse(root, fn_change_object_checked_state, [node.tag_id]);
+            trace(node, fn_check_ancestors);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           },
-          onNodeUnchecked: function (event, node) {
-            traverse(book_tag_list_object[0], fn_change_object_checked_state, [node]);
+          onNodeUnchecked: function(event, node) {
+            traverse(root, fn_change_object_checked_state, [node.tag_id]);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           }
         });
