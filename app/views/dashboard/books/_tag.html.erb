@@ -2,17 +2,10 @@
       <hr>
       <div class="row">
         <div class="col-sm-4">
-          <h2>Input</h2>
-          <div class="form-group">
-            <label for="input-check-node" class="sr-only">Search Tree:</label>
-            <input type="input" class="form-control" id="input-check-node" placeholder="Identify node..." value="Parent 1">
-          </div>
-        </div>
-        <div class="col-sm-4">
           分類<br/>
           <div id="treeview-checkable" class=""></div>
-          <input type="text" id="tag_name">
-          <input type="button" value="新增" class="btn btn-danger" id="ajax_submit">
+          <input type="text" id="input-check-node" placeholder="請輸入分類" >
+          <input type="button" value="新增" class="btn btn-sm btn-danger" id="ajax_submit">
         </div>
       </div>
       <hr>
@@ -189,7 +182,7 @@
         }
 
         $('#ajax_submit').click(function(){
-          var name = $('#tag_name').val();
+          var name = $('#input-check-node').val();
           var parent = selected_tag;
           $.ajax({
             url: "/dashboard/tags/add_tag",
