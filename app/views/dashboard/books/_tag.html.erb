@@ -169,19 +169,28 @@
           }
         }
 
-        var fn_change_object_state = function(current, args) {
+        var fn_change_object_checked_state = function(current, args) {
           target = args[0];
           if(current.tag_id == target.tag_id) {
             current.state.checked = !current.state.checked;
             return current;
           } 
         }
-        
+
+        var fn_change_object_selected_state = function(current, args) {
+          target = args[0];
+          current.state.selected = false;
+
+          if(current.tag_id == target.tag_id) {
+            current.state.selected = !current.state.selected;
+            //return current;
+          }
+        }
+
         var fn_add_child_tag = function(current, args) {
           parrent_tag_id = args[0];
           tag_id = args[1];
           tag_name = args[2];
-          console.log(args[0]);
           if(current.tag_id == parrent_tag_id) {
             current.nodes = current.nodes||[]
             current.nodes.push({
@@ -194,7 +203,7 @@
                 'selected': true
               }
             });
-            return current;
+            return current.nodes[current.nodes.length-1];
           } 
         }
 
@@ -237,12 +246,10 @@
         //   o['state']['checked'] = !o['state']['checked'];
         // }
 
-        
-
-
         $('#ajax_submit').click(function() {
           var name = $('#input-check-node').val();
-          var tag_id = selected_tag.tag_id;
+          var tag = selected_tag;
+          traverse(book_tag_list_object, fn_change_object_selected_state, [tag]);
 
           if(!name) {
             alert('請輸入分類名稱');
@@ -260,10 +267,12 @@
             dataType: "json",
             data: {tag: {
                      tag_name: name, 
-                     parent_tag_id: tag_id}},
+                     parent_tag_id: tag.tag_id}},
             success: function(data){
               args = [data['parent_tag_id'], data['tag_id'], data['tag_name']];
-              traverse(book_tag_list_object, fn_add_child_tag, args);
+              var new_tag = traverse(book_tag_list_object, fn_add_child_tag, args);
+              selected_tag = new_tag;
+              traverse(book_tag_list_object, fn_change_object_selected_state, [new_tag]);
               // add_child_tag(book_tag_list_object, data['parent_tag'], data['tag_id'], data['tag_name']);
 
               //How to DRY this?
@@ -273,20 +282,18 @@
                 showCheckbox: true,
                 onNodeSelected: function(event, node) {
                   selected_tag = node;
+                  // traverse(book_tag_list_object, fn_change_object_selected_state, [node]);
+                  // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeChecked: function(event, node) {
-                  traverse(book_tag_list_object, fn_change_object_state, [node]);
-                  //change_object_state(book_tag_list_object, node);
+                  traverse(book_tag_list_object, fn_change_object_checked_state, [node]);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeUnchecked: function (event, node) {
-                  traverse(book_tag_list_object, fn_change_object_state, [node]);
-                  //change_object_state(book_tag_list_object, node);
+                  traverse(book_tag_list_object, fn_change_object_checked_state, [node]);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 }
               });
-              console.log('hello');
-
             }
           });
         });
@@ -301,18 +308,16 @@
           showCheckbox: true,
           onNodeSelected: function(event, node) {
             selected_tag = node;
+            // traverse(book_tag_list_object, fn_change_object_selected_state, [node]);
+            // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           },
           onNodeChecked: function(event, node) {
-            traverse(book_tag_list_object, fn_change_object_state, [node]);
-            //change_object_state(book_tag_list_object, node);
+            traverse(book_tag_list_object, fn_change_object_checked_state, [node]);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            console.log(node.state);
           },
           onNodeUnchecked: function (event, node) {
-            traverse(book_tag_list_object, fn_change_object_state, [node]);
-            //change_object_state(book_tag_list_object, node);
+            traverse(book_tag_list_object, fn_change_object_checked_state, [node]);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
-            console.log(node.state);
           }
         });
 
