@@ -38,9 +38,20 @@ class Book < ActiveRecord::Base
       end
     end
 
-    book.shelf_books.each {|s| s.destroy }    
+    current_shelves_id = user.shelves.joins(:shelf_books).
+      where('shelf_books.book_id = ?', book.id).
+      uniq.map {|s| s.id}
+
     shelves_id.each do |s_id|
-      book.shelf_books.create(:book_id => book, :shelf_id => s_id)
+      if current_shelves_id.exclude?(s_id)
+        book.shelf_books.create(:book_id => book, :shelf_id => s_id)
+      end
+    end
+
+    current_shelves_id.each do |cs_id|
+      if shelves_id.exclude?(cs_id)
+        book.shelf_books.where(shelf_id: cs_id).first.delete
+      end
     end
     
     book
