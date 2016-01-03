@@ -142,7 +142,10 @@
 
 			// Search methods
 			search: $.proxy(this.search, this),
-			clearSearch: $.proxy(this.clearSearch, this)
+			clearSearch: $.proxy(this.clearSearch, this),
+
+			// Alter tree
+			alter_tree: $.proxy(this.alter_tree, this)
 		};
 	};
 
@@ -164,6 +167,15 @@
 		this.subscribeEvents();
 		this.setInitialStates({ nodes: this.tree }, 0);
 		this.render();
+	};
+
+	Tree.prototype.alter_tree = function (new_tree) {
+		if (new_tree) {
+			if (typeof new_tree === 'string') {
+				new_tree = $.parseJSON(new_tree);
+			}
+			this.tree = $.extend(true, [], [new_tree]);
+		}
 	};
 
 	Tree.prototype.remove = function () {
@@ -517,6 +529,7 @@
 				.addClass(node.state.disabled ? 'node-disabled': '')
 				.addClass(node.state.selected ? 'node-selected' : '')
 				.addClass(node.searchResult ? 'search-result' : '') 
+				.attr('id', 'tag_id_' + node.tag_id)
 				.attr('data-nodeid', node.nodeId)
 				.attr('style', _this.buildStyleOverride(node));
 
