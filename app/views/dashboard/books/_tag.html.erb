@@ -190,14 +190,15 @@
         }
 
         var fn_add_child_tag = function(current, args) {
-          parrent_tag_id = args[0];
+          parent_tag_id = args[0];
           tag_id = args[1];
           tag_name = args[2];
-          if (current.tag_id == parrent_tag_id) {
+          if (current.tag_id == parent_tag_id) {
             current.nodes = current.nodes||[]
             current.nodes.push({
               'tag_id': tag_id,
               'text': tag_name,
+              'parent_tag_id': parent_tag_id,
               'nodes': null,
               'state': {
                 'checked': false,
@@ -211,6 +212,7 @@
 
         var trace_parent = function(initiative, fn, args) {
           current = initiative;
+          debugger;
           while (current.parent_tag_id) {
             current = traverse(root, fn_search_object, [current.parent_tag_id]);
             result = fn(current, args);
