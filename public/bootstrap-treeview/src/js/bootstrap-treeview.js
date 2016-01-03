@@ -175,6 +175,7 @@
 				new_tree = $.parseJSON(new_tree);
 			}
 			this.tree = $.extend(true, [], [new_tree]);
+			this.setInitialStates({ nodes: this.tree }, 0);
 		}
 	};
 
