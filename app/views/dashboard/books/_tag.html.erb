@@ -161,7 +161,8 @@
             if (result) {
               return result;
             }
-          }  
+          }
+          $checkableTree.treeview('alter_tree', book_tag_list_object);
         }
 
         var fn_search_object = function(current, args) {
@@ -214,17 +215,19 @@
             current = traverse(root, fn_search_object, [current.parent_tag_id]);
             result = fn(current, args);
             if (result) {
-              $checkableTree.treeview('alter_tree', book_tag_list_object);
+              //$checkableTree.treeview('alter_tree', book_tag_list_object);
               return result;
             }
           }
-
           $checkableTree.treeview('alter_tree', book_tag_list_object);
         }
 
         var fn_check_ancestors = function(current, args) {
-
           current.state.checked = true;
+        }
+
+        var fn_uncheck_children = function(current, args) {
+          current.state.checked = false;
         }
 
         $('#ajax_submit').click(function() {
@@ -254,7 +257,6 @@
               var new_tag = traverse(root, fn_add_child_tag, args);
               selected_tag = new_tag;
               traverse(root, fn_change_object_selected_state, [new_tag.tag_id]);
-              // add_child_tag(book_tag_list_object, data['parent_tag'], data['tag_id'], data['tag_name']);
 
               //How to DRY this?
               $('#treeview-checkable').treeview({
@@ -263,15 +265,15 @@
                 showCheckbox: true,
                 onNodeSelected: function(event, node) {
                   selected_tag = node;
-                  // traverse(book_tag_list_object, fn_change_object_selected_state, [node]);
-                  // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeChecked: function(event, node) {
                   traverse(root, fn_change_object_checked_state, [node.tag_id]);
+                  trace_parent(node, fn_check_ancestors);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 },
                 onNodeUnchecked: function (event, node) {
                   traverse(root, fn_change_object_checked_state, [node.tag_id]);
+                  traverse(traverse(root, fn_search_object, [node.tag_id]), fn_uncheck_children);
                   $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
                 }
               });
@@ -289,8 +291,6 @@
           showCheckbox: true,
           onNodeSelected: function(event, node) {
             selected_tag = node;
-            // traverse(book_tag_list_object, fn_change_object_selected_state, [node]);
-            // $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           },
           onNodeChecked: function(event, node) {
             traverse(root, fn_change_object_checked_state, [node.tag_id]);
@@ -299,6 +299,7 @@
           },
           onNodeUnchecked: function(event, node) {
             traverse(root, fn_change_object_checked_state, [node.tag_id]);
+            traverse(traverse(root, fn_search_object, [node.tag_id]), fn_uncheck_children);
             $('#book_tag_list').val(JSON.stringify(book_tag_list_object));
           }
         });
