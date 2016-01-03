@@ -33,6 +33,10 @@ class StaticsController < ApplicationController
     end
   end
 
+  def profile
+    @profile = current_user.profile
+  end
+
   def add_book_to_shelf
     book_isbn = params[:isbn]
     book_data_url = params[:book_data_url]

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :statics, :only => [:index, :search] do
     get 'search', on: :collection
     get 'book', on: :member
+    get 'profile', on: :member
     post 'add_book_to_shelf', on: :collection
   end
   resources :shelves, :only => [:index, :show]

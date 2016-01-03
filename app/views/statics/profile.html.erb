@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+
+<section class="blog-content">
+    <div class="container">
+        <div class="row">
+            <main class="col-md-9 col-md-push-3" style="display: block;">
+                <article class="blog-item">
+                    <div class="blog-heading">
+                        <h1 class="text-capitalize">
+                          <%= @profile.name %>
+                        </h1>
+                    </div>
+                    <p>
+                      <%= sanitize @profile.email %>
+                    </p>
+                </article>
+                <h3>筆記</h3>
+
+                <h3>書評</h3>
+
+            </main>
+
+            <!-- begin sidebar -->
+            <aside class="col-md-3 col-md-pull-9">
+                <div class="item-image">       
+                  <img src="<%= @profile.selfie.url(:medium) %>" 
+                       class="img-responsive center-block" alt="portfolio1">   
+                </div>
+                <!-- begin tag-widget -->
+                <div class="tag-widget">
+                    <h4>書櫃</h4>
+                    <div class="tags">
+                        <% current_user.shelves.each do |shelf| %>
+                            <%= link_to shelf.name, shelf_path(shelf) %>
+                        <% end %>
+                    </div>
+                    <h4>評分</h4>
+                    <h4>作者</h4>
+                    <h4>ISBN</h4>
+                    <h4>出版商</h4>
+                    <h4>語言</h4>
+                    <h4>頁數</h4>
+                </div> <!-- /.tag-widget -->
+
+            </aside>
+            <!-- end sidebar -->
+        </div>
+    </div>
+
+</section>
