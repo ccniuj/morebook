@@ -1,25 +1,72 @@
-<p id="notice"><%= notice %></p>
+<div class="main-content">
+<!--  begin portfolio section  -->
+    <section class="bg-light-gray">
+        <div class="container">
 
-<h1>Listing Books</h1>
+            <div class="headline text-center">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <h2 class="section-title">探索好書</h2>
+                        <p class="section-sub-title">
+                            快來挑選你有興趣的主題
+                        </p> <!-- /.section-sub-title -->
+                    </div>
+                </div>
+                <hr/>
+                <ul class="nav nav-pills">
+                  <li role="presentation" >
+                    <%= link_to 'All', books_path %>
+                  </li>
+                  <% Tag.all.each do |tag| %>
+                    <li role="presentation" class="<%= 'active' if @tag_name == tag.name %>">
+                        <%= link_to tag.name, 
+                        books_path + '?tag=' + tag.name %></li>
+                  <% end %>
+                </ul>
+                <hr/>
+            </div> <!-- /.headline -->
+            <%= will_paginate @paginate if @paginate %>
+            <div class="portfolio-item-list">
+                <div class="row">
+                    <% @books.each do |book| %>
+                        <% if !@tag_name || (book.tags.map{|t|t.name}.include?(@tag_name)) %>
+                            <div class="col-md-3 col-sm-6">       
+                                <div class="portfolio-item">       
+                                    <div class="item-image">       
+                                        <a href="<%= book_path(book) %>">       
+                                            <img src="<%= book.pictures.first.image.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">       
+                                            <div><span><i class="fa fa-plus"></i></span></div>       
+                                        </a>       
+                                    </div>       
 
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+                                    <div class="item-description">       
+                                        <div class="row">       
+                                            <div class="col-xs-8 col-xs-offset-2">
+                                                <span class="item-name">       
+                                                    <%= book.name %>       
+                                                </span>       
+                                                <span>       
+                                                    
+                                                </span>       
+                                            </div>       
+                                            <div class="col-xs-6 col-xs-offset-3">       
+                                                <span class="like">       
+                                                    <i class="fa fa-heart-o"></i>       
+                                                    99       
+                                                </span>       
+                                            </div>       
+                                        </div>       
+                                    </div> <!-- end of /.item-description -->       
+                                </div> <!-- end of /.portfolio-item -->       
+                            </div>   
+                        <% end %>    
+                    <% end %>
+                </div>
+            </div> <!-- end of portfolio-item-list -->
+            
+            <%= will_paginate @paginate if @paginate %>
 
-  <tbody>
-    <% @books.each do |book| %>
-      <tr>
-        <td><%= link_to 'Show', book %></td>
-        <td><%= link_to 'Edit', edit_book_path(book) %></td>
-        <td><%= link_to 'Destroy', book, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Book', new_book_path %>
+        </div>
+    </section> 
+    <!--   end of portfolio section  -->
+</div>

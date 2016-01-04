@@ -1,5 +1,6 @@
 class BooksController < ApplicationController
   def index
+    @tag_name = params[:tag] if params[:tag]
     @books = @paginate = Book.paginate(:page => params[:page])
   end
 
