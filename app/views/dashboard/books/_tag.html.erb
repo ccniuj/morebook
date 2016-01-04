@@ -9,13 +9,6 @@
         </div>
       </div>
       <hr>
-      分類<br/>
-      <% Tag.all.each do |tag| %>
-        <%= check_box_tag "tags_id[]", tag.id, 
-            @book.tags.map{|t|t.name}.include?(tag.name) %><%= tag.name %><br/>
-      <% end %>
-
-
     <script src="/bootstrap-treeview/src/js/bootstrap-treeview.js"></script>
     <script type="text/javascript">
 

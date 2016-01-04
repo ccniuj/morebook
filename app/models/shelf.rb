@@ -9,9 +9,9 @@ class Shelf < ActiveRecord::Base
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
 
   def self.owned_by(user)
-    Shelf.select("shelves.*, user_shelves.user_id").
-          joins('LEFT JOIN user_shelves ON user_shelves.shelf_id = shelves.id').
-          where("user_shelves.user_id = ?", user.id)
+    self.joins('LEFT JOIN user_shelves ON user_shelves.shelf_id = shelves.id').
+         where("user_shelves.user_id = ?", user.id).
+         where('user_shelves."is_owner?" = true')
   end
 
   def self.tag_filter(tag_name)
