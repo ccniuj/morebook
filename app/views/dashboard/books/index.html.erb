@@ -11,7 +11,6 @@
         <th>名稱</th>
         <th>分類</th>
         <th>作者</th>
-        <th>簡介</th>
         <th>管理</th>
       </tr>
       <% @books.each do |book| %>
@@ -22,14 +21,13 @@
               <%= image_tag book.pictures.first.image.url(:thumb) %>
             <% end %>
           </td>
-          <td width='100'><%= book.name %></td>
+          <td><%= book.name %></td>
           <td width='100'>
             <% book.tags.each do |tag| %>
               <%= tag.name %><br/>
             <% end %>
           </td>
           <td width='100'><%= book.author %></td>
-          <td width='400'><%= book.description %></td>
           <td>
             <%= link_to '編輯', edit_dashboard_book_path(book) %>
             <%= link_to '刪除', dashboard_book_path(book), method: :delete, data: { confirm: '你確定嗎？' } %>

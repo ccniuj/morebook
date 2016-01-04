@@ -37,7 +37,8 @@ class Dashboard::BooksController < Dashboard::DashboardController
 
   def update
     @book = Book.find(params[:id])
-    
+    shelves_id = params[:shelves_id]
+
     @book_tag_list = JSON.parse(params[:book_tag_list])
     tags_id = book_tag_filter(@book_tag_list)
 
@@ -48,8 +49,9 @@ class Dashboard::BooksController < Dashboard::DashboardController
       book_tag.save
     end
 
-    @shelf_book = ShelfBook.where(:book_id => @book.id).take
-    if @book.update(book_params) && @shelf_book.update(:shelf_id => params[:shelf_id])
+    Book.add_book_to_shelf(current_user, @book, shelves_id)
+
+    if @book.update(book_params)
       redirect_to dashboard_books_path
     else
       render 'edit'

@@ -72,6 +72,7 @@ class Book < ActiveRecord::Base
          joins('LEFT JOIN book_tags ON books.id = book_tags.book_id').
          joins('LEFT JOIN tags ON book_tags.tag_id = tags.id').
          where('user_shelves.user_id = ?', user.id).
+         where('user_shelves."is_owner?" = true').
          uniq
   end
 
