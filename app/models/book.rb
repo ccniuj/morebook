@@ -32,7 +32,7 @@ class Book < ActiveRecord::Base
     if book_data.class == self
       book = book_data
     else
-      book = self.where(:isbn => book_data[:isbn]).first
+      book = self.where(:isbn => book_data[:isbn]).where(:name => book_data[:name]).first
       if book.nil?
         book = self.add_book_to_db(book_data)
       end

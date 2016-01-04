@@ -23,7 +23,7 @@ class StaticsController < ApplicationController
     c = Crawler.new
     if book
       @book = c.get_book_info(book[:href])
-      @book_db = Book.where(:isbn => @book[:isbn]).first
+      @book_db = Book.where(:isbn => @book[:isbn]).where(:name => @book[:name]).first
       if @book_db
         redirect_to book_path(@book_db.id)
       end
