@@ -1,0 +1,20 @@
+<%= form_for(@shelf, {:url => update_members_shelves_path, :method => 'post', :name => 'test'}) do |f| %>
+  <%= hidden_field_tag 'shelf_id', @shelf.id %>
+  <%= hidden_field_tag 'shelf_show_url', request.original_url %>
+  <% @shelf.users.each do |user| %>
+    <%= link_to user.name, profile_static_path(user.id) %><br/>
+  <% end %>
+  <% if current_user %>
+    <% if @shelf.users.include?(current_user) %>
+      <% if current_user.user_shelves.select{|us|us.shelf_id == @shelf.id}.first.is_owner? %>
+        這是您的書櫃
+      <% else %>
+        <%= f.submit '取消關注', :class => 'form-control' %>
+      <% end %>
+    <% else %>
+      <%= f.submit '關注這個書櫃', :class => 'form-control' %>
+    <% end %>
+  <% else %>
+    您尚未登入，<%= f.submit '登入以關注這個書櫃', :class => 'form-control' %>
+  <% end %>
+<% end %>

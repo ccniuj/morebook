@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   resources :books do
     post 'add_book_to_shelf', on: :collection
   end
-  resources :shelves
+  resources :shelves do
+    post 'update_members', on: :collection
+  end
   devise_for :managers
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :statics, :only => [:index, :search] do
