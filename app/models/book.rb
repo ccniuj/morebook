@@ -66,6 +66,12 @@ class Book < ActiveRecord::Base
     book
   end
 
+  def remove_book_from_each_shelf(user)
+    user.user_shelves.select{|us|us.is_owner?}.map{|us|us.shelf}.flatten
+        .select{|s|s.books.include?(self)}.map{|s|s.shelf_books}.flatten
+        .each{|sb|sb.delete if sb.book_id == self.id}
+  end
+
   def self.kept_by(user)
     self.joins('INNER JOIN shelf_books ON books.id = shelf_books.book_id').
          joins('INNER JOIN user_shelves ON shelf_books.shelf_id = user_shelves.shelf_id').

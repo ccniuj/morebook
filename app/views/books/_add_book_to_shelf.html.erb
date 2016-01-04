@@ -2,7 +2,11 @@
   <%= hidden_field_tag 'book_id', @book.id %>
   <%= hidden_field_tag 'book_show_url', request.original_url %>
   <% if current_user %>
-    <% current_user.shelves.all.each do |shelf| %>
+    <% current_user.user_shelves.
+                        select{|s|s.is_owner?}.
+                        map{|us|us.shelf}.
+                        flatten.uniq.
+                        each do |shelf| %>
       <%= check_box_tag "shelves_id[]", shelf.id,
         shelf.books.map{|b|b.isbn}.include?(@book.isbn), :class => 'ck' %><%= shelf.name %><br/>
       <% end %>

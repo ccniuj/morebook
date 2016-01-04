@@ -1,6 +1,6 @@
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">編輯書本</h3>
+    <h3 class="box-title"><%= @book.name %></h3>
   </div><!-- /.box-header -->
   <div class="box-body">
     <%= form_for(@book, {:url => dashboard_book_path, :method => 'patch'}) do |f| %>

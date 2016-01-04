@@ -1,6 +1,6 @@
 <div class="box box-primary">
   <div class="box-header with-border">
-    <h3 class="box-title">編輯書櫃</h3>
+    <h3 class="box-title"><%= @shelf.name %></h3>
   </div><!-- /.box-header -->
   <div class="box-body">
     <%= form_for(@shelf, {:url => dashboard_shelf_path, :method => 'patch'}) do |f| %>
@@ -13,7 +13,10 @@
         <% @shelf.users.all.each do |user| %>
           <%= link_to user.name, profile_static_path(user.id) %><br/>
         <% end %>
-
+        書本<br/>
+        <% @shelf.books.all.each do |book| %>
+          <%= link_to book.name, edit_dashboard_book_path(book) %><br/>
+        <% end %>
       </div>
       <%= f.submit :class => 'btn btn-primary', :value => '送出' %>
     <% end %>

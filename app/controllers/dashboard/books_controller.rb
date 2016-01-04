@@ -50,24 +50,18 @@ class Dashboard::BooksController < Dashboard::DashboardController
     end
 
     Book.add_book_to_shelf(current_user, @book, shelves_id)
-
-    if @book.update(book_params)
-      redirect_to dashboard_books_path
-    else
-      render 'edit'
-    end
+    redirect_to dashboard_books_path
   end
 
   def destroy
     @book = Book.find(params[:id])
-    @book.destroy
+    @book.remove_book_from_each_shelf(current_user)
+
     redirect_to dashboard_books_path
   end
 
   private
   def book_params
-    params.require(:book).permit(:name, :description, :shelf_id, :author,
-     :descripton, :isbn, :publisher, :publish_date, :language, :page)
   end
 
   def book_tag_filter(hash_arr)

@@ -30,7 +30,7 @@
           <td width='100'><%= book.author %></td>
           <td>
             <%= link_to '編輯', edit_dashboard_book_path(book) %>
-            <%= link_to '刪除', dashboard_book_path(book), method: :delete, data: { confirm: '你確定嗎？' } %>
+            <%= link_to '移除', dashboard_book_path(book), method: :delete, data: { confirm: '你確定要將這本書從所有書櫃中移除嗎？' } %>
           </td>
         </tr>
       <% end %>
