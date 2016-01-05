@@ -59,11 +59,27 @@ class Book < ActiveRecord::Base
 
   def self.add_book_to_db(book_data)
     cover_url = book_data.delete(:cover_url)
+    tag_name = book_data.delete(:tag)
+
     book = self.new(book_data)
     book.save
 
-    book_cover = book.save_image([cover_url])
+    book.save_image([cover_url])
+    book.tagging(tag_name)
+
     book
+  end
+
+  def tagging(name)
+    tag = Tag.where(:name => name).take
+    BookTag.create(:book_id => self.id, :tag_id => tag.id)
+    while tag.parent
+      tag = tag.parent
+      bt = BookTag.where(:book_id => self.id).where(:tag_id => tag.id).take
+      if bt.nil?
+        BookTag.create(:book_id => self.id, :tag_id => tag.id)
+      end
+    end
   end
 
   def remove_book_from_each_shelf(user)
