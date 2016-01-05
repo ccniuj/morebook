@@ -38,6 +38,12 @@
                 <!-- begin tag-widget -->
                 <div class="tag-widget">
                     <h4>分類</h4>
+
+                    <div class="tags">
+                        <% Tag.where(:name => @book[:tag]).first.ancestors.each do |tag| %>
+                            <a href="<%= books_path + '?tag=' +tag.name %>"><%= tag.name %></a>
+                        <% end %>
+                    </div>
                     <h4>書櫃</h4>
                     <%= render 'add_book_to_shelf' %>
                     <h4>評分</h4>

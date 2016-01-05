@@ -9,4 +9,15 @@ class Tag < ActiveRecord::Base
     c.move_to_child_of(parent_tag)
     c.id
   end
+
+  def ancestors
+    results = []
+    results.push(self)
+    current = self
+    while current.parent
+      results.unshift(current.parent)
+      current = current.parent
+    end
+    results
+  end
 end

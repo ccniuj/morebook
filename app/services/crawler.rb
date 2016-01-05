@@ -113,6 +113,7 @@ class Crawler
     doc = Nokogiri::HTML(open(url))
     
     name         = doc.css('h1').children.text.strip
+    tag          = doc.css('ul.type04_breadcrumb li:nth-last-child(2) a span').children.text
     author       = doc.css('li:contains("作者") a').children[3].text.strip if doc.css('li:contains("作者") a').children[3]
     publisher    = doc.css('li:contains("出版社") a span').children.text.strip
     publish_date = doc.css('li:contains("出版日期")').children.text.strip.scan(/\d/).join.to_time
@@ -128,20 +129,21 @@ class Crawler
     cover_url    = doc.css('img.cover')[0]['src'] if doc.css('img.cover').any?
 
     result = {
-      :name => name,
-      :author => author,
-      :publisher => publisher,
+      :name         => name,
+      :tag          => tag,
+      :author       => author,
+      :publisher    => publisher,
       :publish_date => publish_date,
-      :language => language,
-      :description => description,
-      :isbn => isbn,
-      :page => page,
-      :name_en => name_en,
-      :author_en => author_en,
+      :language     => language,
+      :description  => description,
+      :isbn         => isbn,
+      :page         => page,
+      :name_en      => name_en,
+      :author_en    => author_en,
       :author_intro => author_intro,
-      :outline => outline,
-      :review => review,
-      :cover_url => cover_url
+      :outline      => outline,
+      :review       => review,
+      :cover_url    => cover_url
     }
   end
 

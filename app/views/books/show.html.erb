@@ -40,7 +40,7 @@
                     <h4>分類</h4>
                     <div class="tags">
                         <% @book.tags.each do |tag| %>
-                            <a href="#"><%= tag.name %></a>
+                            <a href="<%= books_path + '?tag=' +tag.name %>"><%= tag.name %></a>
                         <% end %>
                     </div>
                     <h4>書櫃</h4>
