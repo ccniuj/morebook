@@ -25,6 +25,46 @@
                 </ul>
                 <hr/>
             </div> <!-- /.headline -->
+            <%= will_paginate @paginate if @paginate %>
+            <div class="portfolio-item-list">
+                <div class="row">
+                    <% @books.each do |book| %>
+                        <% if !@tag_name || (book.tags.map{|t|t.name}.include?(@tag_name)) %>
+                            <div class="col-md-3 col-sm-6">       
+                                <div class="portfolio-item">       
+                                    <div class="item-image">       
+                                        <a href="<%= book_path(book) %>">       
+                                            <img src="<%= book.pictures.first.image.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">       
+                                            <div><span><i class="fa fa-plus"></i></span></div>       
+                                        </a>       
+                                    </div>       
+
+                                    <div class="item-description">       
+                                        <div class="row">       
+                                            <div class="col-xs-8 col-xs-offset-2">
+                                                <span class="item-name">       
+                                                    <%= book.name %>       
+                                                </span>       
+                                                <span>       
+                                                    
+                                                </span>       
+                                            </div>       
+                                            <div class="col-xs-6 col-xs-offset-3">       
+                                                <span class="like">       
+                                                    <i class="fa fa-heart-o"></i>       
+                                                    99       
+                                                </span>       
+                                            </div>       
+                                        </div>       
+                                    </div> <!-- end of /.item-description -->       
+                                </div> <!-- end of /.portfolio-item -->       
+                            </div>   
+                        <% end %>    
+                    <% end %>
+                </div>
+            </div> <!-- end of portfolio-item-list -->
+            
+            <%= will_paginate @paginate if @paginate %>
 
         </div>
     </section> 
