@@ -17,7 +17,7 @@
                   <li role="presentation" >
                     <%= link_to 'All', shelves_path %>
                   </li>
-                  <% Tag.all.each do |tag| %>
+                  <% Tag.all.select{|t|t.depth==1}.each do |tag| %>
                     <li role="presentation" class="<%= 'active' if @tag_name == tag.name %>">
                         <%= link_to tag.name, 
                         shelves_path + '?tag=' + tag.name %></li>
