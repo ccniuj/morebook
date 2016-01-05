@@ -34,6 +34,44 @@ class Crawler
     end
   end
 
+  def crawl_tags
+    url = 'http://www.books.com.tw/web/books'
+    anchor = 'h3:contains("中文書書籍分類")+ul '
+    general_class_selector = anchor + 'li a'
+    current_selector = anchor + 'li.open > span a'
+    children_selector = anchor + 'ul.sub li a'
+    queue = []
+
+    doc = Nokogiri::HTML(open(url))
+    general_classes = doc.css(general_class_selector).map do |a|
+                        queue.push(a['href'])
+                        a.children.text
+                      end
+    root_tag = Tag.create(:name => '中文書')
+
+    general_classes.each do |class_name|
+      tag = Tag.create(:name => class_name)
+      tag.move_to_child_of(root_tag)
+    end
+
+    while queue.any?
+      url = queue.pop
+      doc = Nokogiri::HTML(open(url))
+      current_tag_name = doc.css(current_selector).children.text
+      current_tag = Tag.where(:name => current_tag_name)
+      children_tag_names = doc.css(children_selector).map do |a|
+                             queue.push(a['href'])
+                             a.children.text
+                           end
+      children_tag_names.each do |name|
+        tag = Tag.create(:name => name)
+        tag.move_to_child_of(current_tag)
+      end
+
+    end
+
+  end
+
   def watir_webdriver(str)
     w = Watir::Browser.new :firefox 
     w.goto "#{@@nthu_lib_query_url}#{str}"
