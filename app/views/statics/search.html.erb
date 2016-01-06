@@ -15,9 +15,10 @@
             <%= will_paginate @paginate if @paginate %>
             <div class="portfolio-item-list">
                 <div class="row">
-            
+                  <ul class="grid effect-2" id="grid">
                     <% @results.each do |result| %>
-                            <div class="col-md-3 col-sm-6">       
+                        <li>
+                            <div class="col-md-12 col-sm-12">
                                 <div class="portfolio-item">       
                                     <div class="item-image">       
                                         <a href="<%= book_static_path(result[:product_id]) %>">
@@ -45,8 +46,10 @@
                                         </div>       
                                     </div> <!-- end of /.item-description -->       
                                 </div> <!-- end of /.portfolio-item -->       
-                            </div>   
+                            </div>
+                        </li>   
                     <% end %>
+                  </ul>
                 </div>
             </div> <!-- end of portfolio-item-list -->
             
