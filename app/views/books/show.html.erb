@@ -3,7 +3,17 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
-
+<link rel="stylesheet" href="/jquery-bar-rating/dist/themes/bars-1to10.css">
+<script src="/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
+<script type="text/javascript">
+jQuery(function($) {
+    $('#score').barrating({
+        theme: 'bars-1to10',
+        initialRating: 7,
+        readonly: true
+    });
+});
+</script>
 <section class="blog-content">
     <div class="container">
         <div class="row">
@@ -50,7 +60,21 @@
                         <% end %>
                         <%= render 'add_book_to_shelf' %>
                     </div>
-                    <h4>評分</h4>
+                    <h4>評價</h4>
+                        <div class="br-wrapper br-theme-bars-1to10">
+                        <select id="score">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        </div>
                     <h4>作者</h4>
                     <%= @book.author %>
                     <h4>ISBN</h4>
