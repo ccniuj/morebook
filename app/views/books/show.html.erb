@@ -12,6 +12,28 @@ jQuery(function($) {
         initialRating: 7,
         readonly: true
     });
+
+    $("#rate").click(function() {
+      $('#score').barrating('readonly', false);
+      $('#score').barrating('set', '6');
+      $(this).attr('value', '送出評價');
+      $(this).unbind('click');
+      $(this).click(function(){
+        var score = $('.br-current').attr('data-rating-value');
+        $.ajax({
+          url: '/books/add_rate',
+          type: 'POST',
+          dataType: 'json',
+          data: {score: score},
+          success: function(data){
+            $('#score').barrating('set', data);
+          }
+        });
+        $(this).attr('value', '已評價');
+        $(this).unbind('click');
+        $(this).prop('disabled', true);
+      });
+    });
 });
 </script>
 <section class="blog-content">
@@ -61,7 +83,7 @@ jQuery(function($) {
                         <%= render 'add_book_to_shelf' %>
                     </div>
                     <h4>評價</h4>
-                        <div class="br-wrapper br-theme-bars-1to10">
+                      <div class="br-wrapper br-theme-bars-1to10">
                         <select id="score">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -74,7 +96,9 @@ jQuery(function($) {
                             <option value="9">9</option>
                             <option value="10">10</option>
                         </select>
-                        </div>
+                      </div>
+                      <br/>
+                      <input type="button" id="rate" value="評價這本書">
                     <h4>作者</h4>
                     <%= @book.author %>
                     <h4>ISBN</h4>

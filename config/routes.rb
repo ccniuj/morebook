@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :stars
   resources :books do
     post 'add_book_to_shelf', on: :collection
+    post 'add_rate', on: :collection
   end
   resources :shelves do
     post 'update_members', on: :collection
