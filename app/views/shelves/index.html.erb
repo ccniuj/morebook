@@ -28,10 +28,12 @@
             <%= will_paginate @paginate if @paginate %>
             <div class="portfolio-item-list">
                 <div class="row">
+                  <ul class="grid effect-2" id="grid">
                     <% @shelves.each do |shelf| %>
                         <% if !@tag_name || (shelf.main_tag == @tag_name) then %>
-                            <div class="col-md-3 col-sm-6">       
-                                <div class="portfolio-item">       
+                          <li>
+                            <div class="col-md-12 col-sm-12">
+                                <div class="portfolio-item" id="grid">       
                                     <div class="item-image">       
                                         <a href="<%= shelf_path(shelf) %>">       
                                             <img src="<%= shelf.cover.url(:medium) %>" class="img-responsive center-block" alt="portfolio1">       
@@ -58,9 +60,11 @@
                                         </div>       
                                     </div> <!-- end of /.item-description -->       
                                 </div> <!-- end of /.portfolio-item -->       
-                            </div>   
+                            </div>
+                          </li>
                         <% end %>    
                     <% end %>
+                  </ul>
                 </div>
             </div> <!-- end of portfolio-item-list -->
             

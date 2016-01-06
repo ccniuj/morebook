@@ -22,12 +22,16 @@
         <link rel="stylesheet" href="/template_front/assets/css/owl.carousel.css">
         <link rel="stylesheet" href="/template_front/assets/css/owl.theme.css">
         <link rel="stylesheet" href="/template_front/assets/css/style.css">
+        <link rel="stylesheet" href="/GridLoadingEffects/css/default.css" />
+        <link rel="stylesheet" href="/GridLoadingEffects/css/component.css" />
 
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 
 
+
         <!-- scripts -->
-        <script type="text/javascript" src="/template_front/assets/js/modernizr.custom.97074.js"></script>
+        <script src="/template_front/assets/js/modernizr.custom.97074.js"></script>
+        <script src="/GridLoadingEffects/js/modernizr.custom.js"></script>
         <%= javascript_include_tag 'application' %>
         <%= csrf_meta_tags %>
     </head>
@@ -172,7 +176,18 @@
         <script type="text/javascript" src="/template_front/assets/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/template_front/assets/js/owl.carousel.js"></script>
         <script type="text/javascript" src="/template_front/assets/js/jquery.hoverdir.js"></script>
-
+        <script src="/GridLoadingEffects/js/masonry.pkgd.min.js"></script>
+        <script src="/GridLoadingEffects/js/imagesloaded.js"></script>
+        <script src="/GridLoadingEffects/js/classie.js"></script>
+        <script src="/GridLoadingEffects/js/AnimOnScroll.js"></script>
+        
+        <script>
+            new AnimOnScroll( document.getElementById( 'grid' ), {
+                minDuration : 0.4,
+                maxDuration : 0.7,
+                viewportFactor : 0.2
+            } );
+        </script>
 
         <!-- script for portfolio section using hoverdirection -->
         <script type="text/javascript">
