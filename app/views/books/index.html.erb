@@ -48,13 +48,13 @@
                                                     <%= book.name %>       
                                                 </span>       
                                                 <span>       
-                                                    
+                                                    <%= book.tags.any? ? book.tags.select{|t|t.leaf?}.first.name : 'None' %>
                                                 </span>       
                                             </div>       
                                             <div class="col-xs-6 col-xs-offset-3">       
                                                 <span class="like">       
-                                                    <i class="fa fa-heart-o"></i>       
-                                                    99       
+                                                    <i class="fa fa-bookmark"></i>       
+                                                    <%= book.shelves.count %>
                                                 </span>       
                                             </div>       
                                         </div>       
