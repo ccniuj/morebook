@@ -98,4 +98,36 @@ class Book < ActiveRecord::Base
          uniq
   end
 
+  def rating_distribution
+    results = []
+    total = self.rates.count
+    counts = self.rates.reduce({}) do |result, rate|
+               key = rate.score
+               result[key] ||= 0
+               result[key] += 1
+               result
+             end
+             .sort_by{|k, v|k}.reverse.to_h
+    results = counts.map do |k, v|
+                h = {}
+                v = (v.to_f/total).round(2)
+                h[to_text(k)] = v
+                h
+              end
+  end
+
+  private
+
+  def to_text(score)
+    case score
+    when 0
+      '免讀'
+    when 1
+      '可讀'
+    when 2
+      '應讀'
+    when 3
+      '必讀'
+    end
+  end
 end

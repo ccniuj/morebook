@@ -1,0 +1,16 @@
+<div class="br-wrapper br-theme-bars-movie">
+  <select id="score">
+      <option value="0">免讀</option>
+      <option value="1">可讀</option>
+      <option value="2">應讀</option>
+      <option value="3">必讀</option>
+  </select>
+</div>
+<br/><br/>
+<ul>
+<%= @book.rates.count %>人評價過這本書<br/>
+<% @book.rating_distribution.each do |rate| %>
+  <li><%= rate.keys.first %>, <%= (rate.values.first * 100).to_i.to_s + '%' %></li>
+<% end %>
+</ul>
+<input type="button" id="rate" value="評價這本書">

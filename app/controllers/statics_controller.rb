@@ -34,7 +34,8 @@ class StaticsController < ApplicationController
   end
 
   def profile
-    @profile = current_user.profile
+    @user = User.find(params[:id])
+    @profile = @user.profile
   end
 
   def add_book_to_shelf

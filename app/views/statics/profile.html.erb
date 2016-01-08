@@ -34,7 +34,7 @@
                 <div class="tag-widget">
                     <h4>書櫃</h4>
                     <div class="tags">
-                        <% current_user.shelves.each do |shelf| %>
+                        <% @user.shelves.each do |shelf| %>
                             <%= link_to shelf.name, shelf_path(shelf) %>
                         <% end %>
                     </div>

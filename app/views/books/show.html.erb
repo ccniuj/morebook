@@ -84,16 +84,7 @@ jQuery(function($) {
                         <%= render 'add_book_to_shelf' %>
                     </div>
                     <h4>評價</h4>
-                      <div class="br-wrapper br-theme-bars-movie">
-                        <select id="score">
-                            <option value="0">免讀</option>
-                            <option value="1">可讀</option>
-                            <option value="2">應讀</option>
-                            <option value="3">必讀</option>
-                        </select>
-                      </div>
-                      <br/><br/>
-                      <input type="button" id="rate" value="評價這本書">
+                      <%= render 'add_book_rating' %>
                     <h4>作者</h4>
                     <%= @book.author %>
                     <h4>ISBN</h4>
