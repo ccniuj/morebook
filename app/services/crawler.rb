@@ -26,11 +26,11 @@ class Crawler
     count = 0
     # queue = []
 
-    # doc = Nokogiri::HTML(open(url))
-    # general_classes = doc.css(general_class_selector).map do |a|
-    #                     @@REDIS.rpush @@QUEUE_NAME, a['href']
-    #                     a.children.text
-    #                   end
+    doc = Nokogiri::HTML(open(url))
+    general_classes = doc.css(general_class_selector).map do |a|
+                        @@REDIS.rpush @@QUEUE_NAME, a['href']
+                        a.children.text
+                      end
     # # root_tag = Tag.create(:name => '中文書')
 
     # general_classes.each do |class_name|
