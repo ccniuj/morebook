@@ -6,7 +6,7 @@
             <div class="welcome-speech">
                 <h1>Morebook，讓您每天都讀更多</h1>
                 <p>在這裡，分享知識就是這麼簡單</p>
-                <a href="#" class="btn btn-white">
+                <a id="start" class="btn btn-white">
                     開始瀏覽
                 </a>
             </div><!-- /.intro -->
@@ -19,7 +19,7 @@
 <div class="main-content">
     <!--  begin portfolio section  -->
 
-    <section class="bg-light-gray">
+    <section class="bg-light-gray" id="shelves">
         <div class="container">
 
             <div class="headline text-center">
@@ -77,3 +77,13 @@
     </section> 
     <!--   end of portfolio section  -->
 </div>
+<script>
+  $(function() {
+    $('#start').click(function() {
+      var top_offset = $('#shelves').offset().top;
+      $('html,body').animate({
+              scrollTop: top_offset
+          }, 600, 'swing');
+    });
+  });
+</script>
