@@ -15,6 +15,68 @@ class Crawler
   def initialize
   end
 
+  def crawl_tags
+    p 'Crawler initiated.'
+
+    url = 'http://www.books.com.tw/web/books'
+    anchor = 'h3:contains("中文書書籍分類")+ul '
+    general_class_selector = anchor + 'li a'
+    current_selector = anchor + 'li.open > span a'
+    children_selector = anchor + 'ul.sub li a'
+    count = 0
+    # queue = []
+
+    # doc = Nokogiri::HTML(open(url))
+    # general_classes = doc.css(general_class_selector).map do |a|
+    #                     @@REDIS.rpush @@QUEUE_NAME, a['href']
+    #                     a.children.text
+    #                   end
+    # # root_tag = Tag.create(:name => '中文書')
+
+    # general_classes.each do |class_name|
+    #   tag = Tag.create(:name => class_name)
+    #   tag.move_to_child_of(root_tag)
+    # end
+
+    @@REDIS.rpush @@QUEUE_NAME, url
+    Signal.trap('INT') { $exit = true }; Signal.trap('TERM'){ $exit = true }
+
+    loop do
+      count += 1
+      sleep 1
+      sleep 1 until url = @@REDIS.lpop(@@QUEUE_NAME) || $exit
+      exit if $exit
+      p "#{'='*10}Iteration ##{count}#{'='*10}"
+      p "POP: #{url}"
+      begin
+        p 'Fetching page...'
+        doc = Nokogiri::HTML(open(url))
+        p 'Fetching page...done'
+        current_tag_name = doc.css(current_selector).children.text
+        # current_tag = Tag.where(:name => current_tag_name)
+        children_tags = doc.css(children_selector)
+  
+        if children_tags.any?
+          children_tag_names = children_tags.map do |a|
+                                 p 'Push into queue...'
+                                 @@REDIS.rpush @@QUEUE_NAME, a['href']
+                                 p 'Push into queue...done'
+                                 a.children.text
+                               end
+          # children_tag_names.each do |name|
+          #   tag = Tag.create(:name => name)
+          #   tag.move_to_child_of(current_tag)
+          # end
+        end
+      rescue
+        puts $!.inspect, $@
+        @@REDIS.rpush @@QUEUE_NAME, url
+      end
+    end
+
+    p 'Crawler terminated.'
+  end
+
   def crawl_example
     Signal.trap('INT') { $exit = true }; Signal.trap('TERM'){ $exit = true }
     loop do
@@ -34,44 +96,6 @@ class Crawler
     end
   end
 
-  def crawl_tags
-    url = 'http://www.books.com.tw/web/books'
-    anchor = 'h3:contains("中文書書籍分類")+ul '
-    general_class_selector = anchor + 'li a'
-    current_selector = anchor + 'li.open > span a'
-    children_selector = anchor + 'ul.sub li a'
-    queue = []
-
-    doc = Nokogiri::HTML(open(url))
-    general_classes = doc.css(general_class_selector).map do |a|
-                        queue.push(a['href'])
-                        a.children.text
-                      end
-    root_tag = Tag.create(:name => '中文書')
-
-    general_classes.each do |class_name|
-      tag = Tag.create(:name => class_name)
-      tag.move_to_child_of(root_tag)
-    end
-
-    while queue.any?
-      url = queue.pop
-      doc = Nokogiri::HTML(open(url))
-      current_tag_name = doc.css(current_selector).children.text
-      current_tag = Tag.where(:name => current_tag_name)
-      children_tag_names = doc.css(children_selector).map do |a|
-                             queue.push(a['href'])
-                             a.children.text
-                           end
-      children_tag_names.each do |name|
-        tag = Tag.create(:name => name)
-        tag.move_to_child_of(current_tag)
-      end
-
-    end
-
-  end
-
   def watir_webdriver(str)
     w = Watir::Browser.new :firefox 
     w.goto "#{@@nthu_lib_query_url}#{str}"
@@ -81,6 +105,7 @@ class Crawler
     doc = Nokogiri::HTML.parse(text)
     result = doc.css('.brieftit').children.to_s
   end
+
 
   def books_search(str)
     pages = 2
