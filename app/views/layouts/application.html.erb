@@ -191,11 +191,21 @@
         <!-- script for portfolio section using hoverdirection -->
         <script type="text/javascript">
             $(function() {
+                var window_height = $(window).height();
+                var nav_height = $('.main-navigation').height();
+                var content_height = $('.blog-content').height();
+                var footer_height = $('.footer-nav').height();
+                var total_height = nav_height + content_height + footer_height;
+                var offset = window_height - total_height;
+                
+                if (window_height > total_height) {
+                    $('.blog-content').height(content_height + offset - 59);
+                    debugger;
+                }
 
                 $('.portfolio-item > .item-image').each( function() { $(this).hoverdir({
                     hoverDelay : 75
                 }); } );
-
             });
         </script>
 
