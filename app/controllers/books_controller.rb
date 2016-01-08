@@ -24,11 +24,13 @@ class BooksController < ApplicationController
   end
 
   def add_rate
+    #@book = Book.find(params[:book])
+    @book = Book.find(269)
     score = params[:score].to_i
     score += 1
     respond_to do |format|
       format.html
-      format.json {render json: score }
+      format.json {render json: [score, @book] }
     end
   end
 end

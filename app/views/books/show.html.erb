@@ -3,40 +3,6 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
-<link rel="stylesheet" href="/jquery-bar-rating/dist/themes/bars-movie.css">
-<script src="/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
-<script type="text/javascript">
-jQuery(function($) {
-    $('#score').barrating({
-        theme: 'bars-movie',
-        initialRating: 2,
-        readonly: true
-    });
-
-    $("#rate").click(function() {
-      $('#score').barrating('readonly', false);
-      $('#score').barrating('set', '6');
-      $(this).attr('value', '送出評價');
-      $(this).unbind('click');
-      $(this).click(function(){
-        var score = $('.br-current').attr('data-rating-value');
-        $.ajax({
-          url: '/books/add_rate',
-          type: 'POST',
-          dataType: 'json',
-          data: {score: score},
-          success: function(data){
-            $('#score').barrating('set', data);
-          }
-        });
-        $('#score').barrating('readonly', true);
-        $(this).attr('value', '已評價');
-        $(this).unbind('click');
-        $(this).prop('disabled', true);
-      });
-    });
-});
-</script>
 <section class="blog-content">
     <div class="container">
         <div class="row">
