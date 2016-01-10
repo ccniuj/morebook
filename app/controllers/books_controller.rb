@@ -25,7 +25,8 @@ class BooksController < ApplicationController
 
   def add_rate
     #@book = Book.find(params[:book])
-    @book = Book.find(269)
+    book = Book.find(269)
+    @rating_distribution = book.rating_distribution
     score = params[:score].to_i
     score += 1
     respond_to do |format|

@@ -8,73 +8,116 @@ class Crawler
   @@QUEUE_NAME = :url_queue
   @@CSS = '#item > tbody > tr > td:nth-child(4) > a,.pagelinks > a:nth-last-of-type(2)'
   @@REDIS = Redis.new
-  @@fresh_key = '7XRD78FQ18Y8MNERSVXUIAMJ21CBIJ9V6P1NRHC7US85XIT959-04415'
-  @@nthu_lib_query_url = "http://webpac.lib.nthu.edu.tw/F/#{@@fresh_key}?func=find-b&find_code=WAN&request="
   @@books_query_url = "http://search.books.com.tw/exep/prod_search.php?key="
+  @@trail_id = 6
 
   def initialize
   end
 
   def crawl_tags
-    p 'Crawler initiated.'
-
     url = 'http://www.books.com.tw/web/books'
     anchor = 'h3:contains("中文書書籍分類")+ul '
     general_class_selector = anchor + 'li a'
     current_selector = anchor + 'li.open > span a'
     children_selector = anchor + 'ul.sub li a'
     count = 0
-    # queue = []
+    duration = 0
+    threshold = 250
+    buffer = 60
+    previous_periods = []
+    factor = 3
 
-    doc = Nokogiri::HTML(open(url))
-    general_classes = doc.css(general_class_selector).map do |a|
-                        @@REDIS.rpush @@QUEUE_NAME, a['href']
-                        a.children.text
-                      end
-    # # root_tag = Tag.create(:name => '中文書')
+    p 'Crawler initiated.'
 
-    # general_classes.each do |class_name|
-    #   tag = Tag.create(:name => class_name)
-    #   tag.move_to_child_of(root_tag)
-    # end
-
-    @@REDIS.rpush @@QUEUE_NAME, url
-    Signal.trap('INT') { $exit = true }; Signal.trap('TERM'){ $exit = true }
-
-    loop do
-      count += 1
-      sleep 1
-      sleep 1 until url = @@REDIS.lpop(@@QUEUE_NAME) || $exit
-      exit if $exit
-      p "#{'='*10}Iteration ##{count}#{'='*10}"
-      p "POP: #{url}"
-      begin
-        p 'Fetching page...'
-        doc = Nokogiri::HTML(open(url))
-        p 'Fetching page...done'
-        current_tag_name = doc.css(current_selector).children.text
-        # current_tag = Tag.where(:name => current_tag_name)
-        children_tags = doc.css(children_selector)
+    if @@REDIS.llen(@@QUEUE_NAME) == 0
+      doc = Nokogiri::HTML(open(url))
+      general_classes = doc.css(general_class_selector).map do |a|
+                          @@REDIS.rpush @@QUEUE_NAME, a['href']
+                          a.children.text
+                        end
+      root_tag = Tag.create(:name => '中文書')
   
-        if children_tags.any?
-          children_tag_names = children_tags.map do |a|
-                                 p 'Push into queue...'
-                                 @@REDIS.rpush @@QUEUE_NAME, a['href']
-                                 p 'Push into queue...done'
-                                 a.children.text
-                               end
-          # children_tag_names.each do |name|
-          #   tag = Tag.create(:name => name)
-          #   tag.move_to_child_of(current_tag)
-          # end
-        end
-      rescue
-        puts $!.inspect, $@
-        @@REDIS.rpush @@QUEUE_NAME, url
+      general_classes.each do |class_name|
+        tag = Tag.create(:name => class_name)
+        tag.move_to_child_of(root_tag)
       end
     end
 
+    Signal.trap('INT') { $exit = true }; Signal.trap('TERM'){ $exit = true }
+  
+      while @@REDIS.llen(@@QUEUE_NAME) > 0
+        count += 1
+        sleep 1 until url = @@REDIS.lpop(@@QUEUE_NAME) || $exit
+        exit if $exit
+        p "#{'='*20}Trail ##{@@trail_id} Iteration ##{count}#{'='*20}"
+        p "POP: #{url}"
+        begin
+          p 'Fetching page...'
+          from = Time.now
+          doc = Nokogiri::HTML(open(url))
+          period = Time.now - from
+          duration += period
+          previous_periods.push(period)
+          previous_periods.shift if previous_periods.size > factor
+  
+          p 'Fetching page...done'
+          p "Cost #{period} seconds."
+  
+          current_tag_name = doc.css(current_selector).children.text
+          current_tag = Tag.where(:name => current_tag_name)
+          p "#{current_tag_name} is the current processing tag."
+          children_tags = doc.css(children_selector)
+    
+          if children_tags.any?
+            children_tag_names = children_tags.map do |a|
+                                   p 'Push into queue...'
+                                   @@REDIS.rpush @@QUEUE_NAME, a['href']
+                                   p 'Push into queue...done'
+                                   a.children.text
+                                 end
+            children_tag_names.each do |name|
+              tag = Tag.create(:name => name)
+              tag.move_to_child_of(current_tag)
+            end
+          end
+  
+          p "Total duration: #{duration} seconds."
+          p "#{@@REDIS.llen(@@QUEUE_NAME)} urls are not visited yet."
+  
+          CrawlerLog.create(
+                  :trail_id => @@trail_id,
+                  :url => url, 
+                  :tag => current_tag_name,
+                  :iteration => count,
+                  :period => period)
+        rescue
+          puts $!.inspect, $@
+          @@REDIS.rpush @@QUEUE_NAME, url
+        end
+
+        if previous_periods.all?{|period|period > 6}
+          p 'Crawler terminated.'
+          t = 0
+          while t < buffer
+            p "Crawler will restart in #{buffer - t} second(s)."
+            t += 1
+            sleep 1
+          end
+        end
+      end
     p 'Crawler terminated.'
+  end
+  
+  def export_data
+    save_path = Rails.root.join('public','crawler_logs',"trail_#{@@trail_id}.tsv")
+    output = File.open(save_path, 'w')
+    output << "iteration\tperiod\n"
+
+    CrawlerLog.where(:trail_id => @@trail_id).all.each do |log|
+      output << "#{log.iteration}\t#{log.period}\n"
+    end
+
+    output.close
   end
 
   def crawl_example

@@ -1,3 +1,4 @@
+<%= hidden_field_tag 'rate_distribution', @rate_distribution %>
 <ul>
 <%= @book.rates.count %>人評價過這本書<br/>
 <% @book.rating_distribution.each do |rate| %>
