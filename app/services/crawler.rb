@@ -6,6 +6,7 @@ class Crawler
   require 'redis'
   
   @@QUEUE_NAME = :url_queue
+  @@BOOK_URL_QUEUE = :book_url_queue
   @@CSS = '#item > tbody > tr > td:nth-child(4) > a,.pagelinks > a:nth-last-of-type(2)'
   @@REDIS = Redis.new
   @@books_query_url = "http://search.books.com.tw/exep/prod_search.php?key="
@@ -45,69 +46,175 @@ class Crawler
 
     Signal.trap('INT') { $exit = true }; Signal.trap('TERM'){ $exit = true }
   
-      while @@REDIS.llen(@@QUEUE_NAME) > 0
-        count += 1
-        sleep 1 until url = @@REDIS.lpop(@@QUEUE_NAME) || $exit
-        exit if $exit
-        p "#{'='*20}Trail ##{@@trail_id} Iteration ##{count}#{'='*20}"
-        p "POP: #{url}"
-        begin
-          p 'Fetching page...'
-          from = Time.now
-          doc = Nokogiri::HTML(open(url))
-          period = Time.now - from
-          duration += period
-          previous_periods.push(period)
-          previous_periods.shift if previous_periods.size > factor
+    while @@REDIS.llen(@@QUEUE_NAME) > 0
+      count += 1
+      sleep 1 until url = @@REDIS.lpop(@@QUEUE_NAME) || $exit
+      exit if $exit
+      p "#{'='*20}Trail ##{@@trail_id} Iteration ##{count}#{'='*20}"
+      p "POP: #{url}"
+      begin
+        p 'Fetching page...'
+        from = Time.now
+        doc = Nokogiri::HTML(open(url))
+        period = Time.now - from
+        duration += period
+        previous_periods.push(period)
+        previous_periods.shift if previous_periods.size > factor
   
-          p 'Fetching page...done'
-          p "Cost #{period} seconds."
+        p 'Fetching page...done'
+        p "Cost #{period} seconds."
   
-          current_tag_name = doc.css(current_selector).children.text
-          current_tag = Tag.where(:name => current_tag_name)
-          p "#{current_tag_name} is the current processing tag."
-          children_tags = doc.css(children_selector)
+        current_tag_name = doc.css(current_selector).children.text
+        current_tag = Tag.where(:name => current_tag_name)
+        p "#{current_tag_name} is the current processing tag."
+        children_tags = doc.css(children_selector)
     
-          if children_tags.any?
-            children_tag_names = children_tags.map do |a|
-                                   p 'Push into queue...'
-                                   @@REDIS.rpush @@QUEUE_NAME, a['href']
-                                   p 'Push into queue...done'
-                                   a.children.text
-                                 end
-            children_tag_names.each do |name|
-              tag = Tag.create(:name => name)
-              tag.move_to_child_of(current_tag)
-            end
+        if children_tags.any?
+          children_tag_names = children_tags.map do |a|
+                                 p 'Push into queue...'
+                                 @@REDIS.rpush @@QUEUE_NAME, a['href']
+                                 p 'Push into queue...done'
+                                 a.children.text
+                               end
+          children_tag_names.each do |name|
+            tag = Tag.create(:name => name)
+            tag.move_to_child_of(current_tag)
           end
-  
-          p "Total duration: #{duration} seconds."
-          p "#{@@REDIS.llen(@@QUEUE_NAME)} urls are not visited yet."
-  
-          CrawlerLog.create(
-                  :trail_id => @@trail_id,
-                  :url => url, 
-                  :tag => current_tag_name,
-                  :iteration => count,
-                  :period => period)
-        rescue
-          puts $!.inspect, $@
-          @@REDIS.rpush @@QUEUE_NAME, url
         end
+  
+        p "Total duration: #{duration} seconds."
+        p "#{@@REDIS.llen(@@QUEUE_NAME)} urls are not visited yet."
+  
+        CrawlerLog.create(
+                :trail_id => @@trail_id,
+                :url => url, 
+                :tag => current_tag_name,
+                :iteration => count,
+                :period => period)
+      rescue
+        puts $!.inspect, $@
+        @@REDIS.rpush @@QUEUE_NAME, url
+      end
 
-        if previous_periods.all?{|period|period > 6}
-          p 'Crawler terminated.'
-          t = 0
-          while t < buffer
-            p "Crawler will restart in #{buffer - t} second(s)."
-            t += 1
-            sleep 1
-          end
+      if previous_periods.all?{|period|period > 6}
+        p 'Crawler terminated.'
+        t = 0
+        while t < buffer
+          p "Crawler will restart in #{buffer - t} second(s)."
+          t += 1
+          sleep 1
         end
       end
+    end
     p 'Crawler terminated.'
   end
   
+  def book_url_fetch
+    results = []
+    duration = 0
+    previous_periods = []
+    factor = 3
+    count = 0
+    buffer = 60
+
+    leaves_url = Tag.select {|t|t.leaf?}.
+                 map! {|l|CrawlerLog.where('trail_id=6').where(tag:l.name).first.url}
+
+    p 'Crawler started to fetch book urls.'
+
+    while leaves_url.any?
+      count += 1
+      leaf_url = leaves_url.shift
+      begin
+        p "#{'='*20}Iteration ##{count}#{'='*20}"
+        p 'Fetching page...'
+      
+        from = Time.now
+        doc = Nokogiri::HTML(open(leaf_url))
+        period = Time.now - from
+        duration += period
+        previous_periods.push(period)
+        previous_periods.shift if previous_periods.size > factor
+        
+        p 'Fetching page...done'
+        p "Cost #{period} seconds."
+
+        urls = doc.css('.item > a').map{|e|e['href']}.first(10)
+        results.push(urls)
+        urls.each {|u|@@REDIS.rpush(@@BOOK_URL_QUEUE, u)}
+      rescue
+        puts $!.inspect, $@
+        leaves_url.pop(leaf_url)
+      end
+
+      p "Total duration: #{duration} seconds."
+      p "#{leaves_url.size} urls are not visited yet."
+
+      if previous_periods.all?{|period|period > 6}
+        p 'Crawler terminated.'
+        t = 0
+        while t < buffer
+          p "Crawler will restart in #{buffer - t} second(s)."
+          t += 1
+          sleep 1
+        end
+      end
+    end
+    p 'Crawler terminated.'
+    results.flatten!
+  end
+
+  def fetch_book_data
+    results = []
+    duration = 0
+    previous_periods = []
+    factor = 3
+    count = 0
+    buffer = 60
+
+    urls = @@REDIS.lrange(@@BOOK_URL_QUEUE, 0, -1)
+
+    p 'Crawler started to fetch book data.'
+
+    while urls.any?
+      count += 1
+      url = urls.shift
+      begin
+        p "#{'='*20}Iteration ##{count}#{'='*20}"
+        p 'Fetching page...'
+      
+        from = Time.now
+        data = get_book_info(url)
+        ap data
+        period = Time.now - from
+        duration += period
+        previous_periods.push(period)
+        previous_periods.shift if previous_periods.size > factor
+        
+        p 'Fetching page...done'
+        p "Cost #{period} seconds."
+      rescue
+        puts $!.inspect, $@
+        urls.pop(url)
+      end
+
+      p "Total duration: #{duration} seconds."
+      p "#{urls.size} urls are not visited yet."
+
+      if previous_periods.all?{|period|period > 6}
+        p 'Crawler terminated.'
+        t = 0
+        while t < buffer
+          p "Crawler will restart in #{buffer - t} second(s)."
+          t += 1
+          sleep 1
+        end
+      end
+    end
+    p 'Crawler terminated.'
+    true
+  end
+
   def export_data
     save_path = Rails.root.join('public','crawler_logs',"trail_#{@@trail_id}.tsv")
     output = File.open(save_path, 'w')
@@ -148,6 +255,7 @@ class Crawler
     doc = Nokogiri::HTML.parse(text)
     result = doc.css('.brieftit').children.to_s
   end
+
 
 
   def books_search(str)
