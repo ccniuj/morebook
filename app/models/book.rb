@@ -97,6 +97,14 @@ class Book < ActiveRecord::Base
          uniq
   end
 
+  def self.filter_by_tag(tag_name)
+    return self.all if tag_name.nil?
+    tag_id = Tag.where(:name => tag_name).first.id
+    self.joins('LEFT JOIN book_tags on books.id = book_tags.book_id').
+         where('book_tags.tag_id = ?', tag_id).
+         uniq
+  end
+
   def rating_distribution
     results = []
     total = self.rates.count

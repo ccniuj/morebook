@@ -109,7 +109,7 @@ class Crawler
     p 'Crawler terminated.'
   end
   
-  def book_url_fetch
+  def fetch_book_url
     results = []
     duration = 0
     previous_periods = []
@@ -139,7 +139,7 @@ class Crawler
         p 'Fetching page...done'
         p "Cost #{period} seconds."
 
-        urls = doc.css('.item > a').map{|e|e['href']}.first(10)
+        urls = doc.css('.item > a').map{|e|e['href']}.first(3)
         results.push(urls)
         urls.each {|u|@@REDIS.rpush(@@BOOK_URL_QUEUE, u)}
       rescue
