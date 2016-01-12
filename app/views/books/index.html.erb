@@ -48,7 +48,7 @@
                                                     <%= book.name %>       
                                                 </span>       
                                                 <span>       
-                                                    <%= book.tags.any? ? book.tags.select{|t|t.leaf?}.first.name : 'None' %>
+                                                    <%= book.tags.any? ? book.tags.first.name : 'None' %>
                                                 </span>       
                                             </div>       
                                             <div class="col-xs-6 col-xs-offset-3">       
