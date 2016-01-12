@@ -172,7 +172,7 @@ class Crawler
     count = 0
     buffer = 60
 
-    urls = @@REDIS.lrange(@@BOOK_URL_QUEUE, 0, -1)
+    urls = @@REDIS.lrange(@@BOOK_URL_QUEUE, 0, -1).uniq
 
     p 'Crawler started to fetch book data.'
 
@@ -186,6 +186,7 @@ class Crawler
         from = Time.now
         data = get_book_info(url)
         ap data
+        Book.add_book_to_db(data)
         period = Time.now - from
         duration += period
         previous_periods.push(period)
@@ -195,7 +196,7 @@ class Crawler
         p "Cost #{period} seconds."
       rescue
         puts $!.inspect, $@
-        urls.pop(url)
+        urls.push(url)
       end
 
       p "Total duration: #{duration} seconds."
@@ -286,8 +287,12 @@ class Crawler
   end
 
   def get_book_info(url)
-    doc = Nokogiri::HTML(open(url))
-    
+    begin
+      doc = Nokogiri::HTML(open(url))
+    rescue
+      puts $!.inspect, $@
+    end
+
     name         = doc.css('h1').children.text.strip
     tag          = doc.css('ul.type04_breadcrumb li:nth-last-child(2) a span').children.text
     author       = doc.css('li:contains("作者") a').children[3].text.strip if doc.css('li:contains("作者") a').children[3]

@@ -17,9 +17,7 @@
         <tr>
           <td><%= book.id %></td>
           <td>
-            <% if book.pictures.any? %>
-              <%= image_tag book.pictures.first.image.url(:thumb) %>
-            <% end %>
+            <%= image_tag book.cover_url, width: 100 %>
           </td>
           <td><%= book.name %></td>
           <td width='100'>

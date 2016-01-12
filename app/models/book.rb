@@ -58,13 +58,12 @@ class Book < ActiveRecord::Base
   end
 
   def self.add_book_to_db(book_data)
-    cover_url = book_data.delete(:cover_url)
     tag_name = book_data.delete(:tag)
 
     book = self.new(book_data)
     book.save
 
-    book.save_image([cover_url])
+    # book.save_image([cover_url])
     book.tagging(tag_name)
 
     book
