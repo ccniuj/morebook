@@ -7,7 +7,7 @@ class Shelf < ActiveRecord::Base
   has_attached_file :cover, styles: { medium: "300x300#", thumb: "100x100#" }, 
     default_url: '/images/:styles/missing.png'
   validates_attachment_content_type :cover, content_type: /\Aimage\/.*\Z/
-
+  
   def self.owned_by(user)
     self.joins('LEFT JOIN user_shelves ON user_shelves.shelf_id = shelves.id').
          where("user_shelves.user_id = ?", user.id).

@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
   has_many :shelves, through: :shelf_books
   has_many :book_tags, dependent: :destroy
   has_many :tags, through: :book_tags
-  
+
   def save_image(images)
     images.each do |img|
       self.pictures.create(:image => img)
@@ -106,21 +106,24 @@ class Book < ActiveRecord::Base
   end
 
   def rating_distribution
-    results = []
     total = self.rates.count
     counts = self.rates.reduce({}) do |result, rate|
                key = rate.score
-               result[key] ||= 0
+               score_range = [*0..3]
+               score_range.each do |score|
+                 result[score] ||= 0
+               end
                result[key] += 1
                result
+             end.
+             sort_by{|k, v|k}.reverse.to_h.
+             map do |k, v|
+               h = {}
+               v = (v.to_f/total).round(2)
+               h[k] = v
+               h
              end
-             .sort_by{|k, v|k}.reverse.to_h
-    results = counts.map do |k, v|
-                h = {}
-                v = (v.to_f/total).round(2)
-                h[to_text(k)] = v
-                h
-              end
+    counts
   end
 
   private
