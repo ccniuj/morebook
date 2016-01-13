@@ -105,7 +105,7 @@ class Book < ActiveRecord::Base
          uniq
   end
 
-  def rating_distribution
+  def rate_distribution
     total = self.rates.count
     counts = self.rates.reduce({}) do |result, rate|
                key = rate.score
@@ -124,6 +124,12 @@ class Book < ActiveRecord::Base
                h
              end
     counts
+  end
+
+  def avg_score
+    counts = self.rates.count
+    total = self.rates.reduce(0){|sum, i|sum += i.score}
+    (counts > 0) ? (total.to_f / counts).round.to_i : 0.0
   end
 
   private

@@ -6,6 +6,8 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @rate_distribution = @book.rate_distribution
+    @avg_score = @book.avg_score
   end
 
   def add_book_to_shelf
@@ -24,14 +26,13 @@ class BooksController < ApplicationController
   end
 
   def add_rate
-    #@book = Book.find(params[:book])
-    book = Book.find(269)
-    @rating_distribution = book.rating_distribution
-    score = params[:score].to_i
-    score += 1
+    @book = Book.find(params[:book])
+    score = params[:score]
+    @book.rates.create(:score => score)
+
     respond_to do |format|
       format.html
-      format.json {render json: [score, @book] }
+      format.json {render json: [@book.rate_distribution, @book.avg_score]}
     end
   end
 end

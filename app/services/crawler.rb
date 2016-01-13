@@ -1,10 +1,10 @@
+require 'nokogiri'
+require 'mechanize'
+require 'watir-webdriver'
+require 'open-uri'
+require 'redis'
+
 class Crawler
-  require 'nokogiri'
-  require 'mechanize'
-  require 'watir-webdriver'
-  require 'open-uri'
-  require 'redis'
-  
   @@QUEUE_NAME = :url_queue
   @@BOOK_URL_QUEUE = :book_url_queue
   @@CSS = '#item > tbody > tr > td:nth-child(4) > a,.pagelinks > a:nth-last-of-type(2)'

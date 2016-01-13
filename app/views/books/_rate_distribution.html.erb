@@ -1,7 +1,0 @@
-<%= hidden_field_tag 'rate_distribution', @rate_distribution %>
-<ul>
-<%= @book.rates.count %>人評價過這本書<br/>
-<% @book.rating_distribution.each do |rate| %>
-  <li><%= rate.keys.first %>, <%= (rate.values.first * 100).to_i.to_s + '%' %></li>
-<% end %>
-</ul>

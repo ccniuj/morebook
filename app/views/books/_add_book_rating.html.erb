@@ -10,14 +10,25 @@
 </div>
 <br/><br/>
 <div id="distribution">
-  <%= render 'rate_distribution' %>
+  <%= hidden_field_tag 'rate_distribution', @rate_distribution %>
+  <%= hidden_field_tag 'avg_score', @avg_score %>
+  <ul>
+    <span id="count"><%= @book.rates.count %></span>人評價過這本書<br/>
+    <% @rate_distribution.each do |rate| %>
+      <li>
+        <span id="score_<%= rate.keys.first %>"><%= rate.keys.first %></span>, 
+        <span id="ratio_<%= rate.keys.first %>"><%= (rate.values.first * 100).to_i.to_s + '%' %></span>
+      </li>
+    <% end %>
+  </ul>
 </div>
 <input type="button" id="rate" value="評價這本書">
 <script type="text/javascript">
 jQuery(function($) {
+    var avg_score = $('#avg_score').val();
     $('#score').barrating({
         theme: 'bars-movie',
-        initialRating: 2,
+        initialRating: avg_score,
         readonly: true
     });
 
@@ -32,10 +43,20 @@ jQuery(function($) {
           url: '/books/add_rate',
           type: 'POST',
           dataType: 'json',
-          data: {score: score, book: '<%= @book.id %>' },
+          data: {book: '<%= @book.id %>', score: score},
           success: function(data){
-            $('#score').barrating('set', data);
-            $('#distribution').html("<%= raw normalize render 'rate_distribution' %>");
+            var count = parseInt($('#count').html());
+            var avg_score_new = data[1];
+            var scores = [];
+            var ratios = [];
+
+            $('#count').html(count+1);
+            $('#score').barrating('set', avg_score_new);
+            for (var i = 0, length = data[0].length; i < length; i++) {
+              $.each(data[0][i], function(k,v){
+                $('#ratio_' + k).html(String(v*100) + '%');
+              });
+            }
           }
         });
         $('#score').barrating('readonly', true);
