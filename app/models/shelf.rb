@@ -51,23 +51,17 @@ class Shelf < ActiveRecord::Base
   def self.fake_shelves
     Tag.all.select {|t|t.depth==3}.each do |tag|
       shelf = self.create(:name => "#{tag.name}相關")
-      p 'point 1'
       UserShelf.create(:user_id  => User.where(email:'davidjuin0519@gmail.com').first.id, 
                        :shelf_id => shelf.id)
-      p 'point 2'
       tag.books.each do |book|
-        p 'point 3'
         ShelfBook.create(:shelf_id => shelf.id,
                          :book_id => book.id)
-        p 'point 4'
       end
 
       random_book = tag.books.shuffle.first
-      p 'point 5'
-      # if random_book
-      #   shelf.update(:cover => random_book.cover_url, :description => random_book.description)
-      # end
-      p 'point 6'
+      if random_book
+        shelf.update(:cover => random_book.cover_url, :description => random_book.description)
+      end
       p "Shelf of tag #{tag.name} has been created."
     end
   end
