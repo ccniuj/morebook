@@ -1,7 +1,7 @@
 class ShelvesController < ApplicationController
   def index
     @tag_name = params[:tag] if params[:tag]
-    @shelves = @paginate = Shelf.all.order('id DESC').paginate(:page => params[:page])
+    @shelves = @paginate = Shelf.filter_by_tag(@tag_name).paginate(:page => params[:page])
   end
 
   def show

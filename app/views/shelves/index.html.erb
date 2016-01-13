@@ -30,7 +30,6 @@
                 <div class="row">
                   <ul class="grid effect-2" id="grid">
                     <% @shelves.each do |shelf| %>
-                        <% if !@tag_name || (shelf.main_tag == @tag_name) then %>
                           <li>
                             <div class="col-md-12 col-sm-12">
                                 <div class="portfolio-item" id="grid">       
@@ -62,7 +61,6 @@
                                 </div> <!-- end of /.portfolio-item -->       
                             </div>
                           </li>
-                        <% end %>    
                     <% end %>
                   </ul>
                 </div>

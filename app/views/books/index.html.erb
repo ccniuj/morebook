@@ -30,7 +30,6 @@
                 <div class="row">
                   <ul class="grid effect-2" id="grid">
                     <% @books.each do |book| %>
-                        <% if !@tag_name || (book.tags.map{|t|t.name}.include?(@tag_name)) %>
                           <li>
                             <div class="col-md-12 col-sm-12">
                                 <div class="portfolio-item">       
@@ -62,7 +61,6 @@
                                 </div> <!-- end of /.portfolio-item -->       
                             </div>
                           </li>
-                        <% end %>    
                     <% end %>
                   </ul>
                 </div>
