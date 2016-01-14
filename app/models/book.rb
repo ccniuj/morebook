@@ -132,6 +132,20 @@ class Book < ActiveRecord::Base
     (counts > 0) ? (total.to_f / counts).round.to_i : 0.0
   end
 
+  def record_viewed_book(session_id, user_id=nil)
+    viewed_books = ViewedBook.find_by(:session_id => session_id)
+    if viewed_books
+      books_id = viewed_books.books_id.split(',')
+      books_id.push(self.id) if books_id.exclude?(self.id.to_s)
+      books_id = books_id.join(',')
+      viewed_books.update(:books_id => books_id)
+    else
+      ViewedBook.create(:session_id  => session_id,
+                        :user_id     => user_id,
+                        :books_id    => self.id.to_s)
+    end
+  end
+
   private
 
   def to_text(score)

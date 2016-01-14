@@ -8,6 +8,7 @@ class BooksController < ApplicationController
     @book = Book.find(params[:id])
     @rate_distribution = @book.rate_distribution
     @avg_score = @book.avg_score
+    @book.record_viewed_book(request.session_options[:id])
   end
 
   def add_book_to_shelf
