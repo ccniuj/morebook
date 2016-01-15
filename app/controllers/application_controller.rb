@@ -27,4 +27,15 @@ class ApplicationController < ActionController::Base
         )
     end
   end
+
+  def sign_in(*args)
+    cookies[:sid_backup] = request.session_options[:id]
+    super(*args)
+  end
+
+  def sign_out(*args)
+    cookies[:sid_backup] = request.session_options[:id]
+    super(*args)
+  end
+
 end

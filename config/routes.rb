@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     post 'update_members', on: :collection
   end
   devise_for :managers
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => {:omniauth_callbacks => "users/omniauth_callbacks"}
   resources :statics, :only => [:index, :search] do
     get 'search', on: :collection
     get 'book', on: :member
