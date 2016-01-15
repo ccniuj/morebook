@@ -150,8 +150,12 @@ class Book < ActiveRecord::Base
                         :books_id    => self.id.to_s)
       end
     end
-    books_id = viewed_books.books_id.split(',')
-    books_id.push(self.id) if books_id.exclude?(self.id.to_s)
+    books_id = viewed_books.books_id.split(',').map{|v|v.to_i}
+    if books_id.include?(self.id)
+      books_id.unshift(books_id.delete(self.id))
+    else
+      books_id.unshift(self.id)
+    end
     books_id = books_id.join(',')
     viewed_books.update(:books_id => books_id)
   end
