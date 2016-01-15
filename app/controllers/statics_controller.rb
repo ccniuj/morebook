@@ -1,4 +1,13 @@
 class StaticsController < ApplicationController
+  before_action :update_viewed_books_data, :only => :index
+
+  def update_viewed_books_data
+    current_sid = request.session_options[:id]
+    old_sid = cookies[:sid_backup]
+    ViewedBook.update_session_id(current_sid, old_sid)
+    ViewedBook.update_user_id(current_sid, current_user)
+  end
+
   def index
     # @books = @paginate = Book.paginate(:page => params[:page])
     @shelves = Shelf.offset(rand(Shelf.count)).limit(8)

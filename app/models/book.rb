@@ -132,24 +132,14 @@ class Book < ActiveRecord::Base
     (counts > 0) ? (total.to_f / counts).round.to_i : 0.0
   end
 
-  def record_viewed_book(session_ids, user_id=nil)
-
-    current_sid = session_ids[:current]
-    old_sid = session_ids[:old]
-
-    viewed_books = ViewedBook.find_by(:session_id => current_sid)
-    if viewed_books
-    else
-      prev_viewed_books = ViewedBook.find_by(:session_id => old_sid)
-      if prev_viewed_books
-        prev_viewed_books.update(:session_id => current_sid)
-        viewed_books = prev_viewed_books
-      else
-        viewed_books = ViewedBook.create(:session_id  => current_sid,
-                        :user_id     => user_id,
-                        :books_id    => self.id.to_s)
-      end
+  def record_viewed_book(sid, user)
+    viewed_books = ViewedBook.find_by(:session_id => sid)
+    if viewed_books.nil?
+        viewed_books = ViewedBook.create(:session_id  => sid,
+                                         :books_id    => self.id.to_s)
+        viewed_books.update(:user_id => user.id) if user
     end
+
     books_id = viewed_books.books_id.split(',').map{|v|v.to_i}
     if books_id.include?(self.id)
       books_id.unshift(books_id.delete(self.id))

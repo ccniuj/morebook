@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :create_profile
+
   @@selfie_default_url = 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTMQRG8v0aaUxcbIIBX9rAlnIykCgxzHLn3t_zILkWwt-kOYaP80z0t-ZQ'
   WillPaginate.per_page = 40
 
