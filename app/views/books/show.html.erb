@@ -65,6 +65,10 @@
                     <%= @book.language %>
                     <h4>頁數</h4>
                     <%= @book.page %>
+                    <h4>推薦閱讀</h4>
+                    <% @recommendations.each do |b| %>
+                      <%= link_to b.name, book_path(b) %><br/>
+                    <% end %>
                     <h4>瀏覽歷史</h4>
                     <% ViewedBook.list_recent_five_viewed_books(request.session_options[:id], current_user).each do |v| %>
                       <%= link_to v.name, book_path(v) %><br/>

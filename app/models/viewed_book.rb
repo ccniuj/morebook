@@ -32,4 +32,17 @@ class ViewedBook < ActiveRecord::Base
       end
     end
   end
+
+  def self.book_viewed_list
+    ViewedBook.all.reduce({}) do |result, viewed_book|
+      user_id = viewed_book.user_id
+      viewed_book.books_id.split(',').each do |book_id|
+        result[book_id] ||= []
+        result[book_id].push(user_id)
+      end
+      result
+    end
+  end
+
+
 end
