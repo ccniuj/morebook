@@ -1,4 +1,6 @@
 class ViewedBook < ActiveRecord::Base
+  belongs_to :user
+  
 	def self.list_recent_five_viewed_books(session_id, user)
     viewed_books = self.find_by(:session_id => session_id).books_id.split(',').
                         map{|b|Book.find_by(:id => b.to_i)}
