@@ -12,7 +12,7 @@
       <% end %>
     <%= f.submit '新增到我的書櫃', :class => 'form-control', :onclick => 'return validateCheckbox();' %>
   <% else %>
-    您尚未登入，<%= f.submit '登入以將這本書新增至您的書櫃', :class => 'form-control' %>
+    <%= f.submit '登入以將這本書新增至您的書櫃', :class => 'form-control' %>
   <% end %>
 <% end %>
 
