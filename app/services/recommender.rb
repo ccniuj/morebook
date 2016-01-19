@@ -64,7 +64,7 @@ class Recommender
 		counts = {}
 		rankings = {}
 		viewed_books_id = ViewedBook.find_by(:user_id => user_id).books_id.split(',').first(5)
-		
+
 		viewed_books_id.each do |vb|
 			all_top_matches[vb].each do |k, v|
 				next if viewed_books_id.include?(k)
@@ -75,7 +75,7 @@ class Recommender
 		total.keys.each do |k|
 			rankings[k] = total[k]/counts[k]
 		end
-		rankings.sort_by{|k, v|v}.reverse.to_h.keys
+		rankings.sort_by{|k, v|v}.reverse.to_h.keys.first(5)
 	end
 end
 
