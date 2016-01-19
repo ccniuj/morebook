@@ -34,15 +34,21 @@ class ViewedBook < ActiveRecord::Base
   end
 
   def self.book_viewed_list
-    ViewedBook.all.reduce({}) do |result, viewed_book|
+    results = {}
+    unviewed_books_id = Book.all.map{|b|b.id.to_s}
+    
+    results = ViewedBook.all.reduce({}) do |result, viewed_book|
       user_id = viewed_book.user_id
       viewed_book.books_id.split(',').each do |book_id|
+        unviewed_books_id.delete(book_id)
         result[book_id] ||= []
         result[book_id].push(user_id)
       end
       result
     end
+    unviewed_books_id.each do |u|
+      results[u] = []
+    end
+    results.sort_by{|k,v|k}.reverse.to_h
   end
-
-
 end
