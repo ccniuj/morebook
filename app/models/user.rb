@@ -31,11 +31,12 @@ class User < ActiveRecord::Base
   end
 
   def self.fake_data
-    10.times do
-      Tag.all.select{|t|t.depth==3}.count.times do
+    10.times do |i|
+      Tag.all.select{|t|t.depth==3}.count.times do |j|
         self.create(:name => Faker::Name.name, 
                     :email => Faker::Internet.email, 
                     :password => '00000000')
+        p "#{'='*20}Iteration##{i+1} User##{j+1}#{'='*20}"
       end
     end
   end

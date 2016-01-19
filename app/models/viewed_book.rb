@@ -25,10 +25,11 @@ class ViewedBook < ActiveRecord::Base
   def self.fake_data
     tags = Tag.select{|t|t.depth==3}
     users = User.all.last(10*tags.count)
-    10.times do
+    10.times do |t|
       users.pop(tags.count).each_with_index do |u, i|
         viewed_books = tags[i].books.shuffle.first(10).map{|b|b.id}.join(',')
         self.create(:user_id => u.id, :books_id => viewed_books)
+        p "#{'='*20}Iteration##{t+1} ViewedBook##{i+1}#{'='*20}"
       end
     end
   end
