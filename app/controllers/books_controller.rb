@@ -10,7 +10,7 @@ class BooksController < ApplicationController
     @avg_score = @book.avg_score
     @book.record_viewed_book(request.session_options[:id], current_user)
     all_top_matches = JSON.parse(Redis.new.get('all_top_matches'))
-    @recommendations = Recommender.get_recommendations(ViewedBook.book_viewed_list, all_top_matches, current_user).map{|b|Book.find(b)} if current_user
+    @recommendations = Recommender.get_recommendations(ViewedBook.book_viewed_list, all_top_matches, request.session_options[:id]).map{|b|Book.find(b)}
   end
 
   def add_book_to_shelf

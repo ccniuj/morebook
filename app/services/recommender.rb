@@ -59,11 +59,11 @@ class Recommender
 		results
 	end
  
-	def self.get_recommendations(data, all_top_matches, user_id)
+	def self.get_recommendations(data, all_top_matches, session_id)
 		total = {}
 		counts = {}
 		rankings = {}
-		viewed_books_id = ViewedBook.find_by(:user_id => user_id).books_id.split(',').first(5)
+		viewed_books_id = ViewedBook.find_by(:session_id => session_id).books_id.split(',').first(5)
 
 		viewed_books_id.each do |vb|
 			all_top_matches[vb].each do |k, v|
