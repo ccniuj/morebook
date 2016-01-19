@@ -67,11 +67,23 @@
                     <%= @book.page %>
                     <h4>推薦閱讀</h4>
                     <% @recommendations.each do |b| %>
-                      <%= link_to b.name, book_path(b) %><br/>
+                      <%= link_to book_path(b) do %>
+                        <div class='row'>
+                          <div class='col-xs-4'><span><%= image_tag b.cover_url, :width => '100%' %></span></div>
+                          <div class='col-xs-8'><span><%= b.name %></span></div>
+                        </div>
+                      <% end %>
+                      <br/>
                     <% end %>
                     <h4>瀏覽歷史</h4>
                     <% ViewedBook.list_recent_five_viewed_books(request.session_options[:id], current_user).each do |v| %>
-                      <%= link_to v.name, book_path(v) %><br/>
+                      <%= link_to book_path(v) do %>
+                        <div class='row'>
+                          <div class='col-xs-4'><span><%= image_tag v.cover_url, :width => '100%' %></span></div>
+                          <div class='col-xs-8'><span><%= v.name %></span></div>
+                        </div>
+                      <% end %>
+                      <br/>
                     <% end %>
                 </div> <!-- /.tag-widget -->
 
