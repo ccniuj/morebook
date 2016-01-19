@@ -63,7 +63,7 @@ class Recommender
 		total = {}
 		counts = {}
 		rankings = {}
-		viewed_books_id = ViewedBook.find_by(:session_id => session_id).books_id.split(',').first(5)
+		viewed_books_id = ViewedBook.find_by(:session_id => session_id).books_id.split(',').first(1)
 
 		viewed_books_id.each do |vb|
 			all_top_matches[vb].each do |k, v|
