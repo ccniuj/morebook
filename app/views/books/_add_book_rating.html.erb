@@ -16,7 +16,7 @@
     <span id="count"><%= @book.rates.count %></span>人評價過這本書<br/>
     <% @rate_distribution.each do |rate| %>
       <li>
-        <span id="score_<%= rate.keys.first %>"><%= rate.keys.first %></span>, 
+        <span id="score_<%= rate.keys.first %>"><%= rate.keys.first %></span>
         <span id="ratio_<%= rate.keys.first %>"><%= (rate.values.first * 100).to_i.to_s + '%' %></span>
       </li>
     <% end %>
@@ -34,7 +34,7 @@ jQuery(function($) {
 
     $("#rate").click(function() {
       $('#score').barrating('readonly', false);
-      $('#score').barrating('set', '6');
+      $('#score').barrating('set', '1');
       $(this).attr('value', '送出評價');
       $(this).unbind('click');
       $(this).click(function(){

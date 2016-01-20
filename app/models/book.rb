@@ -120,7 +120,7 @@ class Book < ActiveRecord::Base
              map do |k, v|
                h = {}
                v = (v.to_f/total).round(2)
-               h[k] = v
+               h[score_to_text(k)] = v
                h
              end
     counts
@@ -152,7 +152,7 @@ class Book < ActiveRecord::Base
 
   private
 
-  def to_text(score)
+  def score_to_text(score)
     case score
     when 0
       '免讀'
