@@ -149,6 +149,28 @@ class Book < ActiveRecord::Base
     books_id = books_id.join(',')
     viewed_books.update(:books_id => books_id)
   end
+  
+  def record_rated_book(sid, user)
+    rated_books = RatedBook.find_by(:session_id => sid)
+    if rated_books.nil?
+        rated_books = RatedBook.create(:session_id  => sid,
+                                       :books_and_time_stamps => "#{self.id}/#{Time.now}")
+        rated_books.update(:user_id => user.id) if user
+    end
+
+    books_and_time_stamps = rated_books.books_and_time_stamps.split(',').map do |v|
+      [v.split('/')[0].to_i, v.split('/')[1].to_datetime]
+    end
+
+    if books_and_time_stamps.map{|b|b[0]}.include?(self.id)
+      books_and_time_stamps.delete_if{|b|b[0]==self.id}
+    end
+
+    books_and_time_stamps.unshift([self.id, Time.now])
+    books_and_time_stamps = books_and_time_stamps.map{|b|b.join('/')}.join(',')
+
+    rated_books.update(:books_and_time_stamps => books_and_time_stamps)
+  end
 
   private
 

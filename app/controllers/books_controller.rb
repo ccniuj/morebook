@@ -32,7 +32,7 @@ class BooksController < ApplicationController
     @book = Book.find(params[:book])
     score = params[:score]
     @book.rates.create(:score => score)
-
+    @book.record_rated_book(request.session_options[:id], current_user)
     respond_to do |format|
       format.html
       format.json {render json: [@book.rate_distribution, @book.avg_score]}

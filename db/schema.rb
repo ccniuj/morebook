@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114141223) do
+ActiveRecord::Schema.define(version: 20160120102045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,6 +104,14 @@ ActiveRecord::Schema.define(version: 20160114141223) do
     t.integer  "selfie_file_size"
     t.datetime "selfie_updated_at"
     t.text     "description"
+  end
+
+  create_table "rated_books", force: :cascade do |t|
+    t.string   "user_id"
+    t.string   "session_id"
+    t.text     "books_and_time_stamps"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rates", force: :cascade do |t|
