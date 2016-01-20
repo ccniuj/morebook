@@ -832,6 +832,7 @@ section {
     font-size: 16px;
     color: #474747;
     height: 100px;
+    overflow: hidden;
 }
 
 .portfolio-item .item-description span.like {

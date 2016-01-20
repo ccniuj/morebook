@@ -39,10 +39,10 @@
                                               <div class="row">       
                                                   <div class="col-xs-8 col-xs-offset-2">       
                                                       <span class="item-name">       
-                                                          <%= book.name %>
+                                                        <%= (book.name.size > 20) ? book.name.first(20)+'...' : book.name %>
                                                       </span>       
                                                       <span>       
-                                                          <%= book.tags.any? ? book.tags.select{|t|t.leaf?}.first.name : 'None' %>
+                                                          <%= book.tags.any? ? book.tags.first.name : 'None' %>
                                                       </span>       
                                                   </div>       
                                                   <div class="col-xs-8 col-xs-offset-2">       
