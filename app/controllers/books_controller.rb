@@ -30,12 +30,18 @@ class BooksController < ApplicationController
 
   def add_rate
     @book = Book.find(params[:book])
-    score = params[:score]
-    @book.rates.create(:score => score)
-    @book.record_rated_book(request.session_options[:id], current_user)
-    respond_to do |format|
-      format.html
-      format.json {render json: [@book.rate_distribution, @book.avg_score]}
+    if @book.check_if_rated_recently(request.session_options[:id])
+      respond_to do |format|
+        format.json {render json:[]}
+      end
+    else
+      score = params[:score]
+      @book.rates.create(:score => score)
+      @book.record_rated_book(request.session_options[:id], current_user)
+      respond_to do |format|
+        format.html
+        format.json {render json: [@book.rate_distribution, @book.avg_score]}
+      end
     end
   end
 end

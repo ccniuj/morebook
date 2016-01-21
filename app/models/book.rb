@@ -172,6 +172,24 @@ class Book < ActiveRecord::Base
     rated_books.update(:books_and_time_stamps => books_and_time_stamps)
   end
 
+  def check_if_rated_recently(sid)
+    rated_books = RatedBook.find_by(:session_id => sid)
+
+    if rated_books
+      books_and_time_stamps = rated_books.books_and_time_stamps.split(',').map do |v|
+        [v.split('/')[0].to_i, v.split('/')[1].to_datetime]
+      end
+      books_rated_recently = books_and_time_stamps.select do |bs|
+        bs[0]==self.id && ((Time.now.to_date - bs[1].to_date).to_i<1.month)
+      end
+      if books_rated_recently.any?
+        return true
+      end
+    end
+
+    false
+  end
+  
   private
 
   def score_to_text(score)

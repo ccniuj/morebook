@@ -49,13 +49,16 @@ jQuery(function($) {
             var avg_score_new = data[1];
             var scores = [];
             var ratios = [];
-
-            $('#count').html(count+1);
-            $('#score').barrating('set', avg_score_new);
-            for (var i = 0, length = data[0].length; i < length; i++) {
-              $.each(data[0][i], function(k,v){
-                $('#ratio_' + k).html(String(v*100) + '%');
-              });
+            if (data.length>0){
+              $('#count').html(count+1);
+              $('#score').barrating('set', avg_score_new);
+              for (var i = 0, length = data[0].length; i < length; i++) {
+                $.each(data[0][i], function(k,v){
+                  $('#ratio_' + k).html(String(v*100) + '%');
+                });
+              }
+            } else {
+              alert('一個月後才能再次評論');
             }
           }
         });

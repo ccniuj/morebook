@@ -14,5 +14,4 @@ class RatedBook < ActiveRecord::Base
       prev_rated_books.update(:session_id => current_sid)
     end
   end
-
 end
