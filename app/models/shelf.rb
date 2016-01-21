@@ -26,6 +26,7 @@ class Shelf < ActiveRecord::Base
         counter[tag.name] += 1
       end
     end
+    counter.delete('中文書')
     counter
   end
 

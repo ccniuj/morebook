@@ -25,7 +25,7 @@
                 </ul>
                 <hr/>
             </div> <!-- /.headline -->
-            <%= will_paginate @paginate if @paginate %>
+            <%= (will_paginate @paginate, :previous_label => '<i class="fa fa-angle-double-left"></i>', :next_label => '<i class="fa fa-angle-double-right"></i>', :style => 'margin-left:6%;' ) if @paginate %>
             <div class="portfolio-item-list">
                 <div class="row">
                   <ul class="grid effect-2" id="grid">
@@ -46,8 +46,8 @@
                                                 <span class="item-name">       
                                                     <%= (shelf.name.size > 25) ? shelf.name.first(25)+'...' : shelf.name %>
                                                 </span>       
-                                                <span>       
-                                                    <%= shelf.main_tag %>
+                                                <span>
+                                                    <%= (shelf.main_tag.size > 8) ? shelf.main_tag.first(8)+'...' : shelf.main_tag %>
                                                 </span>       
                                             </div>       
                                             <div class="col-xs-6 col-xs-offset-3">       
@@ -65,9 +65,7 @@
                   </ul>
                 </div>
             </div> <!-- end of portfolio-item-list -->
-            
-            <%= will_paginate @paginate if @paginate %>
-
+          <%= (will_paginate @paginate, :previous_label => '<i class="fa fa-angle-double-left"></i>', :next_label => '<i class="fa fa-angle-double-right"></i>', :style => 'margin-left:6%;' ) if @paginate %>
         </div>
     </section> 
     <!--   end of portfolio section  -->

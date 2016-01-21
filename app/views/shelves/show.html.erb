@@ -42,7 +42,7 @@
                                                         <%= (book.name.size > 20) ? book.name.first(20)+'...' : book.name %>
                                                       </span>       
                                                       <span>       
-                                                          <%= book.tags.any? ? book.tags.first.name : 'None' %>
+                                                        <%= book.tags.empty? ? 'None' : ((book.tags.last.name.size>5) ? (book.tags.last.name.first(5)+'...') : book.tags.last.name ) %>
                                                       </span>       
                                                   </div>       
                                                   <div class="col-xs-8 col-xs-offset-2">       
@@ -70,7 +70,7 @@
                                 <h4>分類</h4>
                                 <div class="tags">
                                     <% @shelf.list_tags.each do |tag_name| %>
-                                        <a href="#"><%= tag_name %></a>
+                                    <a href="<%= books_path+'?tag='+tag_name %>"><%= tag_name %></a>
                                     <% end %>
                                 </div>
                                 <h4>成員</h4>

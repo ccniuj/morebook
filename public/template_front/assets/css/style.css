@@ -87,7 +87,7 @@ html {
 
 /* =-=--=-=-=-=-=-==-=-=-=-  2.1 Button   =-=-=-=-==-=-==-====-==-=- */
 
-.btn {
+.btn:not(#query_btn) {
 	border: 1px solid #000;
 	border-radius: 0px;
 	padding: 10px 25px;
@@ -312,13 +312,18 @@ html {
 	margin-bottom: 20px;
 }
 
-.form-control {
+.form-control:not(#query) {
 	background-color: #f9f9f9;
 	border: 1px solid #E0E0E0;
 	border-radius: 0px;
 	box-shadow: none;
 	height: auto;
 	padding: 14px 28px;
+}
+
+#query_form {
+	height: auto;
+	padding: 10px;
 }
 
 .form-control:focus {
@@ -348,7 +353,10 @@ html {
 
 /*====================================== 2.5 pagination  ====================================*/
 
-.pagination>.active>a, 
+.pagination {
+
+}
+/*.pagination>.active>a, 
 .pagination>.active>a:focus, 
 .pagination>.active>a:hover, 
 .pagination>.active>span, 
@@ -378,7 +386,7 @@ html {
     border-radius: 0px;
     color: #dadada;
     border: 2px solid #dadada;
-}
+}*/
 
 /* =-=--=-=-=-=-=-==-=-=-=-  2.6 Typography   =-=-=-=-==-=-==-====-==-=- */
 
