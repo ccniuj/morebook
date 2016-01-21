@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
       user.profile ||= Profile.create(
         :user_id => user.id,
         :name    => user.name,
-        :email   => user.email,
+        :email   => user.email
         )
     end
   end
