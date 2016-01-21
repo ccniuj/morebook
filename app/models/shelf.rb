@@ -66,4 +66,12 @@ class Shelf < ActiveRecord::Base
       p "Shelf of tag #{tag.name} has been created."
     end
   end
+
+  def self.fake_member
+    self.all.each do |s|
+      User.all.shuffle.first(rand(10..30)).each do |u|
+        UserShelf.create(:user_id => u.id, :shelf_id => s.id)
+      end
+    end
+  end
 end

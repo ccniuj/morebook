@@ -41,4 +41,14 @@ class User < ActiveRecord::Base
       end
     end
   end
+
+  def self.fake_profile
+    self.all.each do |user|
+      user.profile ||= Profile.create(
+        :user_id => user.id,
+        :name    => user.name,
+        :email   => user.email,
+        )
+    end
+  end
 end
